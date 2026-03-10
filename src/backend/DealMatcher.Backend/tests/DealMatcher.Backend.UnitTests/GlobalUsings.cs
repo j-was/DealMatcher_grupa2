@@ -1,0 +1,9 @@
+﻿global using System.Runtime.CompilerServices;
+global using Ardalis.SharedKernel;
+global using DealMatcher.Backend.Core.ContributorAggregate;
+global using DealMatcher.Backend.UseCases.Contributors.Create;
+global using Shouldly;
+global using MediatR;
+global using Microsoft.Extensions.Logging;
+global using NSubstitute;
+global using Xunit;

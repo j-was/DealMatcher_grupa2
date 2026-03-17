@@ -1,9 +1,9 @@
-﻿global using FastEndpoints;
+﻿global using System.Diagnostics;
+global using System.Reflection;
+global using Ardalis.Result;
+global using Ardalis.SharedKernel;
+global using FastEndpoints;
 global using FastEndpoints.Swagger;
 global using MediatR;
 global using Serilog;
 global using Serilog.Extensions.Logging;
-global using Ardalis.Result;
-global using System.Reflection;
-global using Ardalis.SharedKernel;
-global using System.Diagnostics;

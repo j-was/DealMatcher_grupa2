@@ -1,0 +1,40 @@
+name: Backend CD
+
+on:
+  push:
+    branches: [release]
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write 
+      contents: read 
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/src/backend/DealMatcher.Backend
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DEALMATCHERBACKEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.DEALMATCHERBACKEND_REGISTRY_PASSWORD }}
+          containerAppName: dealmatcher-backend
+          resourceGroup: pw-dealmatcher
+          imageToBuild: ${{ secrets.DEALMATCHERBACKEND_REGISTRY_USERNAME }}/dealmatcher-backend:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_

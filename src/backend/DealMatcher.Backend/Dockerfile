@@ -5,7 +5,7 @@ COPY *.sln .
 COPY Directory.Build.props ./
 COPY Directory.Packages.props ./
 COPY src/DealMatcher.Backend.Web/*.csproj src/DealMatcher.Backend.Web/
-RUN dotnet restore src/LoanHub.Backend.Web/LoanHub.Backend.Web.csproj
+RUN dotnet restore src/DealMatcher.Backend.Web/DealMatcher.Backend.Web.csproj
 
 COPY src/ src/
 

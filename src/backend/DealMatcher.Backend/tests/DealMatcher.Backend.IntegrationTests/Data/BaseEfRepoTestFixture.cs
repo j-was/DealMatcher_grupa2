@@ -1,5 +1,4 @@
-﻿using DealMatcher.Backend.Core.ContributorAggregate;
-using DealMatcher.Backend.Infrastructure.Data;
+﻿using DealMatcher.Backend.Infrastructure.Data;
 
 namespace DealMatcher.Backend.IntegrationTests.Data;
 
@@ -20,20 +19,15 @@ public abstract class BaseEfRepoTestFixture
     // Create a fresh service provider, and therefore a fresh
     // InMemory database instance.
     var serviceProvider = new ServiceCollection()
-        .AddEntityFrameworkInMemoryDatabase()
-        .BuildServiceProvider();
+      .AddEntityFrameworkInMemoryDatabase()
+      .BuildServiceProvider();
 
     // Create a new options instance telling the context to use an
     // InMemory database and the new service provider.
     var builder = new DbContextOptionsBuilder<AppDbContext>();
     builder.UseInMemoryDatabase("cleanarchitecture")
-           .UseInternalServiceProvider(serviceProvider);
+      .UseInternalServiceProvider(serviceProvider);
 
     return builder.Options;
-  }
-
-  protected EfRepository<Contributor> GetRepository()
-  {
-    return new EfRepository<Contributor>(_dbContext);
   }
 }

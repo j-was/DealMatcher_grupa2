@@ -1,0 +1,28 @@
+name: Develop to release CD
+
+on:
+  push:
+    branches: [develop]
+
+  workflow_dispatch:
+
+jobs:
+  promote:
+    name: Push develop to release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push develop to release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout release
+          git merge develop --ff-only
+          git push origin release

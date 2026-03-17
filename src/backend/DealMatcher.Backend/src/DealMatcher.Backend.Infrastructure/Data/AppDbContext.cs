@@ -1,6 +1,7 @@
 ﻿// using DealMatcher.Backend.Core.ContributorAggregate;
 
 namespace DealMatcher.Backend.Infrastructure.Data;
+
 public class AppDbContext(DbContextOptions<AppDbContext> options,
   IDomainEventDispatcher? dispatcher) : DbContext(options)
 {
@@ -24,7 +25,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options,
     // dispatch events only if save was successful
     var entitiesWithEvents = ChangeTracker.Entries<HasDomainEventsBase>()
         .Select(e => e.Entity)
-        .Where(e => e.DomainEvents.Any())
+        .Where(e => e.DomainEvents.Count != 0)
         .ToArray();
 
     await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);

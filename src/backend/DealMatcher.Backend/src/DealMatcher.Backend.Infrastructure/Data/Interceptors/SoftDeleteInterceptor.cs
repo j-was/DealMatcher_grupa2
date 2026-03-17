@@ -1,4 +1,4 @@
-using DealMatcher.Backend.Core;
+﻿using DealMatcher.Backend.Core;
 
 namespace DealMatcher.Backend.Infrastructure.Data.Interceptors;
 

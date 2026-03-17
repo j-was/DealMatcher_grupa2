@@ -21,7 +21,7 @@ public sealed class Program
       .CreateLogger<Program>();
     try
     {
-// builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
+      // builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
       builder.Services.AddServiceConfigs(appLogger, builder);
 
 
@@ -35,8 +35,8 @@ public sealed class Program
           c.Register(typeof(CommandLogger<,>));
         });
 
-// wire up commands
-//builder.Services.AddTransient<ICommandHandler<CreateContributorCommand2,Result<int>>, CreateContributorCommandHandler2>();
+      // wire up commands
+      //builder.Services.AddTransient<ICommandHandler<CreateContributorCommand2,Result<int>>, CreateContributorCommandHandler2>();
 
 
       var app = builder.Build();

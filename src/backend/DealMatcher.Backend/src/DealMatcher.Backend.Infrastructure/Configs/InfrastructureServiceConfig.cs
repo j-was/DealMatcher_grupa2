@@ -1,6 +1,7 @@
 ﻿using DealMatcher.Backend.Infrastructure.Data;
 
 namespace DealMatcher.Backend.Infrastructure.Configs;
+
 public static class InfrastructureServiceConfig
 {
   public static IServiceCollection AddInfrastructureServices(

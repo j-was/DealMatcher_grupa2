@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Core;
+﻿namespace DealMatcher.Backend.Core;
 
 public class DealMatcherEntityBase : EntityBase
 {

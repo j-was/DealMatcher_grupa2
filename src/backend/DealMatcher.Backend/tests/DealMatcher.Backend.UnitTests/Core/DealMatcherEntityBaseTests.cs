@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.UnitTests.Core;
+﻿namespace DealMatcher.Backend.UnitTests.Core;
 
 public class DealMatcherEntityBaseTests
 {

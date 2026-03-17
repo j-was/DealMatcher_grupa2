@@ -1,0 +1,54 @@
+name: Frontend CI
+
+on: 
+    push: 
+        branches: ["develop"]
+        paths: 
+            - "src/frontend/**"
+            - ".github/workflows/frontend-ci.yml"
+    pull_request:
+        branches: ["develop"]
+        paths: 
+            - "src/frontend/**"
+            - ".github/workflows/frontend-ci.yml"
+    
+jobs:
+    build:
+        name: Frontend Build & Test (Flutter)
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: "stable"
+            
+            - name: Flutter Setup
+              run: flutter pub get
+              working-directory: src/frontend/DealMatcher.Frontend
+
+            - name: Running tests
+              run: flutter test
+              working-directory: src/frontend/DealMatcher.Frontend
+            
+            - name: Building web application
+              run: flutter build web
+              working-directory: src/frontend/DealMatcher.Frontend
+
+    analyze:
+        name: Frontend code analyze
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: "stable"
+            
+            - name: Flutter Setup
+              run: flutter pub get
+              working-directory: src/frontend/DealMatcher.Frontend
+
+            - name: Running tests
+              run: flutter analyze
+              working-directory: src/frontend/DealMatcher.Frontend

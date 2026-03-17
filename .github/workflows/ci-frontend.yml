@@ -25,15 +25,15 @@ jobs:
             
             - name: Flutter Setup
               run: flutter pub get
-              working-directory: ./DealMatcher.Frontend
+              working-directory: src/frontend/DealMatcher.Frontend
 
             - name: Running tests
               run: flutter test
-              working-directory: ./DealMatcher.Frontend
+              working-directory: src/frontend/DealMatcher.Frontend
             
             - name: Building web application
               run: flutter build web
-              working-directory: ./DealMatcher.Frontend
+              working-directory: src/frontend/DealMatcher.Frontend
 
     analyze:
         name: Frontend code analyze
@@ -47,8 +47,8 @@ jobs:
             
             - name: Flutter Setup
               run: flutter pub get
-              working-directory: ./DealMatcher.Frontend
+              working-directory: src/frontend/DealMatcher.Frontend
 
             - name: Running tests
               run: flutter analyze
-              working-directory: ./DealMatcher.Frontend
+              working-directory: src/frontend/DealMatcher.Frontend

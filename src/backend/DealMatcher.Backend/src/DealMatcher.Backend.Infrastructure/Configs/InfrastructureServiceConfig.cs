@@ -11,6 +11,7 @@ public static class InfrastructureServiceConfig
     string? connectionString = config.GetConnectionString("SqliteConnection");
     Guard.Against.Null(connectionString);
     services.AddApplicationDbContext(connectionString);
+    services.AddAutoMapperConfigs();
 
     services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
       .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));

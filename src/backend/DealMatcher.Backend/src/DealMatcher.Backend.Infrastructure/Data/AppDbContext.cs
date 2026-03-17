@@ -1,4 +1,4 @@
-﻿using DealMatcher.Backend.Core.ContributorAggregate;
+﻿// using DealMatcher.Backend.Core.ContributorAggregate;
 
 namespace DealMatcher.Backend.Infrastructure.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options,
@@ -6,7 +6,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options,
 {
   private readonly IDomainEventDispatcher? _dispatcher = dispatcher;
 
-  public DbSet<Contributor> Contributors => Set<Contributor>();
+  // public DbSet<Contributor> Contributors => Set<Contributor>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

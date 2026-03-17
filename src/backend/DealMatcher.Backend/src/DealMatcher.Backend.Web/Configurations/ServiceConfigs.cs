@@ -1,5 +1,6 @@
 ﻿using DealMatcher.Backend.Core.Interfaces;
 using DealMatcher.Backend.Infrastructure;
+using DealMatcher.Backend.Infrastructure.Configs;
 using DealMatcher.Backend.Infrastructure.Email;
 
 namespace DealMatcher.Backend.Web.Configurations;
@@ -16,7 +17,7 @@ public static class ServiceConfigs
     {
       // Use a local test email server
       // See: https://ardalis.com/configuring-a-local-test-email-server/
-      services.AddScoped<IEmailSender, MimeKitEmailSender>();
+      // services.AddScoped<IEmailSender, MimeKitEmailSender>();
 
       // Otherwise use this:
       //builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
@@ -24,7 +25,7 @@ public static class ServiceConfigs
     }
     else
     {
-      services.AddScoped<IEmailSender, MimeKitEmailSender>();
+      // services.AddScoped<IEmailSender, MimeKitEmailSender>();
     }
 
     logger.LogInformation("{Project} services registered", "Mediatr and Email Sender");

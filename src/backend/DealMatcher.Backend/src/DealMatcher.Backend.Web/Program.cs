@@ -1,43 +1,54 @@
-﻿using DealMatcher.Backend.UseCases.Contributors.Create;
-using DealMatcher.Backend.Web.Configurations;
+﻿using DealMatcher.Backend.Web.Configurations;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace DealMatcher.Backend.Web;
 
-var logger = Log.Logger = new LoggerConfiguration()
-  .Enrich.FromLogContext()
-  .WriteTo.Console()
-  .CreateLogger();
+public sealed class Program
+{
+  private static async Task Main(string[] args)
+  {
+    var builder = WebApplication.CreateBuilder(args);
 
-logger.Information("Starting web host");
+    var logger = Log.Logger = new LoggerConfiguration()
+      .Enrich.FromLogContext()
+      .WriteTo.Console()
+      .CreateLogger();
 
-builder.AddLoggerConfigs();
+    logger.Information("Starting web host");
 
-var appLogger = new SerilogLoggerFactory(logger)
-    .CreateLogger<Program>();
+    builder.AddLoggerConfigs();
 
-builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
-builder.Services.AddServiceConfigs(appLogger, builder);
+    var appLogger = new SerilogLoggerFactory(logger)
+      .CreateLogger<Program>();
+    try
+    {
+// builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
+      builder.Services.AddServiceConfigs(appLogger, builder);
 
 
-builder.Services.AddFastEndpoints()
-                .SwaggerDocument(o =>
-                {
-                  o.ShortSchemaNames = true;
-                })
-                .AddCommandMiddleware(c =>
-                {
-                  c.Register(typeof(CommandLogger<,>));
-                });
+      builder.Services.AddFastEndpoints()
+        .SwaggerDocument(o =>
+        {
+          o.ShortSchemaNames = true;
+        })
+        .AddCommandMiddleware(c =>
+        {
+          c.Register(typeof(CommandLogger<,>));
+        });
 
 // wire up commands
 //builder.Services.AddTransient<ICommandHandler<CreateContributorCommand2,Result<int>>, CreateContributorCommandHandler2>();
 
 
-var app = builder.Build();
+      var app = builder.Build();
 
-await app.UseAppMiddlewareAndSeedDatabase();
+      await app.UseAppMiddlewareAndSeedDatabase();
 
-app.Run();
-
-// Make the implicit Program.cs class public, so integration tests can reference the correct assembly for host building
-public partial class Program { }
+      await app.RunAsync();
+    }
+    catch (Exception ex)
+    {
+      logger.Error(ex.Message);
+      return;
+    }
+  }
+}

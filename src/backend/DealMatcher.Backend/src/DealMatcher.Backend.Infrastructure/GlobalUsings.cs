@@ -12,3 +12,4 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using MimeKit;
 global using DealMatcher.Backend.UseCases.Mapping.Profiles;
+global using Microsoft.EntityFrameworkCore.Diagnostics;

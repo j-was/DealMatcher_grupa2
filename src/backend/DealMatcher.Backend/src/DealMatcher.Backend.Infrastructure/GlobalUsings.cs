@@ -13,3 +13,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using MimeKit;
+global using DealMatcher.Backend.Core;
+global using DealMatcher.Backend.Core.Aggregates.Offer;
+global using DealMatcher.Backend.Core.Aggregates.User;
+global using DealMatcher.Backend.Core.Aggregates.Category;

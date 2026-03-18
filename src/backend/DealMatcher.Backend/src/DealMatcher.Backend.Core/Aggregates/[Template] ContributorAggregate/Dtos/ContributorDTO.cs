@@ -1,2 +1,2 @@
-﻿// namespace DealMatcher.Backend.UseCases.Contributors;
+// namespace DealMatcher.Backend.UseCases.Contributors;
 // public record ContributorDTO(int Id, string Name, string? PhoneNumber);

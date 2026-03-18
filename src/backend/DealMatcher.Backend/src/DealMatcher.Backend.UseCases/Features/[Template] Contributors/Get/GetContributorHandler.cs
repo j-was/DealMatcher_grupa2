@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Core.ContributorAggregate;
+// using DealMatcher.Backend.Core.ContributorAggregate;
 // using DealMatcher.Backend.Core.ContributorAggregate.Specifications;
 //
 // namespace DealMatcher.Backend.UseCases.Contributors.Get;

@@ -1,38 +1,38 @@
-﻿// using DealMatcher.Backend.Core.ContributorAggregate;
+// using DealMatcher.Backend.Core.ContributorAggregate;
 
 namespace DealMatcher.Backend.Infrastructure.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options,
   IDomainEventDispatcher? dispatcher) : DbContext(options)
 {
-  private readonly IDomainEventDispatcher? _dispatcher = dispatcher;
+    private readonly IDomainEventDispatcher? _dispatcher = dispatcher;
 
-  // public DbSet<Contributor> Contributors => Set<Contributor>();
+    // public DbSet<Contributor> Contributors => Set<Contributor>();
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    base.OnModelCreating(modelBuilder);
-    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-  }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 
-  public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-  {
-    int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-    // ignore events if no dispatcher provided
-    if (_dispatcher == null) return result;
+        // ignore events if no dispatcher provided
+        if (_dispatcher == null) return result;
 
-    // dispatch events only if save was successful
-    var entitiesWithEvents = ChangeTracker.Entries<HasDomainEventsBase>()
-        .Select(e => e.Entity)
-        .Where(e => e.DomainEvents.Count != 0)
-        .ToArray();
+        // dispatch events only if save was successful
+        var entitiesWithEvents = ChangeTracker.Entries<HasDomainEventsBase>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Count != 0)
+            .ToArray();
 
-    await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
+        await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
 
-    return result;
-  }
+        return result;
+    }
 
-  public override int SaveChanges() =>
-        SaveChangesAsync().GetAwaiter().GetResult();
+    public override int SaveChanges() =>
+          SaveChangesAsync().GetAwaiter().GetResult();
 }

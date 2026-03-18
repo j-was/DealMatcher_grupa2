@@ -1,4 +1,4 @@
-﻿namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
+namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
 
 public static class MappingProfilesPointer
 {

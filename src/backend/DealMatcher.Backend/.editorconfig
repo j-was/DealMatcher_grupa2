@@ -5,7 +5,7 @@ root = true
 # All files
 [*]
 indent_style = space
-
+trim_trailing_whitespace = true
 # XML project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
@@ -16,9 +16,10 @@ indent_size = 2
 
 # Code files
 [*.{cs,csx,vb,vbx}]
-indent_size = 2
+indent_size = 4
 insert_final_newline = true
-charset = utf-8-bom
+tab_width = 4
+charset = utf-8
 ###############################
 # .NET Coding Conventions     #
 ###############################
@@ -65,7 +66,6 @@ dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case_sty
 dotnet_naming_symbols.constant_fields.applicable_kinds            = field
 dotnet_naming_symbols.constant_fields.applicable_accessibilities  = *
 dotnet_naming_symbols.constant_fields.required_modifiers          = const
-tab_width= 2
 dotnet_naming_rule.private_members_with_underscore.symbols  = private_fields
 dotnet_naming_rule.private_members_with_underscore.style = prefix_underscore
 dotnet_naming_rule.private_members_with_underscore.severity = suggestion
@@ -74,15 +74,14 @@ dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 dotnet_naming_style.prefix_underscore.capitalization = camel_case
 dotnet_naming_style.prefix_underscore.required_prefix = _
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
-# end_of_line = crlf
 ###############################
 # C# Coding Conventions       #
 ###############################
 [*.cs]
 # var preferences
-csharp_style_var_for_built_in_types = true:silent
-csharp_style_var_when_type_is_apparent = true:silent
-csharp_style_var_elsewhere = true:silent
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
 # Expression-bodied members
 csharp_style_expression_bodied_methods = false:silent
 csharp_style_expression_bodied_constructors = false:silent
@@ -97,7 +96,7 @@ csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_throw_expression = true:suggestion
 csharp_style_conditional_delegate_call = true:suggestion
 # Modifier preferences
-csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
+csharp_preferred_modifier_order = public, protected, internal, private, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, volatile, async:suggestion
 # Expression-level preferences
 csharp_prefer_braces = true:silent
 csharp_style_deconstructed_variable_declaration = true:suggestion
@@ -149,3 +148,8 @@ csharp_style_expression_bodied_local_functions = false:silent
 [*.vb]
 # Modifier preferences
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async:suggestion
+[*.{json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

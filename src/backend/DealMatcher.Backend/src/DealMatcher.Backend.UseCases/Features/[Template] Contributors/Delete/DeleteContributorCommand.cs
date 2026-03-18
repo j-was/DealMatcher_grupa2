@@ -1,3 +1,3 @@
-﻿// namespace DealMatcher.Backend.UseCases.Contributors.Delete;
+// namespace DealMatcher.Backend.UseCases.Contributors.Delete;
 //
 // public record DeleteContributorCommand(int ContributorId) : ICommand<Result>;

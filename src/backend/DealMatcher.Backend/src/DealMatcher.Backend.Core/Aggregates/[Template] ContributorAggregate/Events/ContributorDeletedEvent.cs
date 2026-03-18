@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.Core.Aggregates.ContributorAggregate.Events;
+// namespace DealMatcher.Backend.Core.Aggregates.ContributorAggregate.Events;
 //
 // /// <summary>
 // /// A domain event that is dispatched whenever a contributor is deleted.

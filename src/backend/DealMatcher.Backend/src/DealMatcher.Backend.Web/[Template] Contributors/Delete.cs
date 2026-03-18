@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.UseCases.Contributors.Delete;
+// using DealMatcher.Backend.UseCases.Contributors.Delete;
 //
 // namespace DealMatcher.Backend.Web.Contributors;
 //

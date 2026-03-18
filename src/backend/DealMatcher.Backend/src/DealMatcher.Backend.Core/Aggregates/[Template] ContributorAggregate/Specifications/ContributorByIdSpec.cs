@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.Core.ContributorAggregate.Specifications;
+// namespace DealMatcher.Backend.Core.ContributorAggregate.Specifications;
 //
 // public class ContributorByIdSpec : Specification<Contributor>
 // {

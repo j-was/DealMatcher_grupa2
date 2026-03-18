@@ -1,41 +1,41 @@
-﻿namespace DealMatcher.Backend.UnitTests.Core;
+namespace DealMatcher.Backend.UnitTests.Core;
 
 public class DealMatcherEntityBaseTests
 {
-  [Fact]
-  public void DealMatcherEntityBase_WhenCreated_ShouldHaveCorrectCreatedAtDeletedAtAndIsDeletedSet()
-  {
+    [Fact]
+    public void DealMatcherEntityBase_WhenCreated_ShouldHaveCorrectCreatedAtDeletedAtAndIsDeletedSet()
+    {
 
-    var beforeCreationTime = DateTime.UtcNow;
-    var entity = new DealMatcherEntityBase();
-    var afterCreationTime = DateTime.UtcNow;
+        var beforeCreationTime = DateTime.UtcNow;
+        var entity = new DealMatcherEntityBase();
+        var afterCreationTime = DateTime.UtcNow;
 
-    entity.CreatedAt
-      .ShouldBeInRange(beforeCreationTime, afterCreationTime);
+        entity.CreatedAt
+          .ShouldBeInRange(beforeCreationTime, afterCreationTime);
 
-    entity.DeletedAt
-      .ShouldBeNull();
+        entity.DeletedAt
+          .ShouldBeNull();
 
-    entity.IsDeleted
-      .ShouldBeFalse();
-  }
+        entity.IsDeleted
+          .ShouldBeFalse();
+    }
 
-  [Fact]
-  public void DealMatcherEntityBase_WhenDeleted_ShouldHaveCorrectDeletedAtIsDeletedSet()
-  {
-    var entity = new DealMatcherEntityBase();
+    [Fact]
+    public void DealMatcherEntityBase_WhenDeleted_ShouldHaveCorrectDeletedAtIsDeletedSet()
+    {
+        var entity = new DealMatcherEntityBase();
 
-    var beforeDeletionTime = DateTime.UtcNow;
+        var beforeDeletionTime = DateTime.UtcNow;
 
-    entity.Delete();
+        entity.Delete();
 
-    var afterDeletionTime = DateTime.UtcNow;
+        var afterDeletionTime = DateTime.UtcNow;
 
-    entity.DeletedAt
-      .ShouldNotBeNull()
-      .ShouldBeInRange(beforeDeletionTime, afterDeletionTime);
+        entity.DeletedAt
+          .ShouldNotBeNull()
+          .ShouldBeInRange(beforeDeletionTime, afterDeletionTime);
 
-    entity.IsDeleted
-      .ShouldBeTrue();
-  }
+        entity.IsDeleted
+          .ShouldBeTrue();
+    }
 }

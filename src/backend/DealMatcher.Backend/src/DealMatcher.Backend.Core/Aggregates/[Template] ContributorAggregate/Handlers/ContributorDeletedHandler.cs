@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Core.Aggregates.ContributorAggregate.Events;
+// using DealMatcher.Backend.Core.Aggregates.ContributorAggregate.Events;
 // using DealMatcher.Backend.Core.Interfaces;
 //
 // namespace DealMatcher.Backend.Core.ContributorAggregate.Handlers;

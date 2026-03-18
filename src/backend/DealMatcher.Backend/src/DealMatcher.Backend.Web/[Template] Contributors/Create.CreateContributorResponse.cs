@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.Web.Contributors;
+// namespace DealMatcher.Backend.Web.Contributors;
 //
 // public class CreateContributorResponse(int id, string name)
 // {

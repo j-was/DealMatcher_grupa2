@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Core.Interfaces;
+// using DealMatcher.Backend.Core.Interfaces;
 //
 // namespace DealMatcher.Backend.UseCases.Contributors.Delete;
 //

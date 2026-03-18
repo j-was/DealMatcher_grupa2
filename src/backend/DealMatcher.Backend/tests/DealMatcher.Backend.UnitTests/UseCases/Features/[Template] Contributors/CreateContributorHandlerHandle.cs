@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.UnitTests.UseCases.Contributors;
+// namespace DealMatcher.Backend.UnitTests.UseCases.Contributors;
 //
 // public class CreateContributorHandlerHandle
 // {

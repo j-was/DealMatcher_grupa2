@@ -1,4 +1,4 @@
-﻿global using System.Runtime.CompilerServices;
+global using System.Runtime.CompilerServices;
 global using Ardalis.SharedKernel;
 global using DealMatcher.Backend.Core;
 global using MediatR;

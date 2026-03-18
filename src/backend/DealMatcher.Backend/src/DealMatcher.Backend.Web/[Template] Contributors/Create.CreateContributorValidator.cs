@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
+// using DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
 // using FastEndpoints;
 // using FluentValidation;
 //

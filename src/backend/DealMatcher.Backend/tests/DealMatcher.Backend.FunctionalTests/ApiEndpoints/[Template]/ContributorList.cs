@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Infrastructure.Data;
+// using DealMatcher.Backend.Infrastructure.Data;
 // using DealMatcher.Backend.Web.Contributors;
 //
 // namespace DealMatcher.Backend.FunctionalTests.ApiEndpoints;

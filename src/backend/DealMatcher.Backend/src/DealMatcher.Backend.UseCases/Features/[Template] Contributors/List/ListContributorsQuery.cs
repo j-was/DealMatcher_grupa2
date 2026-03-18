@@ -1,4 +1,4 @@
-﻿// using Ardalis.SharedKernel;
+// using Ardalis.SharedKernel;
 // using DealMatcher.Backend.Core.ContributorAggregate;
 // using DealMatcher.Backend.UseCases.Contributors.Create;
 // using FastEndpoints;

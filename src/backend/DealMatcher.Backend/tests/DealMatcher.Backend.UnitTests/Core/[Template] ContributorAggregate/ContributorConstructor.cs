@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.UnitTests.Core.ContributorAggregate;
+// namespace DealMatcher.Backend.UnitTests.Core.ContributorAggregate;
 //
 // public class ContributorConstructor
 // {

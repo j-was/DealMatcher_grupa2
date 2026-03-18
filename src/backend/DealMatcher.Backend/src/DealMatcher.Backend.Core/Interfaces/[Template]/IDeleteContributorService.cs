@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.Core.Interfaces;
+// namespace DealMatcher.Backend.Core.Interfaces;
 //
 // public interface IDeleteContributorService
 // {

@@ -1,4 +1,4 @@
-﻿// namespace DealMatcher.Backend.Core.ContributorAggregate;
+// namespace DealMatcher.Backend.Core.ContributorAggregate;
 //
 // public class Contributor : EntityBase, IAggregateRoot
 // {

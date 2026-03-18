@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.UseCases.Contributors.Create;
+// using DealMatcher.Backend.UseCases.Contributors.Create;
 //
 // namespace DealMatcher.Backend.Web.Contributors;
 //

@@ -1,16 +1,16 @@
-﻿namespace DealMatcher.Backend.Infrastructure.Configs;
+namespace DealMatcher.Backend.Infrastructure.Configs;
 
 public static class AutoMapperConfig
 {
-  public static IServiceCollection AddAutoMapperConfigs(this IServiceCollection services)
-  {
-    services.AddAutoMapper(
-      _ =>
-      {
+    public static IServiceCollection AddAutoMapperConfigs(this IServiceCollection services)
+    {
+        services.AddAutoMapper(
+          _ =>
+          {
 
-      },
-      typeof(MappingProfilesPointer).Assembly);
+          },
+          typeof(MappingProfilesPointer).Assembly);
 
-    return services;
-  }
+        return services;
+    }
 }

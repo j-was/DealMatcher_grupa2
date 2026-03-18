@@ -1,4 +1,4 @@
-﻿// using DealMatcher.Backend.Core.Services;
+// using DealMatcher.Backend.Core.Services;
 //
 // namespace DealMatcher.Backend.UnitTests.Core.Services;
 //

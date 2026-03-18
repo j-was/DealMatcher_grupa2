@@ -1,4 +1,4 @@
-﻿// using Ardalis.ListStartupServices;
+// using Ardalis.ListStartupServices;
 // using DealMatcher.Backend.Infrastructure.Email;
 //
 // namespace DealMatcher.Backend.Web.Configurations;

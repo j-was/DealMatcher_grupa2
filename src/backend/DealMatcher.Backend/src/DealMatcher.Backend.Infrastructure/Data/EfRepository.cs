@@ -1,4 +1,4 @@
-﻿namespace DealMatcher.Backend.Infrastructure.Data;
+namespace DealMatcher.Backend.Infrastructure.Data;
 
 // inherit from Ardalis.Specification type
 public class EfRepository<T>(AppDbContext dbContext) :

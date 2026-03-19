@@ -1,13 +1,35 @@
 name: Backend CD
 
 on:
+  workflow_run:
+    workflows: ["Develop to release CD"]
+    types: [completed]
+    branches: [release]
   push:
     branches: [release]
-
   workflow_dispatch:
 
 jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      backend-changed: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - "src/backend/**"
+              - ".github/workflows/backend-ci.yml"
+
   build-and-deploy:
+    needs: check-paths
+    if: needs.check-paths.outputs.backend-changed == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write 

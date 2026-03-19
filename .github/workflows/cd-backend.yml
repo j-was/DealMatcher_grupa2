@@ -3,6 +3,9 @@ name: Backend CD
 on:
   push:
     branches: [release]
+    paths:
+      - "src/backend/**"
+      - ".github/workflows/backend-cd.yml"
   workflow_dispatch:
 
 jobs:

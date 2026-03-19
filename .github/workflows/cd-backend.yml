@@ -15,11 +15,11 @@ jobs:
     outputs:
       backend-changed: ${{ steps.filter.outputs.backend }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |

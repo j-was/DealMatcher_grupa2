@@ -26,6 +26,7 @@ jobs:
             backend:
               - "src/backend/**"
               - ".github/workflows/backend-ci.yml"
+              - ".github/workflows/backend-cd.yml"
 
   build-and-deploy:
     needs: check-paths

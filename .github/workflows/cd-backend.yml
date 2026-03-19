@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Develop to release CD"]
     types: [completed]
-    branches: [release]
+    branches: [develop]
   push:
     branches: [release]
   workflow_dispatch:

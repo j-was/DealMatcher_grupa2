@@ -5,7 +5,7 @@ on:
         branches: [release]
         paths:
             - "src/frontend/**"
-            - ".github/workflows/frontend-cd.yml"
+            - ".github/workflows/cd-frontend.yml"
     workflow_dispatch:
 
 jobs:
@@ -31,6 +31,7 @@ jobs:
               with: 
                 appSourcePath: ${{github.workspace}}/src/frontend/DealMatcher.Frontend
                 _dockerfilePathKey_: _dockerfilePath_
+                _targetLabelKey_: _targetLabel_
                 registryUrl: docker.io
                 registryUsername: ${{ secrets.DEALMATCHERFRONTEND_REGISTRY_USERNAME }}
                 registryPassword: ${{ secrets.DEALMATCHERFRONTEND_REGISTRY_PASSWORD }}

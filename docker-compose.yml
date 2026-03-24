@@ -1,0 +1,65 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: dealmatcher-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password1!
+    ports:
+      - "1433:1433"
+    volumes:
+      - dealmatcher-sql-data:/var/opt/mssql
+    networks:
+      - dealmatcher-local
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: dealmatcher-pictures
+    ports:
+      - "5001:10000"
+    volumes:
+      - dealmatcher-azurite-data:/data
+    command: azurite-blob --blobHost 0.0.0.0 --location /data
+    networks:
+      - dealmatcher-local
+
+  backend:
+    build:
+      context: ./src/backend/DealMatcher.Backend/
+      dockerfile: Dockerfile
+    container_name: loanhub-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:90
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DealMatcher;User Id=sa;Password=Password1!;TrustServerCertificate=True;
+      - FrontendOrigin=http://localhost:8080
+      - AzureBlob_ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KkM1LoxZM0Dg==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+      - AzureBlob_ContainerName=pictures
+      - BaseUrl=http://localhost:5000
+    ports:
+      - "5000:90"
+    networks:
+      - dealmatcher-local
+    depends_on:
+      - sqlserver
+      - azurite
+
+  frontend:
+    build:
+      context: ./src/frontend/DealMatcher.Frontend/
+      dockerfile: Dockerfile
+    container_name: dealmatcher-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - dealmatcher-local
+    depends_on:
+      - backend
+      
+networks:
+  dealmatcher-local:
+    driver: bridge
+
+volumes:
+  dealmatcher-sql-data:
+  dealmatcher-azurite-data:

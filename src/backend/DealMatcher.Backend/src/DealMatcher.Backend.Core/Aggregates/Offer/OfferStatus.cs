@@ -12,7 +12,7 @@ public abstract class OfferStatus(
     public static readonly OfferStatus Deleted = new DeletedOfferStatus();
 
     private sealed class DeletedOfferStatus() :
-      OfferStatus(nameof(DeletedOfferStatus), nameof(Sold))
+      OfferStatus(nameof(DeletedOfferStatus), nameof(Deleted))
     {
     }
 

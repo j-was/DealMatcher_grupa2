@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DealMatcher.Backend.Core.Aggregates.Offer;
+
 public static class OfferConstants
 {
     public const int TitleMaxLength = 100;

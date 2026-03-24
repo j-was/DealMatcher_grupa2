@@ -28,4 +28,13 @@
     <ProjectReference Include="..\DealMatcher.Backend.UseCases\DealMatcher.Backend.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Endpoints\Offers\Get.GetOfferRequest.cs">
+      <DependentUpon>Get.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Offers\Get.GetOfferValidator.cs">
+      <DependentUpon>Get.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

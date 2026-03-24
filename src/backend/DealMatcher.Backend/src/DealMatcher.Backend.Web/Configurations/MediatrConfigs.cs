@@ -6,9 +6,8 @@ public static class MediatrConfigs
     {
         var mediatRAssemblies = new[]
           {
-        // Assembly.GetAssembly(typeof(Contributor)), // Core
-        // Assembly.GetAssembly(typeof(CreateContributorCommand)) // UseCases
-        Assembly.GetAssembly(typeof(Program))
+        Assembly.GetAssembly(typeof(Program)),
+        Assembly.GetAssembly(typeof(DealMatcher.Backend.UseCases.Features.Offer.Get.GetOfferByIdQuery))
       };
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!))

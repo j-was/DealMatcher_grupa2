@@ -28,16 +28,11 @@ public sealed class Offer :
       int availability)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
-        ArgumentException.ThrowIfNullOrWhiteSpace(description);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        ArgumentOutOfRangeException.ThrowIfNegative(price);
         ArgumentOutOfRangeException.ThrowIfNegative(sellerId);
         ArgumentOutOfRangeException.ThrowIfNegative(categoryId);
         ArgumentOutOfRangeException.ThrowIfNegative(availability);
 
-        if (imageUrls is null || imageUrls.Count < OfferConstants.MinImagesCount)
-            throw new ArgumentException(
-                $"Offer must have at least {OfferConstants.MinImagesCount} image.",
-                nameof(imageUrls));
 
         if (imageUrls.Count > OfferConstants.MaxImagesCount)
             throw new ArgumentException(

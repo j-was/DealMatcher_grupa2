@@ -9,7 +9,7 @@ public static class InfrastructureServiceConfig
       ConfigurationManager config,
       ILogger logger)
     {
-        var connectionString = config.GetConnectionString("SqliteConnection");
+        var connectionString = config.GetConnectionString("DefaultConnection");
         Guard.Against.Null(connectionString);
         services.AddApplicationDbContext(connectionString);
         services.AddAutoMapperConfigs();

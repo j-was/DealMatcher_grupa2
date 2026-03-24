@@ -14,9 +14,9 @@ services:
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
-    container_name: azurite
+    container_name: dealmatcher-pictures
     ports:
-      - "5001:100"
+      - "5001:10000"
     volumes:
       - dealmatcher-azurite-data:/data
     command: azurite-blob --blobHost 0.0.0.0 --location /data
@@ -31,14 +31,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:90
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=LoanHubBackend;User Id=sa;Password=Password1!;TrustServerCertificate=True;
-      - Authentication__Jwt__SecretKey=YourSuperSecretJwtKeyThatShouldBeAtLeast32CharactersLong123456
-      - Authentication__Google__ClientId=791367453262-9f4jj6qq2388m974o4dr7n4gp6vmiegc.apps.googleusercontent.com
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DealMatcher;User Id=sa;Password=Password1!;TrustServerCertificate=True;
       - FrontendOrigin=http://localhost:8080
-      - SendGrid__ApiKey=${SendGrid_SecretApiKey}
-      - AzureBlob__ConnectionString=${AzureBlob_SecretConnectionString}
-      - AzureBlob__Container=${AzureBlob_SecretContainerName}
-      - TemplateName=Template dokumentu.docx
+      - AzureBlob_SecretConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KkM1LoxZM0Dg==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+      - AzureBlob_SecretContainerName=pictures
       - BaseUrl=http://localhost:5000
     ports:
       - "5000:90"
@@ -50,10 +46,8 @@ services:
 
   frontend:
     build:
-      context: ./src/frontend
+      context: ./src/frontend/DealMatcher.Frontend/
       dockerfile: Dockerfile
-      args:
-        ENVIRONMENT: development
     container_name: dealmatcher-frontend
     ports:
       - "8080:80"
@@ -67,5 +61,5 @@ networks:
     driver: bridge
 
 volumes:
-  loanhub-sql-data:
+  dealmatcher-sql-data:
   dealmatcher-azurite-data:

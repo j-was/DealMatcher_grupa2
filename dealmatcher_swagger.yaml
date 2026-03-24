@@ -1,0 +1,1512 @@
+openapi: 3.0.3
+info:
+  title: DealMatcher API
+  version: 1.0.0
+servers:
+  - url: https://api.dealmatcher.com/v1
+tags:
+  - name: categories
+    description: Product categories and their properties
+  - name: offers
+    description: Offer management (search, create, update, delete, statuses)
+  - name: cart
+    description: Shopping cart management
+  - name: users
+    description: User accounts and profiles
+  - name: conversations
+    description: Messaging between buyers and sellers
+  - name: purchases
+    description: Purchase process (payment initialization, delivery options)
+  - name: bans
+    description: User ban management (admin only)
+  - name: admin
+    description: Administrative operations
+
+paths:
+  # ==================== CATEGORIES ====================
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: Get all available categories
+      description: Returns a list of all product categories in the system
+      responses:
+        200:
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+        500:
+          description: Internal server error
+
+  /categories/{categoryName}/properties:
+    get:
+      tags:
+        - categories
+      summary: Get properties for a specific category
+      description: Returns all configurable properties for the given category
+      parameters:
+        - name: categoryName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Properties retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Property"
+        404:
+          description: Category not found
+        500:
+          description: Internal server error
+
+  # ==================== OFFERS ====================
+  /offers/search:
+    post:
+      tags:
+        - offers
+      summary: Search for offers
+      description: Creates a search query and returns matching offers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferSearchRequest"
+      responses:
+        200:
+          description: Search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+        204:
+          description: No offers found matching the criteria
+        400:
+          description: Invalid search parameters
+        500:
+          description: Internal server error
+
+  /offers:
+    post:
+      tags:
+        - offers
+      summary: Create a new offer
+      description: Creates a new offer in DRAFT status pending validation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferCreateRequest"
+      responses:
+        201:
+          description: Offer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+        400:
+          description: Invalid offer data
+        401:
+          description: Unauthorized - user not logged in
+        500:
+          description: Internal server error
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Get offer details
+      description: Returns detailed information about a specific offer
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Offer details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+        404:
+          description: Offer not found
+        500:
+          description: Internal server error
+
+    patch:
+      tags:
+        - offers
+      summary: Update an offer
+      description: Updates an existing offer (returns to DRAFT status for revalidation)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferUpdateRequest"
+      responses:
+        200:
+          description: Offer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+        400:
+          description: Invalid update data
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not the offer owner
+        404:
+          description: Offer not found
+        500:
+          description: Internal server error
+
+    delete:
+      tags:
+        - offers
+      summary: Delete an offer
+      description: Soft-deletes an offer (seller or admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Offer deleted successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not the offer owner or admin
+        404:
+          description: Offer not found
+        500:
+          description: Internal server error
+
+  /offers/{offerId}/status:
+    put:
+      tags:
+        - offers
+      summary: Update offer status
+      description: Changes offer status (ACTIVE/PROMOTED/SOLD - permissions apply)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [ACTIVE, PROMOTED, SOLD]
+      responses:
+        200:
+          description: Status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+        400:
+          description: Invalid status value
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - insufficient permissions
+        404:
+          description: Offer not found
+        409:
+          description: Cannot change status from current state
+        500:
+          description: Internal server error
+
+  # ==================== CART ====================
+  /cart/items:
+    get:
+      tags:
+        - cart
+      summary: Get cart contents
+      description: Returns all items in the user's cart
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Cart contents retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CartItem"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+    post:
+      tags:
+        - cart
+      summary: Add item to cart
+      description: Adds an offer to the user's cart
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - offerId
+              properties:
+                offerId:
+                  type: integer
+                quantity:
+                  type: integer
+                  minimum: 1
+                  default: 1
+      responses:
+        201:
+          description: Item added to cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartItem"
+        400:
+          description: Invalid request
+        401:
+          description: Unauthorized
+        404:
+          description: Offer not found
+        409:
+          description: Item already in cart
+        500:
+          description: Internal server error
+
+  /cart/items/{cartItemId}:
+    patch:
+      tags:
+        - cart
+      summary: Update cart item quantity
+      description: Changes the quantity of a specific cart item
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cartItemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+      responses:
+        200:
+          description: Quantity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartItem"
+        400:
+          description: Invalid quantity
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not your cart item
+        404:
+          description: Cart item not found
+        500:
+          description: Internal server error
+
+    delete:
+      tags:
+        - cart
+      summary: Remove item from cart
+      description: Removes a specific item from the user's cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cartItemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Item removed successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not your cart item
+        404:
+          description: Cart item not found
+        500:
+          description: Internal server error
+
+  /cart/total:
+    get:
+      tags:
+        - cart
+      summary: Get cart total
+      description: Returns the total price of all items in the cart
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Cart total retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalPrice:
+                    type: number
+                    format: double
+                  currency:
+                    type: string
+                    example: PLN
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  # ==================== USERS ====================
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Register a new user
+      description: Creates a new user account with INACTIVE status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                surname:
+                  type: string
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Invalid registration data
+        409:
+          description: Email already exists
+        500:
+          description: Internal server error
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: User login
+      description: Authenticates user and returns JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  user:
+                    $ref: "#/components/schemas/User"
+        401:
+          description: Invalid credentials
+        403:
+          description: User is banned
+        500:
+          description: Internal server error
+
+  /users/me:
+    delete:
+      tags:
+        - users
+      summary: Delete my account
+      description: Deactivates the account associated with logged in user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Account deactivated successfully
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+    get:
+      tags:
+        - users
+      summary: Get current user profile
+      description: Returns profile information for the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+    put:
+      tags:
+        - users
+      summary: Update current user profile
+      description: Updates profile information for the authenticated user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                surname:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+      responses:
+        200:
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Invalid update data
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /users/me/offers:
+    get:
+      tags:
+        - users
+      summary: Get my offers
+      description: Returns all offers posted by the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Offers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+        204:
+          description: No offers found
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  # ==================== CONVERSATIONS ====================
+  /conversations:
+    get:
+      tags:
+        - conversations
+      summary: Get user conversations
+      description: Returns all conversations for the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Conversations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+    post:
+      tags:
+        - conversations
+      summary: Create a new conversation
+      description: Creates a conversation between buyer and seller about an offer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - offerId
+              properties:
+                offerId:
+                  type: integer
+                initialMessage:
+                  type: string
+      responses:
+        201:
+          description: Conversation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+        400:
+          description: Invalid request
+        401:
+          description: Unauthorized
+        403:
+          description: Cannot create conversation with yourself
+        404:
+          description: Offer not found
+        409:
+          description: Conversation already exists
+        500:
+          description: Internal server error
+
+  /conversations/{conversationId}:
+    get:
+      tags:
+        - conversations
+      summary: Get conversation details
+      description: Returns conversation with all messages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Conversation details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationDetail"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not your conversation
+        404:
+          description: Conversation not found
+        500:
+          description: Internal server error
+
+  /conversations/{conversationId}/messages:
+    post:
+      tags:
+        - conversations
+      summary: Send a message
+      description: Sends a new message in the conversation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+      responses:
+        201:
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        400:
+          description: Invalid message content
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - not your conversation
+        404:
+          description: Conversation not found
+        409:
+          description: Conversation is closed
+        500:
+          description: Internal server error
+
+  # ==================== PURCHASES ====================
+  /purchases/delivery-methods:
+    get:
+      tags:
+        - purchases
+      summary: Get available delivery methods
+      description: Returns all available delivery options
+      responses:
+        200:
+          description: Delivery methods retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryMethod"
+        500:
+          description: Internal server error
+
+  /purchases/payment-methods:
+    get:
+      tags:
+        - purchases
+      summary: Get available payment methods
+      description: Returns all available payment options
+      responses:
+        200:
+          description: Payment methods retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentMethod"
+        500:
+          description: Internal server error
+
+  /purchases/initialize:
+    post:
+      tags:
+        - purchases
+      summary: Initialize purchase
+      description: Creates an order and redirects to external payment provider
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - offerId
+                - deliveryMethodId
+                - paymentMethodId
+              properties:
+                offerId:
+                  type: integer
+                deliveryMethodId:
+                  type: string
+                paymentMethodId:
+                  type: string
+                quantity:
+                  type: integer
+                  default: 1
+      responses:
+        303:
+          description: Redirect to payment provider
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URL to external payment gateway
+        400:
+          description: Invalid purchase data
+        401:
+          description: Unauthorized
+        404:
+          description: Offer not found
+        409:
+          description: Offer not available for purchase
+        500:
+          description: Internal server error
+
+  # ==================== BANS ====================
+  /bans:
+    post:
+      tags:
+        - bans
+      summary: Ban a user
+      description: Creates a new ban for a user (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - reason
+              properties:
+                userId:
+                  type: integer
+                reason:
+                  type: string
+                expiresAt:
+                  type: string
+                  format: date-time
+      responses:
+        201:
+          description: User banned successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ban"
+        400:
+          description: Invalid ban data
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: User not found
+        409:
+          description: User already banned
+        500:
+          description: Internal server error
+
+    get:
+      tags:
+        - bans
+      summary: Get bans list
+      description: Returns list of bans (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: integer
+          description: Filter by user ID
+        - name: active
+          in: query
+          schema:
+            type: boolean
+          description: Filter by active status
+      responses:
+        200:
+          description: Bans retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ban"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        500:
+          description: Internal server error
+
+  /bans/{banId}:
+    get:
+      tags:
+        - bans
+      summary: Get ban details
+      description: Returns detailed information about a specific ban (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: banId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Ban details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ban"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: Ban not found
+        500:
+          description: Internal server error
+
+    delete:
+      tags:
+        - bans
+      summary: Remove a ban
+      description: Removes a ban from a user (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: banId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Ban removed successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: Ban not found
+        500:
+          description: Internal server error
+
+  # ==================== ADMIN ====================
+  /admin/offers:
+    get:
+      tags:
+        - admin
+      summary: Get all offers (admin)
+      description: Returns paginated list of all offers in the system
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [DRAFT, ACTIVE, PROMOTED, SOLD, DELETED]
+      responses:
+        200:
+          description: Offers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Offer"
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pages:
+                    type: integer
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        500:
+          description: Internal server error
+
+  /admin/users:
+    get:
+      tags:
+        - admin
+      summary: Get all users (admin)
+      description: Returns paginated list of all users in the system
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [ACTIVE, INACTIVE, BANNED]
+      responses:
+        200:
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pages:
+                    type: integer
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        500:
+          description: Internal server error
+
+  /admin/users/{userId}:
+    get:
+      tags:
+        - admin
+      summary: Get user details (admin)
+      description: Returns detailed information about a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDetail"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+  /admin/activity/user/{userId}:
+    get:
+      tags:
+        - admin
+      summary: Get user activity (admin)
+      description: Returns activity history for a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: User activity retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityRecord"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+  /admin/activity/offer/{offerId}:
+    get:
+      tags:
+        - admin
+      summary: Get offer activity (admin)
+      description: Returns activity history for a specific offer
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Offer activity retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityRecord"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden - admin only
+        404:
+          description: Offer not found
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+
+    Property:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum: [TEXT, NUMBER, BOOLEAN, SELECT]
+        options:
+          type: array
+          items:
+            type: string
+          description: Available options for SELECT type
+
+    Offer:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+        seller:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            rating:
+              type: number
+              format: float
+        category:
+          $ref: "#/components/schemas/Category"
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties: true
+        availability:
+          type: integer
+          description: Available quantity
+        status:
+          type: string
+          enum: [DRAFT, ACTIVE, PROMOTED, SOLD, DELETED]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    OfferCreateRequest:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - categoryId
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+        categoryId:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties: true
+        availability:
+          type: integer
+          default: 1
+
+    OfferUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties: true
+        availability:
+          type: integer
+
+    OfferSearchRequest:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+        minPrice:
+          type: number
+          format: double
+        maxPrice:
+          type: number
+          format: double
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties: true
+        searchPhrase:
+          type: string
+        limit:
+          type: integer
+          default: 20
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        offer:
+          $ref: "#/components/schemas/Offer"
+        quantity:
+          type: integer
+        addedAt:
+          type: string
+          format: date-time
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        rating:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, BANNED]
+        createdAt:
+          type: string
+          format: date-time
+
+    UserDetail:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            totalOffers:
+              type: integer
+            totalSales:
+              type: integer
+            totalPurchases:
+              type: integer
+            lastActive:
+              type: string
+              format: date-time
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+        offer:
+          $ref: "#/components/schemas/Offer"
+        buyer:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        seller:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        lastMessage:
+          type: string
+        lastMessageAt:
+          type: string
+          format: date-time
+        unreadCount:
+          type: integer
+        status:
+          type: string
+          enum: [ACTIVE, CLOSED]
+        createdAt:
+          type: string
+          format: date-time
+
+    ConversationDetail:
+      allOf:
+        - $ref: "#/components/schemas/Conversation"
+        - type: object
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: "#/components/schemas/Message"
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        senderId:
+          type: integer
+        content:
+          type: string
+        status:
+          type: string
+          enum: [SENT, DELIVERED, READ]
+        createdAt:
+          type: string
+          format: date-time
+
+    DeliveryMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        estimatedDays:
+          type: integer
+
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        provider:
+          type: string
+        icon:
+          type: string
+
+    Ban:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        reason:
+          type: string
+        issuedBy:
+          type: integer
+        issuedAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        isActive:
+          type: boolean
+
+    ActivityRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        offerId:
+          type: integer
+          nullable: true
+        action:
+          type: string
+          enum: [CREATE, UPDATE, DELETE, VIEW, PURCHASE, STATUS_CHANGE, LOGIN, LOGOUT]
+        details:
+          type: object
+          additionalProperties: true
+        ipAddress:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

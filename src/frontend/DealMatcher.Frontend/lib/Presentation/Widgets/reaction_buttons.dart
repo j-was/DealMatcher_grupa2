@@ -7,11 +7,9 @@ class ReactionButtons extends StatelessWidget {
   const ReactionButtons({super.key});
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [DislikeButton(), SuperlikeButton(), LikeButton()],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [DislikeButton(), SuperlikeButton(), LikeButton()],
     );
   }
 }

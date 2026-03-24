@@ -41,7 +41,7 @@ public static class SeedData
             new(
                 title: "iPhone 13 Pro 256GB",
                 description: "Sprzedam iPhone 13 Pro w kolorze grafitowym. Bez śladów użytkowania. Komplet z pudełkiem i ładowarką.",
-                price: 2999.99,
+                price: 2999.99m,
                 imageUrls: ["https://placeholder.com/iphone.jpg"],
                 sellerId: sellerIds[0],
                 tags: ["elektronika", "telefon", "apple", "smartfon"],
@@ -57,7 +57,7 @@ public static class SeedData
             new(
                 title: "Rower górski Trek Marlin 5",
                 description: "Rower górski Trek Marlin 5, rocznik 2022. Przejechane około 500km, regularnie serwisowany.",
-                price: 1800.00,
+                price: 1800.00m,
                 imageUrls: ["https://placeholder.com/rower.jpg"],
                 sellerId: sellerIds[0],
                 tags: ["sport", "rower", "górski"],
@@ -73,7 +73,7 @@ public static class SeedData
             new(
                 title: "Sofa narożna szara",
                 description: "Sofa narożna w kolorze szarym, wymiary 250x180cm. Zakupiona rok temu, używana sporadycznie.",
-                price: 1200.00,
+                price: 1200.00m,
                 imageUrls: ["https://placeholder.com/sofa.jpg"],
                 sellerId: sellerIds[1],
                 tags: ["meble", "sofa", "dom"],
@@ -89,7 +89,7 @@ public static class SeedData
             new(
                 title: "Kurtka zimowa Nike rozmiar L",
                 description: "Sprzedam kurtkę zimową Nike w rozmiarze L. Kolor czarny, noszona jeden sezon. Ciepła i lekka, idealna na zimę.",
-                price: 249.99,
+                price: 249.99m,
                 imageUrls: ["https://placeholder.com/kurtka.jpg"],
                 sellerId: sellerIds[1],
                 tags: ["odzież", "kurtka", "zima", "nike"],
@@ -105,7 +105,7 @@ public static class SeedData
             new(
                 title: "Laptop Dell XPS 15",
                 description: "Sprzedam laptopa Dell XPS 15 z procesorem Intel i7, 16GB RAM, dysk SSD 512GB. Używany do pracy biurowej, stan bardzo dobry.",
-                price: 4500.00,
+                price: 4500.00m,
                 imageUrls: ["https://placeholder.com/laptop.jpg"],
                 sellerId: sellerIds[2],
                 tags: ["elektronika", "laptop", "dell", "komputer"],

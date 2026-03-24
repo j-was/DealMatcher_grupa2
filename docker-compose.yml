@@ -1,0 +1,71 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: dealmatcher-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password1!
+    ports:
+      - "1433:1433"
+    volumes:
+      - dealmatcher-sql-data:/var/opt/mssql
+    networks:
+      - dealmatcher-local
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "5001:100"
+    volumes:
+      - dealmatcher-azurite-data:/data
+    command: azurite-blob --blobHost 0.0.0.0 --location /data
+    networks:
+      - dealmatcher-local
+
+  backend:
+    build:
+      context: ./src/backend/DeealMatcher.Backend/
+      dockerfile: Dockerfile
+    container_name: loanhub-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:90
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=LoanHubBackend;User Id=sa;Password=Password1!;TrustServerCertificate=True;
+      - Authentication__Jwt__SecretKey=YourSuperSecretJwtKeyThatShouldBeAtLeast32CharactersLong123456
+      - Authentication__Google__ClientId=791367453262-9f4jj6qq2388m974o4dr7n4gp6vmiegc.apps.googleusercontent.com
+      - FrontendOrigin=http://localhost:8080
+      - SendGrid__ApiKey=${SendGrid_SecretApiKey}
+      - AzureBlob__ConnectionString=${AzureBlob_SecretConnectionString}
+      - AzureBlob__Container=${AzureBlob_SecretContainerName}
+      - TemplateName=Template dokumentu.docx
+      - BaseUrl=http://localhost:5000
+    ports:
+      - "5000:90"
+    networks:
+      - dealmatcher-local
+    depends_on:
+      - sqlserver
+      - azurite
+
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+      args:
+        ENVIRONMENT: development
+    container_name: dealmatcher-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - dealmatcher-local
+    depends_on:
+      - backend
+      
+networks:
+  dealmatcher-local:
+    driver: bridge
+
+volumes:
+  loanhub-sql-data:
+  dealmatcher-azurite-data:

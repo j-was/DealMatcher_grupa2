@@ -13,38 +13,22 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
           .OnDelete(DeleteBehavior.Restrict)
           .IsRequired();
 
-        builder.HasOne<User>()
-          .WithOne()
-          .HasForeignKey<Offer>(o => o.SellerId)
-          .OnDelete(DeleteBehavior.Restrict)
-          .IsRequired();
-
         builder.Property(o => o.Status)
           .HasConversion(s => s.Value, s => OfferStatus.FromValue(s))
           .IsRequired();
 
-        builder.OwnsMany(o => o.Properties, item =>
+        builder.OwnsMany(o => o.Properties, pb =>
         {
-            item.Property(i => i.Name).IsRequired();
-            item.Property(i => i.Value).HasColumnType("");
+            pb.ToTable("OfferProperties");
+            pb.WithOwner().HasForeignKey("OfferId");
+            pb.Property(p => p.Name).IsRequired();
+            pb.Property(p => p.Value).IsRequired();
         });
 
         builder.PrimitiveCollection(o => o.Tags)
           .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.PrimitiveCollection(o => o.ImageUrls)
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
-
-        builder.OwnsMany(o => o.Properties, prop =>
-        {
-            prop.ToTable("OfferProperties");
-            prop.WithOwner().HasForeignKey("OfferId");
-            prop.HasIndex(p => p.Name);
-            prop.Property(p => p.Name).HasMaxLength(200);
-            prop.Property(p => p.Value).HasMaxLength(500);
-        });
-
-        builder.Navigation(o => o.Properties)
           .UsePropertyAccessMode(PropertyAccessMode.Property);
     }
 }

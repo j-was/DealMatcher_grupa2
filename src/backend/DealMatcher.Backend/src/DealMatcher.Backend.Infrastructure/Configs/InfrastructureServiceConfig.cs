@@ -9,8 +9,17 @@ public static class InfrastructureServiceConfig
       ConfigurationManager config,
       ILogger logger)
     {
-        var connectionString = config.GetConnectionString("DefaultConnection");
-        Guard.Against.Null(connectionString);
+        string? connectionString;
+        try
+        {
+            connectionString = config.GetConnectionString("DefaultConnection");
+            Guard.Against.Null(connectionString);
+        }
+        catch
+        {
+            logger.LogError("Default connection string was not defined in the environment");
+            throw;
+        }
         services.AddApplicationDbContext(connectionString);
         services.AddAutoMapperConfigs();
 

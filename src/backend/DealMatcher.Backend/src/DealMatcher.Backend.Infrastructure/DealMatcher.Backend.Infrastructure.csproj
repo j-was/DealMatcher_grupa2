@@ -19,4 +19,8 @@
     <ProjectReference Include="..\DealMatcher.Backend.Core\DealMatcher.Backend.Core.csproj" />
     <ProjectReference Include="..\DealMatcher.Backend.UseCases\DealMatcher.Backend.UseCases.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
 </Project>

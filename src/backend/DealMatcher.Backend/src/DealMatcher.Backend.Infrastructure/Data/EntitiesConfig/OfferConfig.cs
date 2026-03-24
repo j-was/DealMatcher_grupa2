@@ -26,7 +26,7 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
         });
 
         builder.PrimitiveCollection(o => o.Tags)
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.PrimitiveCollection(o => o.ImageUrls)
           .UsePropertyAccessMode(PropertyAccessMode.Property);

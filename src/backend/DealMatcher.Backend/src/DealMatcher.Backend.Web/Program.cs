@@ -21,22 +21,39 @@ public sealed class Program
           .CreateLogger<Program>();
         try
         {
-            // builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
             builder.Services.AddServiceConfigs(appLogger, builder);
 
 
             builder.Services.AddFastEndpoints()
-              .SwaggerDocument(o =>
-              {
-                  o.ShortSchemaNames = true;
-              })
+                .SwaggerDocument(o =>
+                {
+                    o.DocumentSettings = s =>
+                    {
+                        s.Title = "DealMatcher API";
+                        s.Version = "1";
+                    };
+                    o.ShortSchemaNames = true;
+                    o.MaxEndpointVersion = 1;
+                })
               .AddCommandMiddleware(c =>
               {
                   c.Register(typeof(CommandLogger<,>));
               });
 
-            // wire up commands
-            //builder.Services.AddTransient<ICommandHandler<CreateContributorCommand2,Result<int>>, CreateContributorCommandHandler2>();
+            var frontendOrigin = builder.Configuration.GetValue<string>("FrontendOrigin")
+                                 ?? "http://localhost:4200";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins(frontendOrigin)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithExposedHeaders("Content-Disposition");
+                });
+            });
 
 
             var app = builder.Build();

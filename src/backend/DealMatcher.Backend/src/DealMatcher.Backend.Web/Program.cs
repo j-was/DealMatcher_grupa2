@@ -23,7 +23,6 @@ public sealed class Program
         {
             builder.Services.AddServiceConfigs(appLogger, builder);
 
-
             builder.Services.AddFastEndpoints()
                 .SwaggerDocument(o =>
                 {
@@ -54,7 +53,6 @@ public sealed class Program
                         .WithExposedHeaders("Content-Disposition");
                 });
             });
-
 
             var app = builder.Build();
 

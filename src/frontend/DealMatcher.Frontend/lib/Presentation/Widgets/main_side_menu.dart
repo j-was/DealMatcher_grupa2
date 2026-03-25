@@ -10,10 +10,10 @@ class MainSideMenu extends StatelessWidget {
         padding: EdgeInsets.only(top: 24),
         children: const [
           ListTile(leading: Icon(Icons.person), title: Text("Jan Kowalski")),
-          ListTile(leading: Icon(Icons.play_arrow), title: Text('Browse')),
-          ListTile(leading: Icon(Icons.shopping_cart), title: Text('Cart')),
-          ListTile(leading: Icon(Icons.search), title: Text('Search')),
-          ListTile(leading: Icon(Icons.settings), title: Text('Settings')),
+          ListTile(leading: Icon(Icons.play_arrow), title: Text('Przeglądaj')),
+          ListTile(leading: Icon(Icons.shopping_cart), title: Text('Koszyk')),
+          ListTile(leading: Icon(Icons.search), title: Text('Szukaj')),
+          ListTile(leading: Icon(Icons.settings), title: Text('Ustawienia')),
         ],
       ),
     );

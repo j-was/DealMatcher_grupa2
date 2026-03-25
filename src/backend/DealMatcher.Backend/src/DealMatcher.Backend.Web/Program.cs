@@ -56,6 +56,8 @@ public sealed class Program
 
             var app = builder.Build();
 
+            app.UseCors("AllowFrontend");
+
             await app.UseAppMiddlewareAndSeedDatabase();
 
             await app.RunAsync();

@@ -27,7 +27,7 @@ services:
     build:
       context: ./src/backend/DealMatcher.Backend/
       dockerfile: Dockerfile
-    container_name: loanhub-backend
+    container_name: dealmatcher-backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:90

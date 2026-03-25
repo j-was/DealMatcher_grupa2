@@ -108,6 +108,9 @@ csharp_style_namespace_declarations = file_scoped:warning
 ###############################
 # C# Formatting Rules         #
 ###############################
+# blank lines
+dotnet_style_allow_multiple_blank_lines_experimental = false
+csharp_style_allow_multiple_blank_lines_experimental = false
 # New line preferences
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true

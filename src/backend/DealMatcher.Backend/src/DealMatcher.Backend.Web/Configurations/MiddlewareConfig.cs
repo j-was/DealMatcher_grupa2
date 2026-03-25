@@ -18,10 +18,12 @@ public static class MiddlewareConfig
             app.UseHsts();
         }
 
-        app.UseFastEndpoints()
-            .UseSwaggerGen(); // Includes AddFileServer and static files middleware
-
-        app.UseHttpsRedirection(); // Note this will drop Authorization headers
+        app.UseFastEndpoints(c =>
+            {
+                c.Versioning.Prefix = "v";
+                c.Versioning.PrependToRoute = true;
+            })
+            .UseSwaggerGen();
 
         await SeedDatabase(app);
 

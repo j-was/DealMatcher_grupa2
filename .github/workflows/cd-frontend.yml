@@ -40,3 +40,4 @@ jobs:
                 imageToBuild: ${{ secrets.DEALMATCHERFRONTEND2_REGISTRY_USERNAME }}/dealmatcher-frontend:${{github.sha}}
                 _buildArgumentsKey_: |
                     _buildArgumentsValues_
+                    API_URL=${{ secrets.API_URL }}

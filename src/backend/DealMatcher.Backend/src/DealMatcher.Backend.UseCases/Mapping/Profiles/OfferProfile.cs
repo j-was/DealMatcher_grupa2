@@ -12,7 +12,7 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Images),
                 opt => opt.MapFrom(src => src.ImageUrls))
             .ForCtorParam(nameof(OfferDTO.Status),
-                opt => opt.MapFrom(src => src.Status.ToString().ToUpper()))
+                opt => opt.MapFrom(src => src.Status.Value.ToUpper()))
             .ForCtorParam(nameof(OfferDTO.Seller),
                 opt => opt.MapFrom(src => new SellerDTO(src.SellerId, string.Empty, 0f)))
             .ForCtorParam(nameof(OfferDTO.Category),
@@ -26,7 +26,7 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Images),
                 opt => opt.MapFrom(src => src.Offer.ImageUrls))
             .ForCtorParam(nameof(OfferDTO.Status),
-                opt => opt.MapFrom(src => src.Offer.Status.ToString().ToUpper()))
+                opt => opt.MapFrom(src => src.Offer.Status.Value.ToUpper()))
             .ForCtorParam(nameof(OfferDTO.Seller),
                 opt => opt.MapFrom(src => new SellerDTO(src.Seller.Id, src.Seller.Name, src.Seller.Rating)))
             .ForCtorParam(nameof(OfferDTO.Category),

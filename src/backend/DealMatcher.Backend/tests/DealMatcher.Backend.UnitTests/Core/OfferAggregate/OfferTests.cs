@@ -3,13 +3,13 @@ namespace DealMatcher.Backend.UnitTests.Core.OfferAggregate;
 public class OfferTests
 {
     private static List<OfferProperty> TestProperties =>
-        new() { new OfferProperty("Color", "Red") };
+        [new OfferProperty("Color", "Red")];
 
     private static List<string> TestImages =>
-        new() { "https://test.com/a.jpg" };
+        ["https://test.com/a.jpg"];
 
     private static List<string> TestTags =>
-        new() { "Electronics" };
+        ["Electronics"];
 
     [Fact]
     public void Constructor_Should_Create_Offer_With_Valid_Data()

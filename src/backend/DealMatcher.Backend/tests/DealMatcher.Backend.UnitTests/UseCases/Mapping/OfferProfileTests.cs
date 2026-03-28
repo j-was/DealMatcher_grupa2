@@ -51,7 +51,7 @@ public class OfferProfileTests
 
         dto.Images.ShouldNotBeNull();
         dto.Images.ShouldBe(offerEntity.ImageUrls);
-        dto.Images.Count.ShouldBe(2);
+        dto.Images.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class OfferProfileTests
 
         var dto = _mapper.Map<OfferDTO>(offerEntity);
 
-        dto.Status.ShouldBe(OfferStatus.Draft.Name.ToUpper());
+        dto.Status.ShouldBe(OfferStatus.Draft.Value.ToUpper());
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class OfferProfileTests
         var statuses = new[] { OfferStatus.Active, OfferStatus.Sold, OfferStatus.Deleted, OfferStatus.Promoted };
         var expectedStatuses = new[] { "ACTIVE", "SOLD", "DELETED", "PROMOTED" };
 
-        for (int i = 0; i < statuses.Length; i++)
+        for (var i = 0; i < statuses.Length; i++)
         {
             var offerEntity = CreateOfferEntity();
             offerEntity.ChangeStatus(statuses[i]);
@@ -111,7 +111,6 @@ public class OfferProfileTests
     [Fact]
     public void Map_OfferEntityToOfferDTO_MapsPropertiesToDictionary()
     {
-        // Arrange
         var offerEntity = CreateOfferEntity();
 
         var expectedDictionary = new Dictionary<string, string>
@@ -123,7 +122,7 @@ public class OfferProfileTests
 
         dto.Properties.ShouldNotBeNull();
         dto.Properties.ShouldBe(expectedDictionary);
-        dto.Properties.Count.ShouldBe(3);
+        dto.Properties.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -166,7 +165,7 @@ public class OfferProfileTests
 
         dto.Images.ShouldNotBeNull();
         dto.Images.ShouldBe(offerEntity.ImageUrls);
-        dto.Images.Count.ShouldBe(2);
+        dto.Images.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -225,7 +224,7 @@ public class OfferProfileTests
 
         dto.Properties.ShouldNotBeNull();
         dto.Properties.ShouldBe(expectedDictionary);
-        dto.Properties.Count.ShouldBe(3);
+        dto.Properties.Count.ShouldBe(1);
     }
 
     [Fact]
@@ -245,14 +244,16 @@ public class OfferProfileTests
     public void Map_OfferInfoToOfferDTO_WithNullProperties_MapsToEmptyDictionary()
     {
         var offerEntity = CreateOfferEntity();
+        offerEntity.Properties.Clear();
         var offerInfo = new OfferProfile.OfferInfo(offerEntity, CreateSellerEntity(), CreateCategoryEntity());
+
 
         var dto = _mapper.Map<OfferDTO>(offerInfo);
 
         dto.Properties.ShouldNotBeNull();
         dto.Properties.ShouldBeEmpty();
     }
-    
+
 
     private static Offer CreateOfferEntity()
     {
@@ -260,11 +261,11 @@ public class OfferProfileTests
             "Test Offer",
             "Test Description",
             99.99m,
-            new List<string> { "https://example.com/image.jpg" },
+            ["https://example.com/image.jpg"],
             1,
-            new List<string> { "tag1", "tag2" },
+            ["tag1", "tag2"],
             1,
-            new List<OfferProperty> { new("Color", "Red") },
+            [new("Color", "Red")],
             10
         );
     }

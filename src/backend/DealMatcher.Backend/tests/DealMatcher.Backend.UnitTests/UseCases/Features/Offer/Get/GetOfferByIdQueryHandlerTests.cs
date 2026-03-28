@@ -14,28 +14,27 @@ public class GetOfferByIdQueryHandlerTests
         _usersRepository = Substitute.For<IReadRepository<UserEntity>>();
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository,_usersRepository, _categoriesRepository, _mapper);
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper);
     }
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WithMappedOffer_WhenOfferExists()
     {
-        // Arrange
         var query = new GetOfferByIdQuery(1);
 
         var offer = new OfferEntity(
             title: "Test Offer",
             description: "Test Description",
             price: 99.99m,
-            imageUrls: new List<string> { "https://example.com/image.jpg" },
+            imageUrls: ["https://example.com/image.jpg"],
             sellerId: 10,
-            tags: new List<string> { "tag1", "tag2" },
+            tags: ["tag1", "tag2"],
             categoryId: 5,
-            properties: new List<OfferProperty>
-            {
+            properties:
+            [
                 new("Color", "Red"),
                 new("Size", "Large")
-            },
+            ],
             availability: 15);
 
         var seller = new User("John Doe");
@@ -46,9 +45,9 @@ public class GetOfferByIdQueryHandlerTests
             Title: "Test Offer",
             Description: "Test Description",
             Price: 99.99,
-            Images: new List<string> { "https://example.com/image.jpg" },
+            Images: ["https://example.com/image.jpg"],
             Seller: new SellerDTO(10, "John Doe", 0f),
-            Tags: new List<string> { "tag1", "tag2" },
+            Tags: ["tag1", "tag2"],
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),
             Properties: new Dictionary<string, string>
             {
@@ -60,14 +59,13 @@ public class GetOfferByIdQueryHandlerTests
             CreatedAt: offer.CreatedAt,
             UpdatedAt: offer.UpdatedAt);
 
-        _offerRepository.GetByIdAsync(1, Arg.Any<CancellationToken>())
+        _offerRepository.SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), Arg.Any<CancellationToken>())
             .Returns(offer);
         _categoriesRepository.GetByIdAsync(5, Arg.Any<CancellationToken>())
             .Returns(category);
         _usersRepository.GetByIdAsync(10, Arg.Any<CancellationToken>())
             .Returns(seller);
-        var oi = new OfferProfile.OfferInfo(Arg.Any<OfferEntity>(), Arg.Any<UserEntity>(), Arg.Any<CategoryEntity>());
-        _mapper.Map<OfferDTO>(oi)
+        _mapper.Map<OfferDTO>(Arg.Any<OfferProfile.OfferInfo>())
             .Returns(expectedDto);
 
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -75,10 +73,10 @@ public class GetOfferByIdQueryHandlerTests
         result.IsSuccess.ShouldBeTrue();
         result.Value.ShouldBe(expectedDto);
 
-        await _offerRepository.Received(1).GetByIdAsync(1, Arg.Any<CancellationToken>());
+        await _offerRepository.Received(1).SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), Arg.Any<CancellationToken>());
         await _categoriesRepository.Received(1).GetByIdAsync(5, Arg.Any<CancellationToken>());
         await _usersRepository.Received(1).GetByIdAsync(10, Arg.Any<CancellationToken>());
-        oi = new OfferProfile.OfferInfo(offer, seller, category);
+        var oi = new OfferProfile.OfferInfo(offer, seller, category);
         _mapper.Received(1).Map<OfferDTO>(oi);
     }
 
@@ -92,32 +90,31 @@ public class GetOfferByIdQueryHandlerTests
             title: "Test Offer",
             description: "Test Description",
             price: 99.99m,
-            imageUrls: new List<string> { "https://example.com/image.jpg" },
+            imageUrls: ["https://example.com/image.jpg"],
             sellerId: 10,
-            tags: new List<string>(),
+            tags: [],
             categoryId: 5,
-            properties: new List<OfferProperty>(),
+            properties: [],
             availability: 15);
 
         var seller = new User("John Doe");
         var category = new Category("Electronics", "Description");
 
-        _offerRepository.GetByIdAsync(1, cts.Token)
+        _offerRepository.SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), Arg.Any<CancellationToken>())
             .Returns(offer);
         _usersRepository.GetByIdAsync(10, cts.Token)
             .Returns(seller);
         _categoriesRepository.GetByIdAsync(5, cts.Token)
             .Returns(category);
-        var oi = new OfferProfile.OfferInfo(Arg.Any<OfferEntity>(), Arg.Any<UserEntity>(), Arg.Any<CategoryEntity>());
-        _mapper.Map<OfferDTO>(oi)
-            .Returns(new OfferDTO(1, "Test", "Desc", 99.99, new List<string>(),
-                new SellerDTO(10, "John", 0), new List<string>(),
+        _mapper.Map<OfferDTO>(Arg.Any<OfferProfile.OfferInfo>())
+            .Returns(new OfferDTO(1, "Test", "Desc", 99.99, [],
+                new SellerDTO(10, "John", 0), [],
                 new CategoryDTO(5, "Electronics", "Desc"),
-                new Dictionary<string, string>(), 15, "DRAFT", DateTime.UtcNow, DateTime.UtcNow));
+                [], 15, "DRAFT", DateTime.UtcNow, DateTime.UtcNow));
 
         await _handler.Handle(query, cts.Token);
 
-        await _offerRepository.Received(1).GetByIdAsync(1, cts.Token);
+        await _offerRepository.Received(1).SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), cts.Token);
         await _usersRepository.Received(1).GetByIdAsync(10, cts.Token);
         await _categoriesRepository.Received(1).GetByIdAsync(5, cts.Token);
     }

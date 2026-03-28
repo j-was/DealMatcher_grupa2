@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DealMatcher.Backend.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class OfferAggregateV1 : Migration
+public partial class Offer : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,9 +51,9 @@ public partial class OfferAggregateV1 : Migration
             {
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
-                Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Price = table.Column<double>(type: "float", nullable: false),
+                Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                 ImageUrls = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 SellerId = table.Column<int>(type: "int", nullable: false),
                 Tags = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -83,8 +83,8 @@ public partial class OfferAggregateV1 : Migration
                 OfferId = table.Column<int>(type: "int", nullable: false),
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
-                Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                Value = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
             },
             constraints: table =>
             {
@@ -105,8 +105,7 @@ public partial class OfferAggregateV1 : Migration
         migrationBuilder.CreateIndex(
             name: "IX_Offers_SellerId",
             table: "Offers",
-            column: "SellerId",
-            unique: true);
+            column: "SellerId");
     }
 
     /// <inheritdoc />

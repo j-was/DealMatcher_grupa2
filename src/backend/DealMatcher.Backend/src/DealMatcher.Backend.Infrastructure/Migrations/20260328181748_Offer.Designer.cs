@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DealMatcher.Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260324190825_OfferAggregateV1")]
-    partial class OfferAggregateV1
+    [Migration("20260328181748_Offer")]
+    partial class Offer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.PrimitiveCollection<string>("ImageUrls")
                         .IsRequired()
@@ -90,8 +91,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
@@ -106,15 +107,15 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SellerId")
-                        .IsUnique();
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Offers", (string)null);
                 });
@@ -153,8 +154,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Offer.Offer", b =>
                 {
                     b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
-                        .WithOne()
-                        .HasForeignKey("DealMatcher.Backend.Core.Aggregates.Offer.Offer", "SellerId")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -171,11 +172,13 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(450)");
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)");
 
                             b1.HasKey("OfferId", "Id");
 

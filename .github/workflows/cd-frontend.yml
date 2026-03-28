@@ -22,9 +22,9 @@ jobs:
             - name: Azure login
               uses: azure/login@v2
               with:
-                 client-id: ${{ secrets.DEALMATCHERFRONTEND_AZURE_CLIENT_ID }}
-                 tenant-id: ${{ secrets.DEALMATCHERFRONTEND_AZURE_TENANT_ID }}
-                 subscription-id: ${{ secrets.DEALMATCHERFRONTEND_AZURE_SUBSCRIPTION_ID }}
+                 client-id: ${{ secrets.DEALMATCHERFRONTEND2_AZURE_CLIENT_ID }}
+                 tenant-id: ${{ secrets.DEALMATCHERFRONTEND2_AZURE_TENANT_ID }}
+                 subscription-id: ${{ secrets.DEALMATCHERFRONTEND2_AZURE_SUBSCRIPTION_ID }}
             
             - name: Build and push container image to registry
               uses: azure/container-apps-deploy-action@v2
@@ -33,10 +33,10 @@ jobs:
                 _dockerfilePathKey_: _dockerfilePath_
                 _targetLabelKey_: _targetLabel_
                 registryUrl: docker.io
-                registryUsername: ${{ secrets.DEALMATCHERFRONTEND_REGISTRY_USERNAME }}
-                registryPassword: ${{ secrets.DEALMATCHERFRONTEND_REGISTRY_PASSWORD }}
+                registryUsername: ${{ secrets.DEALMATCHERFRONTEND2_REGISTRY_USERNAME }}
+                registryPassword: ${{ secrets.DEALMATCHERFRONTEND2_REGISTRY_PASSWORD }}
                 containerAppName: dealmatcher-frontend
                 resourceGroup: dealmatcher-frontend
-                imageToBuild: ${{ secrets.DEALMATCHERFRONTEND_REGISTRY_USERNAME }}/dealmatcher-frontend:${{github.sha}}
+                imageToBuild: ${{ secrets.DEALMATCHERFRONTEND2_REGISTRY_USERNAME }}/dealmatcher-frontend:${{github.sha}}
                 _buildArgumentsKey_: |
                     _buildArgumentsValues_

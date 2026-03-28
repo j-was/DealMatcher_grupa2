@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 		..\..\..\dealmatcher_swagger.yaml = ..\..\..\dealmatcher_swagger.yaml
 		..\..\..\docker-compose.yml = ..\..\..\docker-compose.yml
+		..\..\..\.github\workflows\cd-backend.yml = ..\..\..\.github\workflows\cd-backend.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DealMatcher.Backend.FunctionalTests", "tests\DealMatcher.Backend.FunctionalTests\DealMatcher.Backend.FunctionalTests.csproj", "{7D84EFEE-A7D9-44AD-A0A3-38EC7882D94C}"

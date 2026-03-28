@@ -1,0 +1,49 @@
+name: Trigger auto deployment for dealmatcher-backend
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ release ]
+    paths:
+    - '**'
+    - '.github/workflows/dealmatcher-backend-AutoDeployTrigger-4132bb7c-67c8-4b01-8ac9-54ae60c54b25.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.DEALMATCHERBACKEND_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}src/backend/DealMatcher.Backend
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DEALMATCHERBACKEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.DEALMATCHERBACKEND_REGISTRY_PASSWORD }}
+          containerAppName: dealmatcher-backend
+          resourceGroup: pw-dealmatcher
+          imageToBuild: pprpjwas/dealmatcher-backend:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+

@@ -22,9 +22,9 @@ public sealed class Offer :
       decimal price,
       List<string> imageUrls,
       int sellerId,
-      List<string> tags,
+      List<string>? tags,
       int categoryId,
-      List<OfferProperty> properties,
+      List<OfferProperty>? properties,
       int availability)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);

@@ -48,7 +48,7 @@ public class GetOfferByIdQueryHandlerTests
             Images: ["https://example.com/image.jpg"],
             Seller: new SellerDTO(10, "John Doe", 0f),
             Tags: ["tag1", "tag2"],
-            Category: new CategoryDTO(5, "Electronics", "Electronic devices", new List<CategoryPropertyDTO>()),
+            Category: new CategoryDTO(5, "Electronics", "Electronic devices", []),
             Properties: new Dictionary<string, string>
             {
                 { "Color", "Red" },
@@ -109,7 +109,7 @@ public class GetOfferByIdQueryHandlerTests
         _mapper.Map<OfferDTO>(Arg.Any<OfferProfile.OfferInfo>())
             .Returns(new OfferDTO(1, "Test", "Desc", 99.99, [],
                 new SellerDTO(10, "John", 0), [],
-                new CategoryDTO(5, "Electronics", "Desc", new List<CategoryPropertyDTO>()),
+                new CategoryDTO(5, "Electronics", "Desc", []),
                 [], 15, "DRAFT", DateTime.UtcNow, DateTime.UtcNow));
 
         await _handler.Handle(query, cts.Token);

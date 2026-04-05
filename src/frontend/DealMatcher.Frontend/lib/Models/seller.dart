@@ -1,12 +1,19 @@
 class Seller {
-  final int id;
-  final String name;
-  final double rating;
+  final int _id;
+  final String _name;
+  final double _rating;
 
-  const Seller({required this.id, required this.name, required this.rating});
+  int get id => _id;
+  String get name => _name;
+  double get rating => _rating;
+
+  const Seller({int id = -1, required String name, required double rating})
+    : _id = id,
+      _name = name,
+      _rating = rating;
 
   Seller.fromJson(Map<String, dynamic> json)
-    : id = json['id'] ?? 0,
-      name = json['name'] ?? '',
-      rating = (json['rating'] ?? 0).toDouble();
+    : _id = json['id'] ?? 0,
+      _name = json['name'] ?? '',
+      _rating = (json['rating'] ?? 0).toDouble();
 }

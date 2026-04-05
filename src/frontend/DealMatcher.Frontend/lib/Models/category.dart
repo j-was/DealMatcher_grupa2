@@ -1,16 +1,22 @@
 class Category {
-  final int id;
-  final String name;
-  final String description;
+  final int _id;
+  final String _name;
+  final String _description;
+
+  int get id => _id;
+  String get name => _name;
+  String get decription => _description;
 
   const Category({
-    required this.id,
-    required this.name,
-    required this.description,
-  });
+    int id = -1,
+    required String name,
+    required String description,
+  }) : _id = id,
+       _name = name,
+       _description = description;
 
   Category.fromJson(Map<String, dynamic> json)
-    : id = json['id'] ?? 0,
-      name = json['name'] ?? '',
-      description = json['description'] ?? '';
+    : _id = json['id'] ?? 0,
+      _name = json['name'] ?? '',
+      _description = json['description'] ?? '';
 }

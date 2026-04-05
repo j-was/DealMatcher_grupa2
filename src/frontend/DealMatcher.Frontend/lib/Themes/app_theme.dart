@@ -33,7 +33,11 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(12),
           ),
+          backgroundColor: _primaryColor,
         ),
+      ),
+      inputDecorationTheme: InputDecorationThemeData(
+        labelStyle: TextStyle(color: Colors.white54),
       ),
     );
   }

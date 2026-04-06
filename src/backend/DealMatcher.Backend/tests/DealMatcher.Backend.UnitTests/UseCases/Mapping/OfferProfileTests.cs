@@ -265,7 +265,7 @@ public class OfferProfileTests
             1,
             ["tag1", "tag2"],
             1,
-            [new("Color", "Red")],
+            [new(3, "Color", "Red")],
             10
         );
     }

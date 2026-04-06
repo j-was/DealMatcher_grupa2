@@ -3,7 +3,7 @@ namespace DealMatcher.Backend.UnitTests.Core.OfferAggregate;
 public class OfferTests
 {
     private static List<OfferProperty> TestProperties =>
-        [new OfferProperty("Color", "Red")];
+        [new OfferProperty(1, "Color", "Red")];
 
     private static List<string> TestImages =>
         ["https://test.com/a.jpg"];

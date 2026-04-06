@@ -32,8 +32,8 @@ public class GetOfferByIdQueryHandlerTests
             categoryId: 5,
             properties:
             [
-                new("Color", "Red"),
-                new("Size", "Large")
+                new(1, "Color", "Red"),
+                new(2, "Size", "Large")
             ],
             availability: 15);
 

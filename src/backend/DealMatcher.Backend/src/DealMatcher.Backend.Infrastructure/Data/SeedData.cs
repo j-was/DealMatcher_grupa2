@@ -48,9 +48,9 @@ public static class SeedData
                 categoryId: 1,
                 properties:
                 [
-                    new OfferProperty("Stan", "Bardzo dobry"),
-                    new OfferProperty("Pamięć", "256GB"),
-                    new OfferProperty("Kolor", "Grafitowy"),
+                    new OfferProperty(1, "Stan", "Bardzo dobry"),
+                    new OfferProperty(2, "Pamięć", "256GB"),
+                    new OfferProperty(3, "Kolor", "Grafitowy"),
                 ],
                 availability: 1
             ),
@@ -64,9 +64,9 @@ public static class SeedData
                 categoryId: 2,
                 properties:
                 [
-                    new OfferProperty("Rozmiar ramy", "M"),
-                    new OfferProperty("Kolor", "Czarny"),
-                    new OfferProperty("Rok produkcji", "2022"),
+                    new OfferProperty(4, "Rozmiar ramy", "M"),
+                    new OfferProperty(5, "Kolor", "Czarny"),
+                    new OfferProperty(6, "Rok produkcji", "2022"),
                 ],
                 availability: 1
             ),
@@ -80,9 +80,9 @@ public static class SeedData
                 categoryId: 3,
                 properties:
                 [
-                    new OfferProperty("Kolor", "Szary"),
-                    new OfferProperty("Wymiary", "250x180cm"),
-                    new OfferProperty("Stan", "Dobry"),
+                    new OfferProperty(7, "Kolor", "Szary"),
+                    new OfferProperty(8, "Wymiary", "250x180cm"),
+                    new OfferProperty(9,"Stan", "Dobry"),
                 ],
                 availability: 1
             ),
@@ -96,9 +96,9 @@ public static class SeedData
                 categoryId: 4,
                 properties:
                 [
-                    new OfferProperty("Rozmiar", "L"),
-                    new OfferProperty("Kolor", "Czarny"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(10,"Rozmiar", "L"),
+                    new OfferProperty(11,"Kolor", "Czarny"),
+                    new OfferProperty(12,"Stan", "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -112,10 +112,10 @@ public static class SeedData
                 categoryId: 1,
                 properties:
                 [
-                    new OfferProperty("Procesor", "Intel i7"),
-                    new OfferProperty("RAM", "16GB"),
-                    new OfferProperty("Dysk", "512GB SSD"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(13,"Procesor", "Intel i7"),
+                    new OfferProperty(14,"RAM", "16GB"),
+                    new OfferProperty(15,"Dysk", "512GB SSD"),
+                    new OfferProperty(16,"Stan", "Bardzo dobry"),
                 ],
                 availability: 1
             ),

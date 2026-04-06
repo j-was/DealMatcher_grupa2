@@ -67,5 +67,3 @@ public sealed class Offer :
         UpdatedAt = DateTime.UtcNow;
     }
 }
-
-public sealed record OfferProperty(string Name, string Value);

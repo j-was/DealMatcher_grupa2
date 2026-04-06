@@ -3,5 +3,6 @@ namespace DealMatcher.Backend.Core.Aggregates.Category.DTOs;
 public sealed record CategoryPropertyDTO(
     int Id,
     string Name,
-    string? Description
+    CategoryPropertyType Type,
+    List<string>? Options
     );

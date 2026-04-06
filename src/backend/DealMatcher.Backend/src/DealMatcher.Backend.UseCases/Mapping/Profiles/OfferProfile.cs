@@ -16,7 +16,7 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Images), opt => opt.MapFrom(src => src.ImageUrls))
             .ForCtorParam(nameof(OfferDTO.Seller), opt => opt.MapFrom(src => new SellerDTO(src.SellerId, "", 0f)))
             .ForCtorParam(nameof(OfferDTO.Tags), opt => opt.MapFrom(src => src.Tags))
-            .ForCtorParam(nameof(OfferDTO.Category), opt => opt.MapFrom(src => new CategoryDTO(src.CategoryId, "", "", new List<CategoryPropertyDTO>())))
+            .ForCtorParam(nameof(OfferDTO.Category), opt => opt.MapFrom(src => new CategoryDTO(src.CategoryId, "", "")))
             .ForCtorParam(nameof(OfferDTO.Properties), opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.Name, p => p.Value)))
             .ForCtorParam(nameof(OfferDTO.Availability), opt => opt.MapFrom(src => src.Availability))
             .ForCtorParam(nameof(OfferDTO.Status), opt => opt.MapFrom(src => src.Status.Value.ToUpper()))
@@ -41,9 +41,7 @@ public sealed class OfferProfile : Profile
                 opt => opt.MapFrom(src => src.Offer.Tags))
             .ForCtorParam(nameof(OfferDTO.Category),
                 opt => opt.MapFrom(src =>
-                    new CategoryDTO(src.Category.Id, src.Category.Name, src.Category.Description, src.Category.Properties
-                .Select(p => new CategoryPropertyDTO(p.Id, p.Name, p.Description))
-                .ToList())))
+                    new CategoryDTO(src.Category.Id, src.Category.Name, src.Category.Description)))
             .ForCtorParam(nameof(OfferDTO.Properties),
                 opt => opt.MapFrom(src =>
                     src.Offer.Properties.ToDictionary(p => p.Name, p => p.Value)))

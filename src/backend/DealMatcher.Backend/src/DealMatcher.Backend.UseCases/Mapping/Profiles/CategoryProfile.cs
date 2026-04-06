@@ -11,7 +11,6 @@ public sealed class CategoryProfile : Profile
         CreateMap<Category, CategoryDTO>()
             .ForCtorParam(nameof(CategoryDTO.Id), opt => opt.MapFrom(src => src.Id))
             .ForCtorParam(nameof(CategoryDTO.Name), opt => opt.MapFrom(src => src.Name))
-            .ForCtorParam(nameof(CategoryDTO.Description), opt => opt.MapFrom(src => src.Description))
-            .ForCtorParam(nameof(CategoryDTO.Properties), opt => opt.MapFrom(src => src.Properties));
+            .ForCtorParam(nameof(CategoryDTO.Description), opt => opt.MapFrom(src => src.Description));
     }
 }

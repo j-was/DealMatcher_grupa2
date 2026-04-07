@@ -23,15 +23,15 @@ public class CreateNewOfferCommandHandlerTests
         var command = new CreateNewOfferCommand("Test offer",
             "Test description",
             100.00,
-            new List<String> {"https://example.com/image.jpg"},
-            new List<String> {"Test tag"},
+            new List<String> { "https://example.com/image.jpg" },
+            new List<String> { "Test tag" },
             5,
             new Dictionary<string, string> {
             { "Test Property", "Test Value" }},
             2);
-        
+
         var category = new CategoryEntity("Electronics", "Electronic devices");
-            
+
         var expectedDto = new OfferDTO(
             Id: 1,
             Title: "Test Offer",

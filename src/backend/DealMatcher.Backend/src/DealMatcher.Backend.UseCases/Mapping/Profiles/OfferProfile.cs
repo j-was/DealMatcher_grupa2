@@ -14,7 +14,7 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Description), opt => opt.MapFrom(src => src.Description))
             .ForCtorParam(nameof(OfferDTO.Price), opt => opt.MapFrom(src => (double)src.Price))
             .ForCtorParam(nameof(OfferDTO.Images), opt => opt.MapFrom(src => src.ImageUrls))
-            .ForCtorParam(nameof(OfferDTO.Seller), opt => opt.MapFrom(src => new SellerDTO(src.SellerId, "", 0f)))
+            .ForCtorParam(nameof(OfferDTO.Seller), opt => opt.MapFrom(src => new SellerDTO(src.SellerId, $"User{src.SellerId}")))
             .ForCtorParam(nameof(OfferDTO.Tags), opt => opt.MapFrom(src => src.Tags))
             .ForCtorParam(nameof(OfferDTO.Category), opt => opt.MapFrom(src => new CategoryDTO(src.CategoryId, "", "")))
             .ForCtorParam(nameof(OfferDTO.Properties), opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.Name, p => p.Value)))
@@ -36,7 +36,7 @@ public sealed class OfferProfile : Profile
                 opt => opt.MapFrom(src => src.Offer.ImageUrls))
             .ForCtorParam(nameof(OfferDTO.Seller),
                 opt => opt.MapFrom(src =>
-                    new SellerDTO(src.Seller.Id, src.Seller.Name, src.Seller.Rating)))
+                    new SellerDTO(src.Seller.Id, $"{src.Seller.Name} {src.Seller.Surname}".TrimEnd())))
             .ForCtorParam(nameof(OfferDTO.Tags),
                 opt => opt.MapFrom(src => src.Offer.Tags))
             .ForCtorParam(nameof(OfferDTO.Category),

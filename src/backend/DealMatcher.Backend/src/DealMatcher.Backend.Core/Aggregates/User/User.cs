@@ -5,12 +5,19 @@ public sealed class User :
   IAggregateRoot
 {
     public string Name { get; private set; }
-    public float Rating { get; private set; }
+    public string Email { get; private set; }
+    public string Surname { get; private set; }
+    public UserStatus Status { get; private set; }
+    private string PasswordHash { get; set; }
 
-    public User(string name)
+
+    public User(string email, string name, string surname = "")
     {
         Name = name;
-        Rating = 0;
+        Email = email;
+        Surname = surname;
+        Status = UserStatus.Active;
+        PasswordHash = "";
     }
 
 #pragma warning disable CS8618
@@ -19,4 +26,15 @@ public sealed class User :
         /* EF */
     }
 #pragma warning restore CS8618
+
+    public static bool AuthenticatePassword(string password)
+    {
+        return false;
+    }
+
+    public static bool HashPassword(string password)
+    {
+        return false;
+    }
+
 }

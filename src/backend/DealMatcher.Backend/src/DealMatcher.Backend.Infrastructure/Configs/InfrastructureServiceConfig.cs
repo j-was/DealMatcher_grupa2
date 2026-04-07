@@ -1,3 +1,4 @@
+using DealMatcher.Backend.Infrastructure.Authentication;
 using DealMatcher.Backend.Infrastructure.Data;
 using DealMatcher.Backend.Infrastructure.Images;
 
@@ -27,6 +28,9 @@ public static class InfrastructureServiceConfig
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
           .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped<IImageService, AzureBlobImageService>();
+
+        services.AddScoped<IPasswordHashService, BcryptHashService>();
+        services.AddScoped<IPasswordValidator, PasswordValidator>();
 
         logger.LogInformation("{Project} services registered", "Infrastructure");
 

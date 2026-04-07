@@ -6,7 +6,7 @@ public abstract class UserStatus(
 {
     public static readonly UserStatus Active = new ActiveUserStatus();
     public static readonly UserStatus Inactive = new InactiveUserStatus();
-    public static readonly UserStatus BannedUserStatus = new PromotedOfferStatus();
+    public static readonly UserStatus Banned = new BannedUserStatus();
 
     private sealed class ActiveUserStatus() :
         UserStatus(nameof(ActiveUserStatus), nameof(Active))
@@ -18,8 +18,8 @@ public abstract class UserStatus(
     {
     }
 
-    private sealed class PromotedOfferStatus() :
-        UserStatus(nameof(PromotedOfferStatus), nameof(BannedUserStatus))
+    private sealed class BannedUserStatus() :
+        UserStatus(nameof(BannedUserStatus), nameof(Banned))
     {
     }
 }

@@ -35,6 +35,18 @@
     <Compile Update="Endpoints\Offers\Get.GetOfferValidator.cs">
       <DependentUpon>Get.cs</DependentUpon>
     </Compile>
+    <Compile Update="Endpoints\Users\Register.RegisterUserRequest.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Users\Register.RegisterUserValidator.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Users\Login.LoginRequest.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Users\Login.LoginValidator.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

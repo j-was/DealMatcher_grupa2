@@ -1,8 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.User.Specifications;
-using DealMatcher.Backend.Core.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Logging;
-
 namespace DealMatcher.Backend.UseCases.Features.User.Register;
 
 public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPasswordHashService passwordHasher, IMapper mapper) : IRequestHandler<RegisterUserCommand, Result<UserDTO>>

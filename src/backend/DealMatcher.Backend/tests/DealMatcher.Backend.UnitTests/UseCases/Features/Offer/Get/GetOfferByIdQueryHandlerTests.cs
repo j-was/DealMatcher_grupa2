@@ -37,7 +37,7 @@ public class GetOfferByIdQueryHandlerTests
             ],
             availability: 15);
 
-        var seller = new User("placeholder@mail.com", "John", "Doe");
+        var seller = new UserEntity("placeholder@mail.com", "John", "Doe");
         var category = new Category("Electronics", "Electronic devices");
 
         var expectedDto = new OfferDTO(
@@ -97,7 +97,7 @@ public class GetOfferByIdQueryHandlerTests
             properties: [],
             availability: 15);
 
-        var seller = new User("placeholder@mail.com", "John", "Doe");
+        var seller = new UserEntity("placeholder@mail.com", "John", "Doe");
         var category = new Category("Electronics", "Description");
 
         _offerRepository.SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), Arg.Any<CancellationToken>())

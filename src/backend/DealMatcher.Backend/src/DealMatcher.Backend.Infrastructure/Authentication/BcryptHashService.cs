@@ -1,7 +1,4 @@
-using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.Core.Interfaces;
-
-namespace DealMatcher.Backend.Core.Services;
+namespace DealMatcher.Backend.Infrastructure.Authentication;
 
 public sealed class BcryptHashService : IPasswordHashService
 {

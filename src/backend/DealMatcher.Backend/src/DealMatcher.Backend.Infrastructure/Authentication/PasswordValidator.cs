@@ -1,6 +1,4 @@
-using DealMatcher.Backend.Core.Interfaces;
-
-namespace DealMatcher.Backend.Core.Services;
+namespace DealMatcher.Backend.Infrastructure.Authentication;
 
 public class PasswordValidator: IPasswordValidator
 {
@@ -17,55 +15,50 @@ public class PasswordValidator: IPasswordValidator
         WeakPasswords.Append(password);
     }
 
-    public bool ValidatePassword(string password, out string errorMessage)
-    {
-        errorMessage = string.Empty;
+    public string PasswordRequirements { get; } =
+        $"Password must have between {MinLength} and {MaxLength} characters. " +
+        $"Must contain lowercase and uppercase letters, digits and special character. " +
+        $"Must not be too commonly weak.";
 
+    public bool ValidatePassword(string password)
+    {
         if (string.IsNullOrWhiteSpace(password))
         {
-            errorMessage = "Password cannot be empty";
             return false;
         }
 
         if (password.Length < MinLength)
         {
-            errorMessage = $"Password must be at least {MinLength} characters long";
             return false;
         }
 
         if (password.Length > MaxLength)
         {
-            errorMessage = $"Password cannot exceed {MaxLength} characters";
             return false;
         }
 
         if (!Regex.IsMatch(password, @"[A-Z]"))
         {
-            errorMessage = "Password must contain at least one uppercase letter";
             return false;
         }
 
         if (!Regex.IsMatch(password, @"[a-z]"))
         {
-            errorMessage = "Password must contain at least one lowercase letter";
             return false;
         }
 
         if (!Regex.IsMatch(password, @"[0-9]"))
         {
-            errorMessage = "Password must contain at least one number";
             return false;
         }
 
         if (!Regex.IsMatch(password, @"[!@#$%^&*(),.?""':{}|<>]"))
         {
-            errorMessage = "Password must contain at least one special character";
             return false;
         }
 
         if (WeakPasswords.Contains(password))
         {
-            errorMessage = "Password is too common. Please choose a stronger password";
             return false;
         }
 

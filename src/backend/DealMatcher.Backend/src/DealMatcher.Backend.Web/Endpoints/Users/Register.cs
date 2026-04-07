@@ -5,19 +5,19 @@ public sealed class Register(
 {
     public override void Configure()
     {
-        Post("/auth/google-login");
+        Post("/users/register");
         Version(1);
         AllowAnonymous();
         Summary(s =>
         {
-            s.Summary = "Authenticate with Google";
-            s.Description = "Validates Google token and returns JWT access token";
+            s.Summary = "Register a new user";
+            s.Description = "Creates a new user account with ACTIVE status";
         });
     }
 
     public override async Task HandleAsync(RegisterUserRequest request, CancellationToken ct)
     {
-        var command = new RegisterUserCommand(request);
+        var command = new RegisterUserCommand(request.Email, request.Name, request.Surname, request.Password);
         var result = await mediator.Send(command, ct);
 
         await result.SendResult(this, ct);

@@ -27,13 +27,15 @@ public sealed class User :
     }
 #pragma warning restore CS8618
 
-    public static bool AuthenticatePassword(string password)
+    public bool AuthenticatePassword(string password)
     {
+        password = PasswordHash;
         return false;
     }
 
-    public static bool HashPassword(string password)
+    public bool HashPassword(string password)
     {
+        PasswordHash =  password;
         return false;
     }
 

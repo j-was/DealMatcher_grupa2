@@ -54,34 +54,6 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                     b.ToTable("Categorys", (string)null);
                 });
 
-            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Category.CategoryProperty", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("Options")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("CategoryProperty");
-                });
-
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Offer.Offer", b =>
                 {
                     b.Property<int>("Id")
@@ -190,11 +162,41 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Category.CategoryProperty", b =>
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Category.Category", b =>
                 {
-                    b.HasOne("DealMatcher.Backend.Core.Aggregates.Category.Category", null)
-                        .WithMany("Properties")
-                        .HasForeignKey("CategoryId");
+                    b.OwnsMany("DealMatcher.Backend.Core.Aggregates.Category.CategoryProperty", "Properties", b1 =>
+                        {
+                            b1.Property<int>("Categoryd")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.PrimitiveCollection<string>("Options")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Categoryd", "Id");
+
+                            b1.HasIndex("Name");
+
+                            b1.ToTable("CategoryProperties", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("Categoryd");
+                        });
+
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Offer.Offer", b =>
@@ -216,9 +218,6 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
-                            b1.Property<int>("CategoryPropertyId")
-                                .HasColumnType("int");
-
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasMaxLength(100)
@@ -239,11 +238,6 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                                 .HasForeignKey("OfferId");
                         });
 
-                    b.Navigation("Properties");
-                });
-
-            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Category.Category", b =>
-                {
                     b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DealMatcher.Backend.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class Offer : Migration
+public partial class OfferUserCategoryProperty : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,10 @@ public partial class Offer : Migration
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Rating = table.Column<float>(type: "real", nullable: false),
+                Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                PasswordHash = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                 CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                 DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                 IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
@@ -43,6 +46,28 @@ public partial class Offer : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_Users", x => x.Id);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "CategoryProperties",
+            columns: table => new
+            {
+                Categoryd = table.Column<int>(type: "int", nullable: false),
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                Type = table.Column<int>(type: "int", nullable: false),
+                Options = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_CategoryProperties", x => new { x.Categoryd, x.Id });
+                table.ForeignKey(
+                    name: "FK_CategoryProperties_Categorys_Categoryd",
+                    column: x => x.Categoryd,
+                    principalTable: "Categorys",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
@@ -98,6 +123,11 @@ public partial class Offer : Migration
             });
 
         migrationBuilder.CreateIndex(
+            name: "IX_CategoryProperties_Name",
+            table: "CategoryProperties",
+            column: "Name");
+
+        migrationBuilder.CreateIndex(
             name: "IX_OfferProperties_Name",
             table: "OfferProperties",
             column: "Name");
@@ -112,10 +142,13 @@ public partial class Offer : Migration
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(
-            name: "Categorys");
+            name: "CategoryProperties");
 
         migrationBuilder.DropTable(
             name: "OfferProperties");
+
+        migrationBuilder.DropTable(
+            name: "Categorys");
 
         migrationBuilder.DropTable(
             name: "Offers");

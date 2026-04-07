@@ -1,3 +1,5 @@
+using DealMatcher.Backend.Infrastructure.Authentication;
+
 namespace DealMatcher.Backend.Infrastructure.Data;
 
 public static class SeedData
@@ -27,14 +29,14 @@ public static class SeedData
             "Elektronika",
             "Urządzenia elektroniczne i akcesoria",
             [
-                new(1, "Stan", CategoryPropertyType.SELECT,
+                new("Stan", CategoryPropertyType.SELECT,
                 [
                     "Nowy",
                     "Używany",
                     "Uszkodzony"
                 ]),
-                new(2, "Pamięć", CategoryPropertyType.NUMBER, null),
-                new(3, "Kolor", CategoryPropertyType.SELECT,
+                new("Pamięć", CategoryPropertyType.NUMBER, null),
+                new("Kolor", CategoryPropertyType.SELECT,
                 [
                     "Czarny",
                     "Biały",
@@ -49,8 +51,8 @@ public static class SeedData
             "Sport",
             "Sprzęt i akcesoria sportowe",
             [
-                new(4, "Rozmiar ramy", CategoryPropertyType.TEXT, null),
-                new(5, "Kolor", CategoryPropertyType.SELECT,
+                new( "Rozmiar ramy", CategoryPropertyType.TEXT, null),
+                new("Kolor", CategoryPropertyType.SELECT,
                 [
                     "Czarny",
                     "Biały",
@@ -58,7 +60,7 @@ public static class SeedData
                     "Niebieski",
                     "Inny"
                 ]),
-                new(6, "Rok produkcji", CategoryPropertyType.NUMBER, null),
+                new("Rok produkcji", CategoryPropertyType.NUMBER, null),
             ]
         ),
 
@@ -66,7 +68,7 @@ public static class SeedData
             "Meble",
             "Meble do domu i biura",
             [
-                new(7, "Kolor", CategoryPropertyType.SELECT,
+                new( "Kolor", CategoryPropertyType.SELECT,
                 [
                     "Biały",
                     "Czarny",
@@ -74,8 +76,8 @@ public static class SeedData
                     "Szary",
                     "Inny"
                 ]),
-                new(8, "Wymiary", CategoryPropertyType.TEXT, null),
-                new(9, "Stan", CategoryPropertyType.SELECT,
+                new("Wymiary", CategoryPropertyType.TEXT, null),
+                new( "Stan", CategoryPropertyType.SELECT,
                 [
                     "Nowy",
                     "Używany",
@@ -88,8 +90,8 @@ public static class SeedData
             "Odzież",
             "Odzież damska, męska i dziecięca",
             [
-                new(10, "Rozmiar", CategoryPropertyType.TEXT, null),
-                new(11, "Kolor", CategoryPropertyType.SELECT,
+                new( "Rozmiar", CategoryPropertyType.TEXT, null),
+                new("Kolor", CategoryPropertyType.SELECT,
                 [
                     "Czarny",
                     "Biały",
@@ -97,7 +99,7 @@ public static class SeedData
                     "Czerwony",
                     "Inny"
                 ]),
-                new(12, "Stan", CategoryPropertyType.SELECT,
+                new("Stan", CategoryPropertyType.SELECT,
                 [
                     "Nowy",
                     "Używany",
@@ -110,14 +112,14 @@ public static class SeedData
         await dbContext.Set<Category>().AddRangeAsync(categories);
         await dbContext.SaveChangesAsync();
     }
-    // version with less precise User, only to be added to the database
+
     public static async Task SeedUsers(AppDbContext dbContext)
     {
         var users = new List<User>
     {
         new("jan.kow@mm.com","Jan","Kowalski"),
         new("ann.n@h.pl","Anna","Nowak"),
-        new("placeholder@xxnx.com","Piotr","Wiśniewski"),
+        new("placeholder@xxnx.com","Piotr","Wiśniewski")
     };
 
         await dbContext.Set<User>().AddRangeAsync(users);
@@ -142,9 +144,9 @@ public static class SeedData
                 categoryId: 1,
                 properties:
                 [
-                    new OfferProperty(1, "Stan", "Bardzo dobry"),
-                    new OfferProperty(2, "Pamięć", "256GB"),
-                    new OfferProperty(3, "Kolor", "Grafitowy"),
+                    new OfferProperty( "Stan", "Bardzo dobry"),
+                    new OfferProperty( "Pamięć", "256GB"),
+                    new OfferProperty( "Kolor", "Grafitowy"),
                 ],
                 availability: 1
             ),
@@ -158,9 +160,9 @@ public static class SeedData
                 categoryId: 2,
                 properties:
                 [
-                    new OfferProperty(4, "Rozmiar ramy", "M"),
-                    new OfferProperty(5, "Kolor", "Czarny"),
-                    new OfferProperty(6, "Rok produkcji", "2022"),
+                    new OfferProperty("Rozmiar ramy", "M"),
+                    new OfferProperty( "Kolor", "Czarny"),
+                    new OfferProperty( "Rok produkcji", "2022"),
                 ],
                 availability: 1
             ),
@@ -174,9 +176,9 @@ public static class SeedData
                 categoryId: 3,
                 properties:
                 [
-                    new OfferProperty(7, "Kolor", "Szary"),
-                    new OfferProperty(8, "Wymiary", "250x180cm"),
-                    new OfferProperty(9,"Stan", "Dobry"),
+                    new OfferProperty( "Kolor", "Szary"),
+                    new OfferProperty("Wymiary", "250x180cm"),
+                    new OfferProperty("Stan", "Dobry"),
                 ],
                 availability: 1
             ),
@@ -190,9 +192,9 @@ public static class SeedData
                 categoryId: 4,
                 properties:
                 [
-                    new OfferProperty(10,"Rozmiar", "L"),
-                    new OfferProperty(11,"Kolor", "Czarny"),
-                    new OfferProperty(12,"Stan", "Bardzo dobry"),
+                    new OfferProperty("Rozmiar", "L"),
+                    new OfferProperty("Kolor", "Czarny"),
+                    new OfferProperty("Stan", "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -206,10 +208,10 @@ public static class SeedData
                 categoryId: 1,
                 properties:
                 [
-                    new OfferProperty(13,"Procesor", "Intel i7"),
-                    new OfferProperty(14,"RAM", "16GB"),
-                    new OfferProperty(15,"Dysk", "512GB SSD"),
-                    new OfferProperty(16,"Stan", "Bardzo dobry"),
+                    new OfferProperty("Procesor", "Intel i7"),
+                    new OfferProperty("RAM", "16GB"),
+                    new OfferProperty("Dysk", "512GB SSD"),
+                    new OfferProperty("Stan", "Bardzo dobry"),
                 ],
                 availability: 1
             ),

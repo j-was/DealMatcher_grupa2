@@ -31,6 +31,7 @@ public static class InfrastructureServiceConfig
 
         services.AddScoped<IPasswordHashService, BcryptHashService>();
         services.AddScoped<IPasswordValidator, PasswordValidator>();
+        services.AddScoped<ITokenProvider, JwtTokenProvider>();
 
         logger.LogInformation("{Project} services registered", "Infrastructure");
 

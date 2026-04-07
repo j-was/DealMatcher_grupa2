@@ -16,6 +16,7 @@ global using DealMatcher.Backend.Core.Aggregates.Category;
 global using DealMatcher.Backend.Core.Aggregates.Offer;
 global using DealMatcher.Backend.Core.Aggregates.User;
 global using DealMatcher.Backend.Core.Interfaces;
+global using DealMatcher.Backend.Infrastructure.Data;
 global using DealMatcher.Backend.UseCases.Mapping.Profiles;
 global using MailKit.Net.Smtp;
 global using Microsoft.EntityFrameworkCore;
@@ -28,3 +29,4 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Tokens;
 global using MimeKit;
+

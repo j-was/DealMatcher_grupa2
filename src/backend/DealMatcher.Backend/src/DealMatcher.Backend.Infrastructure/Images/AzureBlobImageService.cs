@@ -1,3 +1,4 @@
+using MailKit.Net.Imap;
 using Microsoft.AspNetCore.Http;
 
 namespace DealMatcher.Backend.Infrastructure.Images;
@@ -5,13 +6,13 @@ namespace DealMatcher.Backend.Infrastructure.Images;
 public class AzureBlobImageService : IImageService
 {
     private readonly BlobContainerClient _containerClient;
-    private ILogger<AzureBlobImageService> _logger;
+    private readonly ILogger<AzureBlobImageService> _logger;
 
     private readonly long _maxFileSize = 5 * 1024 * 1024;
-    private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-    private readonly string[] _allowedMimeTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
+    private readonly string[] _allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+    private readonly string[] _allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
-    public AzureBlobImageService(IConfiguration config,ILogger<AzureBlobImageService> logger)
+    public AzureBlobImageService(IConfiguration config, ILogger<AzureBlobImageService> logger)
     {
         _logger = logger;
         var connectionString = config.GetValue<string>("AzureBlob:ConnectionString");
@@ -41,13 +42,13 @@ public class AzureBlobImageService : IImageService
             await blobClient.UploadAsync(stream, blobHttpHeaders, cancellationToken: cancellationToken);
 
             var blobUrl = blobClient.Uri.ToString();
-            _logger.LogInformation($"Image uploaded successfully: {blobUrl} (Size: {image.Length} bytes)");
+            _logger.LogInformation("Image uploaded successfully: {blobUrl} (Size: {size} bytes)", blobUrl, image.Length);
 
             return blobUrl;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error uploading image {image.FileName}: {e.Message}");
+            _logger.LogError(e, "Error uploading image {FileName}: {Message}", image.FileName, e.Message);
             throw;
         }
     }
@@ -69,7 +70,7 @@ public class AzureBlobImageService : IImageService
         {
             return false;
         }
-        if(img.Length>_maxFileSize)
+        if (img.Length > _maxFileSize)
         {
             return false;
         }
@@ -86,7 +87,7 @@ public class AzureBlobImageService : IImageService
         return true;
     }
 
-    private string SanitizeFileName(string fileName)
+    private static string SanitizeFileName(string fileName)
     {
         var invalidChars = Path.GetInvalidFileNameChars();
         var sanitized = string.Join("_", fileName.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries));
@@ -95,7 +96,7 @@ public class AzureBlobImageService : IImageService
         var nameWithoutExt = Path.GetFileNameWithoutExtension(sanitized);
 
         if (nameWithoutExt.Length > 100)
-            nameWithoutExt = nameWithoutExt.Substring(0, 100);
+            nameWithoutExt = nameWithoutExt[..100];
 
         return $"{nameWithoutExt}{extension}";
     }

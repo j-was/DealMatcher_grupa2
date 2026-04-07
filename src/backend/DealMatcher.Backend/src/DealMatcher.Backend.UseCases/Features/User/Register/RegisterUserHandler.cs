@@ -23,6 +23,6 @@ public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPassw
         await usersRepository.SaveChangesAsync(cancellationToken);
 
         var res = mapper.Map<UserDTO>(user);
-        return Result.Success(res);
+        return Result.Created(res);
     }
 }

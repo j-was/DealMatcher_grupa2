@@ -29,7 +29,7 @@ public sealed class User :
 
     public bool AuthenticatePassword(string password)
     {
-        password = PasswordHash;
+        PasswordHash = password;
         return false;
     }
 

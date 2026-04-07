@@ -18,3 +18,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using MimeKit;
+global using DealMatcher.Backend.Core.Interfaces;
+global using Azure.Storage.Blobs;
+global using Azure.Storage.Blobs.Models;

@@ -4,6 +4,7 @@ global using Ardalis.Result;
 global using Ardalis.SharedKernel;
 global using DealMatcher.Backend.Core.Aggregates.Offer.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
+global using DealMatcher.Backend.Core.Interfaces;
 global using DealMatcher.Backend.UseCases.Features.Offer.Get;
 global using DealMatcher.Backend.UseCases.Features.User.Register;
 global using DealMatcher.Backend.Web.Extensions;

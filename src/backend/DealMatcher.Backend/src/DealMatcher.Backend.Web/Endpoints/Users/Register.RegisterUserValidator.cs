@@ -1,6 +1,3 @@
-using DealMatcher.Backend.Core.Interfaces;
-using Org.BouncyCastle.Crypto.Engines;
-
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public sealed class RegisterUserValidator(IPasswordValidator passwordValidator) : Validator<RegisterUserRequest>

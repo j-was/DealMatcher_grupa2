@@ -1,10 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.Core.Aggregates.User.Specifications;
-using DealMatcher.Backend.Core.Interfaces;
-using FastEndpoints;
-using MediatR;
-using IMapper = AutoMapper.IMapper;
-
 namespace DealMatcher.Backend.UseCases.Features.User.Login;
 
 public class LoginHandler(

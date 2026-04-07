@@ -38,6 +38,14 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationThemeData(
         labelStyle: TextStyle(color: Colors.white54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white24),
+        ),
+        alignLabelWithHint: true,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(iconColor: WidgetStatePropertyAll(Colors.white54)),
       ),
     );
   }

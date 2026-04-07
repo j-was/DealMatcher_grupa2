@@ -18,6 +18,16 @@ class RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _surnameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -35,6 +45,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: Colors.white54),
             ),
           ),
           SeparatedWidget(
@@ -49,6 +60,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: Colors.white54),
             ),
           ),
           SeparatedWidget(
@@ -67,6 +79,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: Colors.white54),
             ),
           ),
           SeparatedWidget(
@@ -85,6 +98,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: Colors.white54),
             ),
           ),
           SeparatedWidget(
@@ -102,6 +116,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: Colors.white54),
             ),
           ),
           Center(

@@ -451,11 +451,11 @@ class AddOfferFormState extends State<AddOfferForm> {
 
                     await _offerService.createOffer(offer.toJson());
 
-                    if (!mounted) return;
+                    if (!context.mounted) return;
 
                     context.go('/');
                   } catch (e) {
-                    if (!mounted) return;
+                    if (!context.mounted) return;
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Nie udało się dodać oferty')),

@@ -2,8 +2,7 @@ using DealMatcher.Backend.Core.Aggregates.Offer;
 
 namespace DealMatcher.Backend.UseCases.Features.Offer.Create;
 
-public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offersRepository,
- IReadRepository<CategoryEntity> categoriesRepository, IMapper mapper)
+public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository, IMapper mapper)
 : ICommandHandler<CreateNewOfferCommand, Result<OfferDTO>>
 {
     public async Task<Result<OfferDTO>> Handle(CreateNewOfferCommand request, CancellationToken cancellationToken)
@@ -22,10 +21,8 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
             ))
             .ToList();
 
-        var offer = new OfferEntity(request.Title, request.Description, 
-                (decimal)request.Price, request.Images, 1, request.Tags, 1, 
-                properties, request.Availability);
-        
+        var offer = new OfferEntity(request.Title, request.Description, (decimal)request.Price, request.Images, 1, request.Tags, 1, properties, request.Availability);
+
 
         await offersRepository.AddAsync(offer);
         await offersRepository.SaveChangesAsync();

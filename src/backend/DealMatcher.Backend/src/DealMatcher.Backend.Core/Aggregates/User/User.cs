@@ -1,5 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.User;
 
+
 public sealed class User :
   DealMatcherEntityBase,
   IAggregateRoot
@@ -35,7 +36,7 @@ public sealed class User :
 
     public bool HashPassword(string password)
     {
-        PasswordHash = password;
+        PasswordHash = BCrypt.HashPassword(password, BCrypt.GenerateSalt(12));
         return false;
     }
 

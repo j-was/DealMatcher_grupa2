@@ -89,6 +89,7 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
     public void Dispose()
     {
         _context.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private static AppDbContext CreateDbContext()

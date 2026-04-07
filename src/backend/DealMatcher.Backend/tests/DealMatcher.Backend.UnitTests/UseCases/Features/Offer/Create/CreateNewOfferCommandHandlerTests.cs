@@ -27,7 +27,7 @@ public class CreateNewOfferCommandHandlerTests
             new List<String> { "Test tag" },
             5,
             new Dictionary<string, string> {
-            { "Test Property", "Test Value" }},
+            ["Test Property"] = "Test Value"},
             2);
 
         var category = new CategoryEntity("Electronics", "Electronic devices");
@@ -43,7 +43,7 @@ public class CreateNewOfferCommandHandlerTests
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),
             Properties: new Dictionary<string, string>
             {
-                {"Test Property", "Test Value"}
+                ["Test Property"] = "Test Value"
             },
             Availability: 2,
             Status: "DRAFT",

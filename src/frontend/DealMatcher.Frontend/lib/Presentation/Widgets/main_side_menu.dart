@@ -12,10 +12,18 @@ class MainSideMenu extends StatelessWidget {
         children: [
           ListTile(
             leading: Icon(Icons.person),
-            title: Text("Zaloguj się"),
+            title: Text("Zarejestruj się"),
             onTap: () {
               context.pop();
               context.go('/register');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.login),
+            title: const Text('Zaloguj się'),
+            onTap: () {
+              context.pop();
+              context.go('/login');
             },
           ),
           ListTile(leading: Icon(Icons.play_arrow), title: Text('Przeglądaj')),

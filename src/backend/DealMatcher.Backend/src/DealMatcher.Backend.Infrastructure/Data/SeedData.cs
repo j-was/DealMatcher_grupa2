@@ -5,6 +5,10 @@ public static class SeedData
 
     public static async Task InitializeAsync(AppDbContext dbContext)
     {
+        if (!dbContext.Set<Category>().Any())
+        {
+            await SeedCategoriesAndCategoryProperties(dbContext);
+        }
         if (!dbContext.Set<User>().Any())
         {
             await SeedUsers(dbContext);
@@ -15,7 +19,97 @@ public static class SeedData
             await SeedOffers(dbContext);
         }
     }
+    public static async Task SeedCategoriesAndCategoryProperties(AppDbContext dbContext)
+    {
+        var categories = new List<Category>
+    {
+        new(
+            "Elektronika",
+            "Urządzenia elektroniczne i akcesoria",
+            [
+                new(1, "Stan", CategoryPropertyType.SELECT,
+                [
+                    "Nowy",
+                    "Używany",
+                    "Uszkodzony"
+                ]),
+                new(2, "Pamięć", CategoryPropertyType.NUMBER, null),
+                new(3, "Kolor", CategoryPropertyType.SELECT,
+                [
+                    "Czarny",
+                    "Biały",
+                    "Srebrny",
+                    "Szary",
+                    "Inny"
+                ]),
+            ]
+        ),
 
+        new(
+            "Sport",
+            "Sprzęt i akcesoria sportowe",
+            [
+                new(4, "Rozmiar ramy", CategoryPropertyType.TEXT, null),
+                new(5, "Kolor", CategoryPropertyType.SELECT,
+                [
+                    "Czarny",
+                    "Biały",
+                    "Czerwony",
+                    "Niebieski",
+                    "Inny"
+                ]),
+                new(6, "Rok produkcji", CategoryPropertyType.NUMBER, null),
+            ]
+        ),
+
+        new(
+            "Meble",
+            "Meble do domu i biura",
+            [
+                new(7, "Kolor", CategoryPropertyType.SELECT,
+                [
+                    "Biały",
+                    "Czarny",
+                    "Brązowy",
+                    "Szary",
+                    "Inny"
+                ]),
+                new(8, "Wymiary", CategoryPropertyType.TEXT, null),
+                new(9, "Stan", CategoryPropertyType.SELECT,
+                [
+                    "Nowy",
+                    "Używany",
+                    "Do renowacji"
+                ]),
+            ]
+        ),
+
+        new(
+            "Odzież",
+            "Odzież damska, męska i dziecięca",
+            [
+                new(10, "Rozmiar", CategoryPropertyType.TEXT, null),
+                new(11, "Kolor", CategoryPropertyType.SELECT,
+                [
+                    "Czarny",
+                    "Biały",
+                    "Niebieski",
+                    "Czerwony",
+                    "Inny"
+                ]),
+                new(12, "Stan", CategoryPropertyType.SELECT,
+                [
+                    "Nowy",
+                    "Używany",
+                    "Uszkodzony"
+                ]),
+            ]
+        ),
+    };
+
+        await dbContext.Set<Category>().AddRangeAsync(categories);
+        await dbContext.SaveChangesAsync();
+    }
     // version with less precise User, only to be added to the database
     public static async Task SeedUsers(AppDbContext dbContext)
     {

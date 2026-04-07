@@ -7,6 +7,8 @@ global using System.Text.RegularExpressions;
 global using Ardalis.GuardClauses;
 global using Ardalis.SharedKernel;
 global using Ardalis.Specification.EntityFrameworkCore;
+global using Azure.Storage.Blobs;
+global using Azure.Storage.Blobs.Models;
 global using BCrypt;
 global using BCrypt.Net;
 global using DealMatcher.Backend.Core;

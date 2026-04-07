@@ -1,5 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.User;
 
+
 public sealed class User :
   DealMatcherEntityBase,
   IAggregateRoot
@@ -8,7 +9,7 @@ public sealed class User :
     public string Email { get; private set; }
     public string Surname { get; private set; }
     public UserStatus Status { get; private set; }
-    private string PasswordHash { get; set; }
+    public string PasswordHash { get; private set; }
 
 
     public User(string email, string name, string surname = "")
@@ -27,16 +28,9 @@ public sealed class User :
     }
 #pragma warning restore CS8618
 
-    public bool AuthenticatePassword(string password)
+    public void SetNewHash(string passwordHash)
     {
-        PasswordHash = password;
-        return false;
-    }
-
-    public bool HashPassword(string password)
-    {
-        PasswordHash = password;
-        return false;
+        PasswordHash = passwordHash;
     }
 
 }

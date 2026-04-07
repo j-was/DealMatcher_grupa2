@@ -7,6 +7,11 @@ public class Get(IMediator mediator) : Endpoint<GetOfferRequest, OfferDTO>
         AllowAnonymous();
         Version(1);
         Get("/offers/{OfferId:int}");
+        Summary(s =>
+        {
+            s.Summary = "Get offer details";
+            s.Description = "Returns detailed information about a specific offer";
+        });
     }
 
     public override async Task HandleAsync(GetOfferRequest req, CancellationToken ct)

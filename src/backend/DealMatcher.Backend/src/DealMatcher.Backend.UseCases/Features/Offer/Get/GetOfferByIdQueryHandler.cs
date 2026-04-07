@@ -1,6 +1,3 @@
-using System.Diagnostics.Eventing.Reader;
-using DealMatcher.Backend.UseCases.Mapping.Profiles;
-
 namespace DealMatcher.Backend.UseCases.Features.Offer.Get;
 
 public sealed class GetOfferByIdQueryHandler(

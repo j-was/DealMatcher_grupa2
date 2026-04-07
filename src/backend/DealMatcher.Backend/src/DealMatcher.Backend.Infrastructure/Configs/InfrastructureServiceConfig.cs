@@ -1,3 +1,4 @@
+using DealMatcher.Backend.Infrastructure.Authentication;
 using DealMatcher.Backend.Infrastructure.Data;
 
 namespace DealMatcher.Backend.Infrastructure.Configs;
@@ -25,6 +26,9 @@ public static class InfrastructureServiceConfig
 
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
           .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+
+        services.AddScoped<IPasswordHashService, BcryptHashService>();
+        services.AddScoped<IPasswordValidator, PasswordValidator>();
 
         logger.LogInformation("{Project} services registered", "Infrastructure");
 

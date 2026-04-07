@@ -7,3 +7,4 @@ global using MediatR;
 global using Microsoft.Extensions.Logging;
 global using BCrypt;
 global using BCrypt.Net;
+global using System.Text.RegularExpressions;

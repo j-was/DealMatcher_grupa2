@@ -11,3 +11,5 @@ global using FluentValidation;
 global using MediatR;
 global using Serilog;
 global using Serilog.Extensions.Logging;
+global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
+global using DealMatcher.Backend.UseCases.Features.User.Register;

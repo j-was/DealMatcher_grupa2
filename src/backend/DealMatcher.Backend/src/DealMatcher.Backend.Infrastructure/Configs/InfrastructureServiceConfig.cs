@@ -26,6 +26,8 @@ public static class InfrastructureServiceConfig
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
           .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 
+        services.AddScoped<IPasswordHashService, BcryptHashService>();
+
         logger.LogInformation("{Project} services registered", "Infrastructure");
 
         return services;

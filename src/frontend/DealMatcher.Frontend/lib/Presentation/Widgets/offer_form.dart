@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/category.dart';
+import 'package:frontend/Models/offer_create.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
-import 'package:frontend/Services/category_service.dart';
+import 'package:frontend/Services/offer_service.dart';
+//import 'package:frontend/Services/category_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,10 +18,17 @@ class AddOfferForm extends StatefulWidget {
 }
 
 class AddOfferFormState extends State<AddOfferForm> {
-  final _categoryService = CategoryService();
-  List<Category> _categories = [];
+  // final _categoryService = CategoryService();
+  final OfferService _offerService = OfferService();
+  final List<Category> _categories = [
+    Category(
+      name: 'Elektronika',
+      description: 'ElektronikaElektronikaElektronikaElektronika',
+    ),
+    Category(name: 'Dom', description: 'DomDomDomDomDomDomDomDomDomDom'),
+  ];
   Category? _selectedCategory;
-  bool _isLoadingCategories = true;
+  //bool _isLoadingCategories = true;
 
   final List<Uint8List> _images = [];
   final ImagePicker _picker = ImagePicker();
@@ -56,20 +66,20 @@ class AddOfferFormState extends State<AddOfferForm> {
     }
   }
 
-  Future<void> getCategories() async {
-    try {
-      final categories = await _categoryService.getCategories();
-      setState(() {
-        _categories = categories;
-        _isLoadingCategories = false;
-      });
-    } catch (e) {
-      debugPrint("Błąd ładowania kategorii: $e");
-      setState(() {
-        _isLoadingCategories = false;
-      });
-    }
-  }
+  // Future<void> getCategories() async {
+  //   try {
+  //     final categories = await _categoryService.getCategories();
+  //     setState(() {
+  //       _categories = categories;
+  //       _isLoadingCategories = false;
+  //     });
+  //   } catch (e) {
+  //     debugPrint("Błąd ładowania kategorii: $e");
+  //     setState(() {
+  //       _isLoadingCategories = false;
+  //     });
+  //   }
+  // }
 
   void _addTag() {
     if (_tagsControllers.length >= 10) {
@@ -116,7 +126,7 @@ class AddOfferFormState extends State<AddOfferForm> {
 
   @override
   void initState() {
-    getCategories();
+    // getCategories();
     super.initState();
   }
 
@@ -246,31 +256,28 @@ class AddOfferFormState extends State<AddOfferForm> {
             ),
           ),
           SeparatedWidget(
-            widget: _isLoadingCategories
-                ? const Center(child: CircularProgressIndicator())
-                : DropdownButtonFormField<Category>(
-                    initialValue: _selectedCategory,
-                    decoration: const InputDecoration(
-                      labelText: 'Kategoria oferty',
-                    ),
-                    items: _categories.map((category) {
-                      return DropdownMenuItem<Category>(
-                        value: category,
-                        child: Text(category.name),
-                      );
-                    }).toList(),
-                    onChanged: (Category? value) {
-                      setState(() {
-                        _selectedCategory = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Wybierz kategorię';
-                      }
-                      return null;
-                    },
-                  ),
+            widget: DropdownButtonFormField<Category>(
+              initialValue: _selectedCategory,
+              decoration: const InputDecoration(labelText: 'Kategoria oferty'),
+              style: TextStyle(color: Colors.white54),
+              items: _categories.map((category) {
+                return DropdownMenuItem<Category>(
+                  value: category,
+                  child: Text(category.name),
+                );
+              }).toList(),
+              onChanged: (Category? value) {
+                setState(() {
+                  _selectedCategory = value;
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Wybierz kategorię';
+                }
+                return null;
+              },
+            ),
           ),
           ...List.generate(
             _tagsControllers.length,
@@ -421,8 +428,39 @@ class AddOfferFormState extends State<AddOfferForm> {
                   if (!(_formKey.currentState?.validate() ?? false)) {
                     return;
                   }
-                  context.pop();
-                  context.go('/');
+
+                  try {
+                    final tags = _tagsControllers.map((c) => c.text).toList();
+                    final properties = {
+                      for (var p in _propertiesControllers)
+                        p.$1.text: p.$2.text,
+                    };
+
+                    final images = _images.map((i) => base64Encode(i)).toList();
+
+                    final offer = OfferCreate(
+                      title: _titleController.text,
+                      description: _descriptionController.text,
+                      price: double.parse(_priceController.text),
+                      images: images,
+                      categoryId: 1,
+                      tags: tags,
+                      properties: properties,
+                      availability: int.parse(_availabilityController.text),
+                    );
+
+                    await _offerService.createOffer(offer.toJson());
+
+                    if (!context.mounted) return;
+
+                    context.go('/');
+                  } catch (e) {
+                    if (!context.mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Nie udało się dodać oferty')),
+                    );
+                  }
                 },
                 child: Text(
                   'Wyślij',

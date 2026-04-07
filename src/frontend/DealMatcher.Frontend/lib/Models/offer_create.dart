@@ -5,7 +5,7 @@ class OfferCreate {
   final List<String> _images;
   final int _categoryId;
   final List<String> _tags;
-  final List<(String, String)> _properties;
+  final Map<String, String> _properties;
   final int _availability;
 
   String get title => _title;
@@ -14,7 +14,7 @@ class OfferCreate {
   List<String> get images => List.unmodifiable(_images);
   int get categoryId => _categoryId;
   List<String> get tags => List.unmodifiable(_tags);
-  List<(String, String)> get properties => List.unmodifiable(_properties);
+  Map<String, String> get properties => Map.unmodifiable(_properties);
   int get availability => _availability;
 
   const OfferCreate({
@@ -24,7 +24,7 @@ class OfferCreate {
     required List<String> images,
     required int categoryId,
     required List<String> tags,
-    required List<(String, String)> properties,
+    required Map<String, String> properties,
     required int availability,
   }) : _title = title,
        _description = description,
@@ -42,7 +42,7 @@ class OfferCreate {
     'images': _images,
     'categoryId': _categoryId,
     'tags': _tags,
-    'properties': Map.fromEntries(_properties.map((e) => MapEntry(e.$1, e.$2))),
+    'properties': _properties,
     'availability': _availability,
   };
 }

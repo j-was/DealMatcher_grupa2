@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.UseCases.Features.Offer.Create;
+namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public sealed record CreateOfferRequest(
     string Title,

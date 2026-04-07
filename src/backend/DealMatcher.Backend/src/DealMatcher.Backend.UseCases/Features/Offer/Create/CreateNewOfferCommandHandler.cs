@@ -7,7 +7,7 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
 {
     public async Task<Result<OfferDTO>> Handle(CreateNewOfferCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoriesRepository.GetByIdAsync(request.CategoryId);
+        var category = await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken);
 
         if (category is null)
         {
@@ -24,8 +24,8 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
         var offer = new OfferEntity(request.Title, request.Description, (decimal)request.Price, request.Images, 1, request.Tags, 1, properties, request.Availability);
 
 
-        await offersRepository.AddAsync(offer);
-        await offersRepository.SaveChangesAsync();
+        await offersRepository.AddAsync(offer, cancellationToken);
+        await offersRepository.SaveChangesAsync(cancellationToken);
 
         var dto = mapper.Map<OfferDTO>(offer);
 

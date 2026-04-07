@@ -35,7 +35,7 @@ public sealed class User :
 
     public bool HashPassword(string password)
     {
-        PasswordHash =  password;
+        PasswordHash = password;
         return false;
     }
 

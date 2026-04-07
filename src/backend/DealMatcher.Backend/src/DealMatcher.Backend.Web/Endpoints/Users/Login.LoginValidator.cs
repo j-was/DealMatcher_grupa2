@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
-public sealed class LoginValidator:Validator<LoginRequest>
+public sealed class LoginValidator : Validator<LoginRequest>
 {
     public LoginValidator()
     {

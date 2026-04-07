@@ -3,7 +3,7 @@ using Org.BouncyCastle.Crypto.Engines;
 
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
-public sealed class RegisterUserValidator(IPasswordValidator passwordValidator):Validator<RegisterUserRequest>
+public sealed class RegisterUserValidator(IPasswordValidator passwordValidator) : Validator<RegisterUserRequest>
 {
     public RegisterUserValidator() : this(null!)
     {

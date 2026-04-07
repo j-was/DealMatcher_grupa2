@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DealMatcher.Backend.UseCases.Features.User.Register;
 
-public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPasswordHashService passwordHasher, IMapper mapper):IRequestHandler<RegisterUserCommand,Result<UserDTO>>
+public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPasswordHashService passwordHasher, IMapper mapper) : IRequestHandler<RegisterUserCommand, Result<UserDTO>>
 {
     public async Task<Result<UserDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {

@@ -1,18 +1,19 @@
 namespace DealMatcher.Backend.Infrastructure.Authentication;
 
-public class PasswordValidator: IPasswordValidator
+public partial class PasswordValidator : IPasswordValidator
 {
     private const int MinLength = 8;
     private const int MaxLength = 128;
-    private static readonly string[] WeakPasswords ={ "Password123!", "Admin123!", "Qwerty123!" };
+    private static string[] _weakPasswords = ["Password123!", "Admin123!", "Qwerty123!"];
 
-    public void AddWeakPassword(string password)
+    public static void AddWeakPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
         {
             return;
         }
-        WeakPasswords.Append(password);
+
+        _weakPasswords = [.. _weakPasswords, password];
     }
 
     public string PasswordRequirements { get; } =
@@ -37,31 +38,42 @@ public class PasswordValidator: IPasswordValidator
             return false;
         }
 
-        if (!Regex.IsMatch(password, @"[A-Z]"))
+        if (!UppercaseRegex().IsMatch(password))
         {
             return false;
         }
 
-        if (!Regex.IsMatch(password, @"[a-z]"))
+        if (!LowercaseRegex().IsMatch(password))
         {
             return false;
         }
 
-        if (!Regex.IsMatch(password, @"[0-9]"))
+        if (!DigitRegex().IsMatch(password))
         {
             return false;
         }
 
-        if (!Regex.IsMatch(password, @"[!@#$%^&*(),.?""':{}|<>]"))
+        if (!SpecialCharacterRegex().IsMatch(password))
         {
             return false;
         }
 
-        if (WeakPasswords.Contains(password))
+        if (_weakPasswords.Contains(password))
         {
             return false;
         }
 
         return true;
     }
+
+    [GeneratedRegex(@"[A-Z]")]
+    private static partial Regex UppercaseRegex();
+
+    [GeneratedRegex(@"[a-z]")]
+    private static partial Regex LowercaseRegex();
+
+    [GeneratedRegex(@"[0-9]")]
+    private static partial Regex DigitRegex();
+    [GeneratedRegex(@"[!@#$%^&*(),.?""':{}|<>]")]
+    private static partial Regex SpecialCharacterRegex();
 }

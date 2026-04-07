@@ -21,9 +21,9 @@ public static class SeedData
     {
         var users = new List<User>
     {
-        new("Jan Kowalski"),
-        new("Anna Nowak"),
-        new("Piotr Wiśniewski"),
+        new("jan.kow@mm.com","Jan","Kowalski"),
+        new("ann.n@h.pl","Anna","Nowak"),
+        new("placeholder@xxnx.com","Piotr","Wiśniewski"),
     };
 
         await dbContext.Set<User>().AddRangeAsync(users);

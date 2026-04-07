@@ -20,6 +20,5 @@ public sealed record OfferDTO(
 
 public sealed record SellerDTO(
     int Id,
-    string Name,
-    float Rating
+    string Name
 );

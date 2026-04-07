@@ -4,12 +4,18 @@ import 'package:frontend/Presentation/Widgets/like_button.dart';
 import 'package:frontend/Presentation/Widgets/superlike_button.dart';
 
 class ReactionButtons extends StatelessWidget {
-  const ReactionButtons({super.key});
+  final VoidCallback onDislike;
+
+  const ReactionButtons({super.key, required this.onDislike});
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [DislikeButton(), SuperlikeButton(), LikeButton()],
+      children: [
+        DislikeButton(onPressed: onDislike),
+        SuperlikeButton(),
+        LikeButton(),
+      ],
     );
   }
 }

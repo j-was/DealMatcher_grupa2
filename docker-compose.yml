@@ -36,6 +36,9 @@ services:
       - AzureBlob_ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KkM1LoxZM0Dg==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
       - AzureBlob_ContainerName=pictures
       - BaseUrl=http://localhost:5000
+      - Authentication__Jwt__SecretKey=secret_key
+      - Authentication__Jwt__Issuer=dealmatcher
+      - Authentication__Jwt__Audience=users
     ports:
       - "5000:90"
     networks:
@@ -57,7 +60,7 @@ services:
       - dealmatcher-local
     depends_on:
       - backend
-      
+
 networks:
   dealmatcher-local:
     driver: bridge

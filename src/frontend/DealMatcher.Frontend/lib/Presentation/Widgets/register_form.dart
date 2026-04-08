@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Models/user_register_data.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
+import 'package:frontend/Services/user_service.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -10,6 +12,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterForm> {
+  final _userService = UserService();
+
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -128,8 +132,39 @@ class RegisterFormState extends State<RegisterForm> {
                   if (!(_formKey.currentState?.validate() ?? false)) {
                     return;
                   }
-                  context.pop();
-                  context.go('/');
+
+                  try {
+                    final userRegisterData = UserRegisterData(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      name: _nameController.text,
+                      surname: _surnameController.text,
+                    );
+
+                    await _userService.registerUser(userRegisterData);
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    context.go('/');
+                  } catch (e) {
+                    if (!context.mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Nie udało się zarejestrować użytkownika',
+                        ),
+                      ),
+                    );
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    context.go('/');
+                  }
                 },
                 child: Text(
                   'Wyślij',

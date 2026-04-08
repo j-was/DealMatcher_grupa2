@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Models/user_login_data.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
+import 'package:frontend/Services/user_service.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
@@ -10,6 +12,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final _userService = UserService();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -70,12 +74,39 @@ class _LoginFormState extends State<LoginForm> {
               width: 140,
               child: ElevatedButton(
                 key: const Key('loginSubmitButton'),
-                onPressed: () {
+                onPressed: () async {
                   if (!(_formKey.currentState?.validate() ?? false)) {
                     return;
                   }
 
-                  context.go('/');
+                  try {
+                    final loginUserData = UserLoginData(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+
+                    await _userService.loginUser(loginUserData);
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    context.go('/');
+                  } catch (e) {
+                    if (!context.mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Nie udało się zalogować użytkownika'),
+                      ),
+                    );
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    context.go('/');
+                  }
                 },
                 child: const Text(
                   'Zaloguj',

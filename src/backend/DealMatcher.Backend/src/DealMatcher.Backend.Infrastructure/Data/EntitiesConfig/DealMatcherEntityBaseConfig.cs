@@ -6,6 +6,9 @@ public class DealMatcherEntityBaseConfig<T> : IEntityTypeConfiguration<T> where 
     {
         builder.HasKey(e => e.Id);
 
+        builder.Property(e => e.Id)
+            .UseIdentityColumn();
+
         builder.HasQueryFilter(e => !e.IsDeleted);
 
         builder.Property(e => e.CreatedAt)

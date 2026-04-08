@@ -24,4 +24,27 @@ class OfferService {
       'Status: ${response.statusCode}',
     );
   }
+
+  Future<Offer> createOffer(Map<String, dynamic> jsonOffer) async {
+    final uri = Uri.parse('$baseUrl/v1/offers');
+
+    final response = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(jsonOffer),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return Offer.fromJson(json);
+    }
+
+    throw Exception(
+      'Nie udało się pobrać oferty.'
+      'Status: ${response.statusCode}',
+    );
+  }
 }

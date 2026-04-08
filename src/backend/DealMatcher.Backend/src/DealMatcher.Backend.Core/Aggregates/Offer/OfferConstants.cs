@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DealMatcher.Backend.Core.Aggregates.Offer;
 
 public static class OfferConstants

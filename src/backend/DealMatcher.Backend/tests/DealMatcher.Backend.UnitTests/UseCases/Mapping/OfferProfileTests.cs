@@ -67,7 +67,6 @@ public class OfferProfileTests
     [Fact]
     public void Map_OfferEntityToOfferDTO_MapsAllStatusValuesCorrectly()
     {
-        // Arrange
         var statuses = new[] { OfferStatus.Active, OfferStatus.Sold, OfferStatus.Deleted, OfferStatus.Promoted };
         var expectedStatuses = new[] { "ACTIVE", "SOLD", "DELETED", "PROMOTED" };
 
@@ -91,8 +90,7 @@ public class OfferProfileTests
 
         dto.Seller.ShouldNotBeNull();
         dto.Seller.Id.ShouldBe(offerEntity.SellerId);
-        dto.Seller.Name.ShouldBe(string.Empty);
-        dto.Seller.Rating.ShouldBe(0f);
+        dto.Seller.Name.ShouldBe($"User{offerEntity.SellerId}");
     }
 
     [Fact]
@@ -190,8 +188,7 @@ public class OfferProfileTests
 
         dto.Seller.ShouldNotBeNull();
         dto.Seller.Id.ShouldBe(seller.Id);
-        dto.Seller.Name.ShouldBe(seller.Name);
-        dto.Seller.Rating.ShouldBe(seller.Rating);
+        dto.Seller.Name.ShouldBe($"{seller.Name} {seller.Surname}".TrimEnd());
     }
 
     [Fact]
@@ -272,9 +269,7 @@ public class OfferProfileTests
 
     private static User CreateSellerEntity()
     {
-        return new User
-        ("John Doe"
-        );
+        return new User("placeholder@mail.com", "John", "Doe");
     }
 
     private static Category CreateCategoryEntity()

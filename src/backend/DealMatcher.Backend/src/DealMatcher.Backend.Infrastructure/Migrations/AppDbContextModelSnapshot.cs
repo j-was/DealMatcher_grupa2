@@ -131,6 +131,10 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -140,12 +144,59 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Category.Category", b =>
+                {
+                    b.OwnsMany("DealMatcher.Backend.Core.Aggregates.Category.CategoryProperty", "Properties", b1 =>
+                        {
+                            b1.Property<int>("Categoryd")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.PrimitiveCollection<string>("Options")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Categoryd", "Id");
+
+                            b1.HasIndex("Name");
+
+                            b1.ToTable("CategoryProperties", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("Categoryd");
+                        });
+
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Offer.Offer", b =>

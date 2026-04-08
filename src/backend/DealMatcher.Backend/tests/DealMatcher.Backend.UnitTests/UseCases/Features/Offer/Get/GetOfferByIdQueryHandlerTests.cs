@@ -32,12 +32,12 @@ public class GetOfferByIdQueryHandlerTests
             categoryId: 5,
             properties:
             [
-                new("Color", "Red"),
+                new( "Color", "Red"),
                 new("Size", "Large")
             ],
             availability: 15);
 
-        var seller = new User("John Doe");
+        var seller = new UserEntity("placeholder@mail.com", "John", "Doe");
         var category = new Category("Electronics", "Electronic devices");
 
         var expectedDto = new OfferDTO(
@@ -46,7 +46,7 @@ public class GetOfferByIdQueryHandlerTests
             Description: "Test Description",
             Price: 99.99,
             Images: ["https://example.com/image.jpg"],
-            Seller: new SellerDTO(10, "John Doe", 0f),
+            Seller: new SellerDTO(10, "John Doe"),
             Tags: ["tag1", "tag2"],
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),
             Properties: new Dictionary<string, string>
@@ -97,7 +97,7 @@ public class GetOfferByIdQueryHandlerTests
             properties: [],
             availability: 15);
 
-        var seller = new User("John Doe");
+        var seller = new UserEntity("placeholder@mail.com", "John", "Doe");
         var category = new Category("Electronics", "Description");
 
         _offerRepository.SingleOrDefaultAsync(Arg.Any<OfferByIdSpec>(), Arg.Any<CancellationToken>())
@@ -108,7 +108,7 @@ public class GetOfferByIdQueryHandlerTests
             .Returns(category);
         _mapper.Map<OfferDTO>(Arg.Any<OfferProfile.OfferInfo>())
             .Returns(new OfferDTO(1, "Test", "Desc", 99.99, [],
-                new SellerDTO(10, "John", 0), [],
+                new SellerDTO(10, "John Doe"), [],
                 new CategoryDTO(5, "Electronics", "Desc"),
                 [], 15, "DRAFT", DateTime.UtcNow, DateTime.UtcNow));
 

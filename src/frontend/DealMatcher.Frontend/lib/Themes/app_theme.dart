@@ -33,7 +33,19 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(12),
           ),
+          backgroundColor: _primaryColor,
         ),
+      ),
+      inputDecorationTheme: InputDecorationThemeData(
+        labelStyle: TextStyle(color: Colors.white54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white24),
+        ),
+        alignLabelWithHint: true,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(iconColor: WidgetStatePropertyAll(Colors.white54)),
       ),
     );
   }

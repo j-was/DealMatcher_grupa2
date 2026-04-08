@@ -35,6 +35,7 @@ services:
       - FrontendOrigin=http://localhost:8080
       - AzureBlob_ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KkM1LoxZM0Dg==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
       - AzureBlob_ContainerName=pictures
+      - Authentication__Jwt__SecretKey=YourSuperSecretJwtKeyThatShouldBeAtLeast32CharactersLong123456
       - BaseUrl=http://localhost:5000
     ports:
       - "5000:90"

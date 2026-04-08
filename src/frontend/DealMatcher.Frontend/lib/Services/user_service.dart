@@ -14,10 +14,14 @@ class UserService {
 
     final response = await http.post(
       uri,
-      headers: {'Accept': 'application/json'},
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(urd.toJson()),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       return User.fromJson(json);
     }

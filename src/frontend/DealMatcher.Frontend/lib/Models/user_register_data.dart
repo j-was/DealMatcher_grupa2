@@ -6,18 +6,18 @@ class UserRegisterData {
 
   const UserRegisterData({
     required String email,
-    required String password,
     required String name,
     required String surname,
+    required String password,
   }) : _email = email,
-       _password = password,
        _name = name,
-       _surname = surname;
+       _surname = surname,
+       _password = password;
 
   Map<String, dynamic> toJson() => {
     'email': _email,
-    'password': _password,
     'name': _name,
     'surname': _surname,
+    'password': _password,
   };
 }

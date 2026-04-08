@@ -37,6 +37,9 @@ services:
       - AzureBlob_ContainerName=pictures
       - Authentication__Jwt__SecretKey=YourSuperSecretJwtKeyThatShouldBeAtLeast32CharactersLong123456
       - BaseUrl=http://localhost:5000
+      - Authentication__Jwt__SecretKey=secret_key
+      - Authentication__Jwt__Issuer=dealmatcher
+      - Authentication__Jwt__Audience=users
     ports:
       - "5000:90"
     networks:
@@ -58,7 +61,7 @@ services:
       - dealmatcher-local
     depends_on:
       - backend
-      
+
 networks:
   dealmatcher-local:
     driver: bridge

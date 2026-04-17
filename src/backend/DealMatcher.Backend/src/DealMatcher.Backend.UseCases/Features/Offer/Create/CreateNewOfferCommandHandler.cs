@@ -21,14 +21,14 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
             ))
             .ToList();
 
-        List<string> imagesUrls = new();
+        var imagesUrls = new List<string>();
 
-        if (request.Images is not null)
+        if (request.Images is not null && request.Images.Count > 0)
         {
-            imagesUrls = await imageService.UploadMultipleImagesAsync(request.Images);
+            imagesUrls = await imageService.UploadMultipleImagesAsync(request.Images, cancellationToken);
         }
 
-        var offer = new OfferEntity(request.Title, request.Description, (decimal)request.Price, imagesUrls, request.CategoryId, request.Tags, 1, properties, request.Availability);
+        var offer = new OfferEntity(request.Title, request.Description, (decimal)request.Price, imagesUrls, 1, request.Tags, request.CategoryId, properties, request.Availability);
 
 
         await offersRepository.AddAsync(offer, cancellationToken);

@@ -1,4 +1,5 @@
 namespace DealMatcher.Backend.Core.Aggregates.Offer.DTOs;
+
 public class CreateOfferDTO
 {
     public string Title { get; init; } = string.Empty;

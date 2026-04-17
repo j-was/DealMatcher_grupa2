@@ -5,6 +5,10 @@ namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
 {
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
     public override void Configure()
     {
         AllowAnonymous();
@@ -15,8 +19,7 @@ public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
 
     public override async Task HandleAsync(CreateOfferRequest req, CancellationToken ct)
     {
-        var createOfferDTO = JsonSerializer.Deserialize<CreateOfferDTO>(req.Data,
-        new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+        var createOfferDTO = JsonSerializer.Deserialize<CreateOfferDTO>(req.Data, _jsonOptions);
 
         if (createOfferDTO is null)
         {

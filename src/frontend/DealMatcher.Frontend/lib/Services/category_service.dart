@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:frontend/Models/category.dart';
+import 'package:frontend/Models/category_property.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryService {
@@ -21,6 +22,28 @@ class CategoryService {
           .map((jsonCat) => Category.fromJson(jsonCat))
           .toList();
       return categories;
+    }
+
+    return List.empty();
+  }
+
+  Future<List<CategoryProperty>> getCategoryProperties(
+    String categoryName,
+  ) async {
+    final uri = Uri.parse('$baseUrl/v1/categories/$categoryName/properties');
+
+    final response = await http.get(
+      uri,
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      final properties = (json as List)
+          .map((jsonCat) => CategoryProperty.fromJson(jsonCat))
+          .toList();
+      return properties;
     }
 
     return List.empty();

@@ -1,12 +1,11 @@
-import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/category.dart';
+import 'package:frontend/Models/category_property.dart';
 import 'package:frontend/Models/offer_create.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
 import 'package:frontend/Services/offer_service.dart';
-//import 'package:frontend/Services/category_service.dart';
+import 'package:frontend/Services/category_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,19 +17,16 @@ class AddOfferForm extends StatefulWidget {
 }
 
 class AddOfferFormState extends State<AddOfferForm> {
-  // final _categoryService = CategoryService();
+  final _categoryService = CategoryService();
   final OfferService _offerService = OfferService();
-  final List<Category> _categories = [
-    Category(
-      name: 'Elektronika',
-      description: 'ElektronikaElektronikaElektronikaElektronika',
-    ),
-    Category(name: 'Dom', description: 'DomDomDomDomDomDomDomDomDomDom'),
-  ];
+  
+  List<Category> categories = [];
+  List<CategoryProperty> categoryProperties = [];
+  final Map<String, dynamic> _propertyValues = {};
   Category? _selectedCategory;
-  //bool _isLoadingCategories = true;
 
-  final List<Uint8List> _images = [];
+  final List<XFile> _images = [];
+  final List<Uint8List> _imagesBytes = [];
   final ImagePicker _picker = ImagePicker();
 
   final _titleController = TextEditingController();
@@ -39,9 +35,6 @@ class AddOfferFormState extends State<AddOfferForm> {
   final List<TextEditingController> _tagsControllers = [
     TextEditingController(),
   ];
-
-  final List<(TextEditingController, TextEditingController)>
-  _propertiesControllers = [(TextEditingController(), TextEditingController())];
   final _availabilityController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -57,29 +50,161 @@ class AddOfferFormState extends State<AddOfferForm> {
 
       for (final img in selected) {
         final bytes = await img.readAsBytes();
-        _images.add(bytes);
+        _imagesBytes.add(bytes);
+        _images.add(img);
       }
-
-      setState(() {});
     } catch (e) {
       debugPrint("Błąd podczas wybierania zdjęć: $e");
     }
   }
 
-  // Future<void> getCategories() async {
-  //   try {
-  //     final categories = await _categoryService.getCategories();
-  //     setState(() {
-  //       _categories = categories;
-  //       _isLoadingCategories = false;
-  //     });
-  //   } catch (e) {
-  //     debugPrint("Błąd ładowania kategorii: $e");
-  //     setState(() {
-  //       _isLoadingCategories = false;
-  //     });
-  //   }
-  // }
+  Future<void> getCategories() async {
+    try {
+      final gotCategories = await _categoryService.getCategories();
+      setState(() {
+        categories = gotCategories;
+      });
+    } catch (e) {
+      debugPrint("Błąd ładowania kategorii: $e");
+    }
+  }
+
+  Future<void> getProperties(Category category) async {
+    setState(() {
+      categoryProperties = [];
+      _propertyValues.clear();
+    });
+
+    try {
+      final properties = await _categoryService.getCategoryProperties(
+        category.name,
+      );
+
+      setState(() {
+        categoryProperties = properties;
+
+        for (final property in properties) {
+          switch (property.type) {
+            case 2:
+              _propertyValues[property.name] = false;
+              break;
+            case 3:
+              _propertyValues[property.name] = property.options.isNotEmpty
+                  ? property.options.first
+                  : null;
+              break;
+            default:
+              _propertyValues[property.name] = '';
+              break;
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('Błąd ładowania właściwości kategorii: $e');
+    }
+  }
+
+  Widget buildPropertyField(CategoryProperty property) {
+    switch (property.type) {
+      case 0:
+        return SeparatedWidget(
+          widget: TextFormField(
+            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            decoration: InputDecoration(labelText: property.name),
+            style: const TextStyle(color: Colors.white54),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (value) {
+              _propertyValues[property.name] = value;
+            },
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Wymagana jest wartość właściwości';
+              }
+              return null;
+            },
+          ),
+        );
+      case 1:
+        return SeparatedWidget(
+          widget: TextFormField(
+            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            decoration: InputDecoration(labelText: property.name),
+            style: const TextStyle(color: Colors.white54),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (value) {
+              _propertyValues[property.name] = value;
+            },
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Wymagana jest wartość właściwości';
+              }
+              if (num.tryParse(value) == null) {
+                return 'Wartość musi być liczbą';
+              }
+              return null;
+            },
+          ),
+        );
+      case 2:
+        return SeparatedWidget(
+          widget: SwitchListTile(
+            title: Text(
+              property.name,
+              style: const TextStyle(color: Colors.white54),
+            ),
+            value: (_propertyValues[property.name] as bool?) ?? false,
+            onChanged: (value) {
+              setState(() {
+                _propertyValues[property.name] = value;
+              });
+            },
+          ),
+        );
+      case 3:
+        return SeparatedWidget(
+          widget: DropdownButtonFormField<String>(
+            initialValue: _propertyValues[property.name] as String?,
+            decoration: InputDecoration(labelText: property.name),
+            dropdownColor: const Color.fromARGB(255, 64, 63, 63),
+            style: const TextStyle(color: Colors.white54),
+            items: property.options
+                .map(
+                  (option) => DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                _propertyValues[property.name] = value;
+              });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Wybierz opcję';
+              }
+              return null;
+            },
+          ),
+        );
+      default:
+        return SeparatedWidget(
+          widget: Text(
+            'Nieobsługiwany typ pola: ${property.type}',
+            style: const TextStyle(color: Colors.redAccent),
+          ),
+        );
+    }
+  }
+
+  List<Widget> generateAllPropertiesControls() {
+    final List<Widget> controls = [];
+    for (var property in categoryProperties) {
+      controls.add(buildPropertyField(property));
+    }
+    return controls;
+  }
 
   void _addTag() {
     if (_tagsControllers.length >= 10) {
@@ -101,32 +226,9 @@ class AddOfferFormState extends State<AddOfferForm> {
     });
   }
 
-  void _addProperty() {
-    if (_propertiesControllers.length >= 10) {
-      return;
-    }
-
-    setState(() {
-      _propertiesControllers.add((
-        TextEditingController(),
-        TextEditingController(),
-      ));
-    });
-  }
-
-  void _removeProperty() {
-    if (_propertiesControllers.length == 1) {
-      return;
-    }
-
-    setState(() {
-      _propertiesControllers.removeLast();
-    });
-  }
-
   @override
   void initState() {
-    // getCategories();
+    getCategories();
     super.initState();
   }
 
@@ -198,7 +300,7 @@ class AddOfferFormState extends State<AddOfferForm> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ..._images.map(
+                    ..._imagesBytes.map(
                       (img) => Stack(
                         children: [
                           Image.memory(
@@ -212,7 +314,9 @@ class AddOfferFormState extends State<AddOfferForm> {
                             top: 0,
                             child: GestureDetector(
                               onTap: () {
-                                setState(() => _images.remove(img));
+                                setState(() {
+                                  _imagesBytes.remove(img);
+                                });
                               },
                               child: const Icon(Icons.close, color: Colors.red),
                             ),
@@ -260,16 +364,19 @@ class AddOfferFormState extends State<AddOfferForm> {
               initialValue: _selectedCategory,
               decoration: const InputDecoration(labelText: 'Kategoria oferty'),
               style: TextStyle(color: Colors.white54),
-              items: _categories.map((category) {
+              dropdownColor: const Color.fromARGB(255, 64, 63, 63),
+              items: categories.map((category) {
                 return DropdownMenuItem<Category>(
                   value: category,
                   child: Text(category.name),
                 );
               }).toList(),
-              onChanged: (Category? value) {
+              onChanged: (Category? value) async {
                 setState(() {
                   _selectedCategory = value;
                 });
+
+                await getProperties(_selectedCategory!);
               },
               validator: (value) {
                 if (value == null) {
@@ -324,81 +431,7 @@ class AddOfferFormState extends State<AddOfferForm> {
                 ),
               ),
             ),
-
-          ...List.generate(
-            _propertiesControllers.length,
-            (i) => SeparatedWidget(
-              widget: Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: TextFormField(
-                      key: Key('propertyTitleField$i'),
-                      controller: _propertiesControllers[i].$1,
-                      decoration: InputDecoration(
-                        labelText: 'Nazwa cechy ${i + 1}',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Wymagana nazwa cechy oferty";
-                        }
-                        return null;
-                      },
-                      style: TextStyle(color: Colors.white54),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    flex: 5,
-                    child: TextFormField(
-                      key: Key('propertyValueField$i'),
-                      controller: _propertiesControllers[i].$2,
-                      decoration: InputDecoration(
-                        labelText: 'Wartość cechy ${i + 1}',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Wymagana wartość cechy oferty";
-                        }
-                        return null;
-                      },
-                      style: TextStyle(color: Colors.white54),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (_propertiesControllers.length < 5 ||
-              _propertiesControllers.length > 1)
-            SeparatedWidget(
-              widget: Center(
-                child: SizedBox(
-                  width: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      if (_propertiesControllers.length > 1)
-                        IconButton(
-                          onPressed: () {
-                            _removeProperty();
-                          },
-                          icon: Icon(Icons.remove),
-                        ),
-                      if (_propertiesControllers.length < 10)
-                        IconButton(
-                          onPressed: () {
-                            _addProperty();
-                          },
-                          icon: Icon(Icons.add),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          ...generateAllPropertiesControls(),
           SeparatedWidget(
             widget: TextFormField(
               key: const Key('availabilityField'),
@@ -431,25 +464,23 @@ class AddOfferFormState extends State<AddOfferForm> {
 
                   try {
                     final tags = _tagsControllers.map((c) => c.text).toList();
-                    final properties = {
-                      for (var p in _propertiesControllers)
-                        p.$1.text: p.$2.text,
+                    final properties = <String, String>{
+                      for (var property in categoryProperties)
+                        property.name: _propertyValues[property.name]
+                            .toString(),
                     };
-
-                    final images = _images.map((i) => base64Encode(i)).toList();
 
                     final offer = OfferCreate(
                       title: _titleController.text,
                       description: _descriptionController.text,
                       price: double.parse(_priceController.text),
-                      images: images,
-                      categoryId: 1,
+                      categoryId: _selectedCategory?.id ?? 1,
                       tags: tags,
                       properties: properties,
                       availability: int.parse(_availabilityController.text),
                     );
 
-                    await _offerService.createOffer(offer.toJson());
+                    await _offerService.createOffer(offer.toJson(), _images);
 
                     if (!context.mounted) return;
 

@@ -24,7 +24,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
 
     private static bool ValidCategory(OfferEntity offer, SearchOfferQuery request)
         => request.CategoryId is null || offer.CategoryId == request.CategoryId;
-    
+
     private static bool ValidPrice(OfferEntity offer, SearchOfferQuery request)
         => (request.MinPrice is null || offer.Price >= (decimal)request.MinPrice)
             && (request.MaxPrice is null || offer.Price <= (decimal)request.MaxPrice);
@@ -36,7 +36,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
             return true;
         }
 
-        string phrase = request.SearchPhrase.Trim();
+        var phrase = request.SearchPhrase.Trim();
 
         return offer.Title.Contains(phrase, StringComparison.OrdinalIgnoreCase) ||
             offer.Description.Contains(phrase, StringComparison.OrdinalIgnoreCase);
@@ -75,7 +75,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
     private static bool ValidProperties(OfferEntity offer, SearchOfferQuery request)
     {
         if (request.Properties is null || request.Properties.Count == 0)
-        return true;
+            return true;
 
         if (offer.Properties is null || offer.Properties.Count == 0)
             return false;
@@ -99,7 +99,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
             {
                 return false;
             }
-            
+
             if (!ValidProperty(offerProperty.Value, reqValues))
             {
                 return false;

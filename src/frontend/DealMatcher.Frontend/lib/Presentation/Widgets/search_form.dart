@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/category.dart';
 import 'package:frontend/Models/category_property.dart';
+import 'package:frontend/Models/search_params.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
-//import 'package:frontend/Services/offer_service.dart';
+import 'package:frontend/Services/offer_service.dart';
 import 'package:frontend/Services/category_service.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,10 +16,10 @@ class SearchForm extends StatefulWidget {
 
 class SearchFormState extends State<SearchForm> {
   final _categoryService = CategoryService();
-  //final OfferService _offerService = OfferService();
+  final OfferService _offerService = OfferService();
 
   final List<int> _limitChoices = [10, 20, 50, 100, 200];
-  int? _selectedLimit;
+  int _selectedLimit = 10;
 
   List<Category> categories = [];
   List<CategoryProperty> categoryProperties = [];
@@ -333,6 +334,43 @@ class SearchFormState extends State<SearchForm> {
     });
   }
 
+  Map<String, dynamic> buildSearchParamsRequest() {
+    final tags = _tagsControllers
+        .map((c) => c.text.trim())
+        .where((t) => t.isNotEmpty)
+        .toList();
+    final properties = <String, List<String>>{};
+
+    for (final property in categoryProperties) {
+      final values = _propertyValues[property.name];
+
+      if (values == null) {
+        continue;
+      }
+
+      final strValues = values
+          .map((v) => v?.toString().trim() ?? '')
+          .where((v) => v.isNotEmpty)
+          .toList();
+
+      if (strValues.isNotEmpty) {
+        properties[property.name] = strValues;
+      }
+    }
+
+    final searchParams = SearchParams(
+      categoryId: _selectedCategory?.id,
+      minPrice: double.tryParse(_minPriceController.text),
+      maxPrice: double.tryParse(_maxPriceController.text),
+      tags: tags,
+      properties: properties,
+      searchPhrase: _searchPhraseController.text,
+      limit: _selectedLimit,
+    );
+
+    return searchParams.toJson();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -442,14 +480,8 @@ class SearchFormState extends State<SearchForm> {
               }).toList(),
               onChanged: (int? value) async {
                 setState(() {
-                  _selectedLimit = value;
+                  _selectedLimit = value ?? _selectedLimit;
                 });
-              },
-              validator: (value) {
-                if (value == null && _selectedLimit == null) {
-                  return 'Wybierz ilość szukanych ofert';
-                }
-                return null;
               },
             ),
           ),
@@ -526,7 +558,30 @@ class SearchFormState extends State<SearchForm> {
               child: ElevatedButton(
                 key: const Key('searchSubmitButton'),
                 onPressed: () async {
-                  context.go('/');
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+
+                  try {
+                    final searchParamsRequest = buildSearchParamsRequest();
+                    final offers = await _offerService.searchOffers(
+                      searchParamsRequest,
+                    );
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    context.push('/searched', extra: offers);
+                  } catch (e) {
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Błąd wyszukiwania ofert: $e')),
+                    );
+                  }
                 },
                 child: Text(
                   'Szukaj',

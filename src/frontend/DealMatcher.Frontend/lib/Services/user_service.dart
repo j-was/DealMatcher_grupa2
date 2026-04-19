@@ -46,7 +46,12 @@ class UserService {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return LoginResponse.fromJson(json);
+      if (jsonResponse.containsKey('value')) {
+    final userData = jsonResponse['value'] as Map<String, dynamic>;
+      return LoginResponse.fromJson(userData);
+    }
+    
+    return LoginResponse.fromJson(jsonResponse);
     }
 
     if (response.statusCode == 401) {

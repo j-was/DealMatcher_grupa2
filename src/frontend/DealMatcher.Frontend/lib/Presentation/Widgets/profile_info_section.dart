@@ -73,6 +73,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: Colors.white.withOpacity(0.05),
         border: Border(
           bottom: isLast

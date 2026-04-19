@@ -27,6 +27,34 @@ class OfferService {
     );
   }
 
+  Future<List<Offer>> searchOffers(
+    Map<String, dynamic> jsonSearchParams,
+  ) async {
+    final uri = Uri.parse('$baseUrl/v1/offers/search');
+
+    final response = await http.post(
+      uri,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(jsonSearchParams),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List<dynamic>;
+
+      return json
+          .map((item) => Offer.fromJson(item as Map<String, dynamic>))
+          .toList();
+    }
+
+    throw Exception(
+      'Nie udało się pobrać ofert.'
+      'Status: ${response.statusCode}',
+    );
+  }
+
   Future<Offer> createOffer(
     Map<String, dynamic> jsonOffer,
     List<XFile> images,

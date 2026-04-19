@@ -1,8 +1,10 @@
+import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
 import 'package:frontend/Presentation/Pages/register_page.dart';
 import 'package:frontend/Presentation/Pages/login_page.dart';
 import 'package:frontend/Presentation/Pages/search_offers_page.dart';
+import 'package:frontend/Presentation/Pages/searched_offers_page.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
@@ -17,6 +19,13 @@ final router = GoRouter(
         GoRoute(
           path: 'search',
           builder: (context, state) => SearchOffersPage(),
+        ),
+        GoRoute(
+          path: 'searched',
+          builder: (context, state) {
+            final offers = state.extra as List<Offer>? ?? [];
+            return SearchedOffersPage(offers: offers);
+          },
         ),
       ],
     ),

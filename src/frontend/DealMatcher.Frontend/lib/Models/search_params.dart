@@ -5,7 +5,7 @@ class SearchParams {
   final List<String>? _tags;
   final Map<String, List<String>>? _properties;
   final String? _searchPhrase;
-  final int? _limit;
+  final int _limit;
 
   int? get categoryId => _categoryId;
   double? get minPrice => _minPrice;
@@ -13,7 +13,7 @@ class SearchParams {
   List<String>? get tags => _tags;
   Map<String, List<String>>? get properties => _properties;
   String? get searchPhrase => _searchPhrase;
-  int? get limit => _limit;
+  int get limit => _limit;
 
   const SearchParams({
     int? categoryId,
@@ -22,7 +22,7 @@ class SearchParams {
     List<String>? tags,
     Map<String, List<String>>? properties,
     String? searchPhrase,
-    int? limit,
+    required int limit,
   }) : _categoryId = categoryId,
        _minPrice = minPrice,
        _maxPrice = maxPrice,

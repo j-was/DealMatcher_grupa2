@@ -22,36 +22,10 @@ class MainSideMenu extends StatelessWidget {
         builder: (context, _) {
           final auth = AuthService.instance;
           final isLoggedIn = auth.isAuthenticated;
-          final user = auth.currentUser;
 
           return ListView(
             padding: const EdgeInsets.only(top: 24),
             children: [
-              DrawerHeader(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Icon(Icons.account_circle, size: 48),
-                    const SizedBox(height: 12),
-                    Text(
-                      isLoggedIn && user != null
-                          ? '${user.name} ${user.surname}'
-                          : 'Gość',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      isLoggedIn && user != null
-                          ? user.email
-                          : 'Zaloguj się, aby zarządzać kontem',
-                    ),
-                  ],
-                ),
-              ),
               if (!isLoggedIn) ...[
                 ListTile(
                   leading: const Icon(Icons.person),

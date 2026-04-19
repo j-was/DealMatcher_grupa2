@@ -19,7 +19,7 @@ class AddOfferForm extends StatefulWidget {
 class AddOfferFormState extends State<AddOfferForm> {
   final _categoryService = CategoryService();
   final OfferService _offerService = OfferService();
-  
+
   List<Category> categories = [];
   List<CategoryProperty> categoryProperties = [];
   final Map<String, dynamic> _propertyValues = {};
@@ -456,7 +456,7 @@ class AddOfferFormState extends State<AddOfferForm> {
             child: SizedBox(
               width: 120,
               child: ElevatedButton(
-                key: const Key('signUpSubmitButton'),
+                key: const Key('addOfferSubmitButton'),
                 onPressed: () async {
                   if (!(_formKey.currentState?.validate() ?? false)) {
                     return;

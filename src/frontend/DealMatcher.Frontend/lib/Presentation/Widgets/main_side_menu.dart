@@ -28,7 +28,14 @@ class MainSideMenu extends StatelessWidget {
           ),
           ListTile(leading: Icon(Icons.play_arrow), title: Text('Przeglądaj')),
           ListTile(leading: Icon(Icons.shopping_cart), title: Text('Koszyk')),
-          ListTile(leading: Icon(Icons.search), title: Text('Szukaj')),
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('Szukaj'),
+            onTap: () {
+              context.pop();
+              context.go('/search');
+            },
+          ),
           ListTile(leading: Icon(Icons.settings), title: Text('Ustawienia')),
         ],
       ),

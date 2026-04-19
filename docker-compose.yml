@@ -36,7 +36,7 @@ services:
       - AzureBlob__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KkM1LoxZM0Dg==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
       - AzureBlob__ContainerName=pictures
       - BaseUrl=http://localhost:5000
-      - Authentication__Jwt__SecretKey=secret_key
+      - Authentication__Jwt__SecretKey=7dbf3922e87c4a1796d11f621382897c
       - Authentication__Jwt__Issuer=dealmatcher
       - Authentication__Jwt__Audience=users
     ports:

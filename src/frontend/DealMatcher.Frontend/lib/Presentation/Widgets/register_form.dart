@@ -146,8 +146,12 @@ class RegisterFormState extends State<RegisterForm> {
                     if (!context.mounted) {
                       return;
                     }
-
-                    context.go('/');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Konto utworzone. Zaloguj się.'),
+                      ),
+                    );
+                    context.go('/login');
                   } catch (e) {
                     if (!context.mounted) return;
 

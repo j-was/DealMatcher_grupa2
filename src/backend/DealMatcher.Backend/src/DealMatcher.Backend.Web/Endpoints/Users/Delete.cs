@@ -1,19 +1,20 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.User.Get;
+using DealMatcher.Backend.UseCases.Features.User.Delete;
 
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
-public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
+public sealed class MeDelete(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
         Version(1);
-        Get("/users/me");
+        Delete("/users/me");
+
         Summary(s =>
         {
-            s.Summary = "Zwraca dane zalogowanego użytkownika";
-            s.Description = "Jeżeli użytkownik jest zalogowany w sesji, to zwracany jest obiekt z jego podstawowymi danymi.";
+            s.Summary = "Delete my account";
+            s.Description = "Deactivates the account associated with logged in user";
         });
     }
 
@@ -27,9 +28,7 @@ public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
             return;
         }
 
-        var request = new GetUserQuery(userId);
-        var result = await mediator.Send(request, ct);
-
+        var result = await mediator.Send(new DeleteCurrentUserCommand(userId), ct);
         await result.SendResult(this, ct: ct);
     }
 }

@@ -1,4 +1,7 @@
+using System.Text;
 using DealMatcher.Backend.Web.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DealMatcher.Backend.Web;
 
@@ -22,7 +25,28 @@ public sealed class Program
         try
         {
             builder.Services.AddServiceConfigs(appLogger, builder);
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                var jwtSection = builder.Configuration.GetSection("Authentication:Jwt");
 
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSection["SecretKey"]!)),
+
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSection["Issuer"],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtSection["Audience"],
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(5)
+                };
+            });
+            builder.Services.AddAuthorization();
             builder.Services.AddFastEndpoints()
                 .SwaggerDocument(o =>
                 {
@@ -57,6 +81,8 @@ public sealed class Program
             var app = builder.Build();
 
             app.UseCors("AllowFrontend");
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             await app.UseAppMiddlewareAndSeedDatabase();
 

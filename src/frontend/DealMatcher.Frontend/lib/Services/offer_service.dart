@@ -4,6 +4,7 @@ import 'package:frontend/Models/offer.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+import 'package:frontend/Services/auth_service.dart';
 
 class OfferService {
   static const String baseUrl = String.fromEnvironment('API_URL');
@@ -64,7 +65,8 @@ class OfferService {
     final request = http.MultipartRequest('POST', uri);
 
     request.headers['Accept'] = 'application/json';
-
+    request.headers['Authorization'] =
+        'Bearer ${AuthService.instance.accessToken}';
     request.fields['data'] = jsonEncode(jsonOffer);
 
     for (final img in images) {
@@ -82,7 +84,7 @@ class OfferService {
 
       request.files.add(
         http.MultipartFile.fromBytes(
-          'Images',
+          'images',
           bytes,
           filename: filename,
           contentType: MediaType('image', extension),

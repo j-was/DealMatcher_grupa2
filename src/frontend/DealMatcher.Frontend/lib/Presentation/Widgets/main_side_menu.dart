@@ -1,43 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Services/auth_service.dart';
 import 'package:go_router/go_router.dart';
 
 class MainSideMenu extends StatelessWidget {
   const MainSideMenu({super.key});
 
+  Future<void> _logout(BuildContext context) async {
+    await AuthService.instance.clearSession();
+    if (!context.mounted) {
+      return;
+    }
+    context.pop();
+    context.go('/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.only(top: 24),
-        children: [
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text("Zarejestruj się"),
-            onTap: () {
-              context.pop();
-              context.go('/register');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.login),
-            title: const Text('Zaloguj się'),
-            onTap: () {
-              context.pop();
-              context.go('/login');
-            },
-          ),
-          ListTile(leading: Icon(Icons.play_arrow), title: Text('Przeglądaj')),
-          ListTile(leading: Icon(Icons.shopping_cart), title: Text('Koszyk')),
-          ListTile(
-            leading: Icon(Icons.search),
-            title: Text('Szukaj'),
-            onTap: () {
-              context.pop();
-              context.go('/search');
-            },
-          ),
-          ListTile(leading: Icon(Icons.settings), title: Text('Ustawienia')),
-        ],
+      child: AnimatedBuilder(
+        animation: AuthService.instance,
+        builder: (context, _) {
+          final auth = AuthService.instance;
+          final isLoggedIn = auth.isAuthenticated;
+
+          return ListView(
+            padding: const EdgeInsets.only(top: 24),
+            children: [
+              if (!isLoggedIn) ...[
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text("Zarejestruj się"),
+                  onTap: () {
+                    context.pop();
+                    context.go('/register');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.login),
+                  title: const Text('Zaloguj się'),
+                  onTap: () {
+                    context.pop();
+                    context.go('/login');
+                  },
+                ),
+              ] else ...[
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Mój profil'),
+                  onTap: () {
+                    context.pop();
+                    context.go('/profile');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Wyloguj'),
+                  onTap: () => _logout(context),
+                ),
+              ],
+              const ListTile(
+                leading: Icon(Icons.play_arrow),
+                title: Text('Przeglądaj'),
+              ),
+              const ListTile(
+                leading: Icon(Icons.shopping_cart),
+                title: Text('Koszyk'),
+              ),
+              ListTile(
+                leading: Icon(Icons.search),
+                title: Text('Szukaj'),
+                onTap: () {
+                  context.pop();
+                  context.go('/search');
+                },
+              ),
+              const ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Ustawienia'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

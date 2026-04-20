@@ -1,5 +1,6 @@
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
+import 'package:frontend/Presentation/Pages/cart_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
 import 'package:frontend/Presentation/Pages/register_page.dart';
 import 'package:frontend/Presentation/Pages/login_page.dart';
@@ -57,6 +58,7 @@ final router = GoRouter(
             return SearchedOffersPage(offers: offers);
           },
         ),
+        GoRoute(path: 'cart', builder: (context, state) => CartPage()),
       ],
     ),
   ],

@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.Json;
 using DealMatcher.Backend.UseCases.Features.Offer.Create;
 
@@ -42,8 +42,8 @@ public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
             createOfferDTO.Tags,
             createOfferDTO.CategoryId,
             createOfferDTO.Properties,
-            createOfferDTO.Availability
-            ,sellerId);
+            createOfferDTO.Availability,
+            sellerId);
 
         var result = await mediator.Send(request, ct);
         await result.SendResult(this, ct);

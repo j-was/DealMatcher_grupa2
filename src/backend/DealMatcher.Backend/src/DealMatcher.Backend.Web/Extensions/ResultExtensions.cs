@@ -1,4 +1,4 @@
-﻿namespace DealMatcher.Backend.Web.Extensions;
+namespace DealMatcher.Backend.Web.Extensions;
 
 public static class ResultExtensions
 {

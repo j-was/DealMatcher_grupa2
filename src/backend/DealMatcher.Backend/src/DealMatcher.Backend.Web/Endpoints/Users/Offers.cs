@@ -1,6 +1,6 @@
-﻿using DealMatcher.Backend.UseCases.Features.User.Offers;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using DealMatcher.Backend.UseCases.Features.User.Offers;
 
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 

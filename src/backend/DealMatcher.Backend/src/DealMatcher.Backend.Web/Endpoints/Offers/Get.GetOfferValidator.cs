@@ -1,4 +1,4 @@
-﻿namespace DealMatcher.Backend.Web.Endpoints.Offers;
+namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class GetOfferValidator : Validator<GetOfferRequest>
 {

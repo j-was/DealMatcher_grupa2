@@ -240,8 +240,9 @@ class _OfferEditFormState extends State<OfferEditForm> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (v) => _propertyValues[property.name] = v,
             validator: (v) {
-              if (v == null || v.trim().isEmpty)
+              if (v == null || v.trim().isEmpty) {
                 return 'Wymagana jest wartość właściwości';
+              }
               if (num.tryParse(v) == null) return 'Wartość musi być liczbą';
               return null;
             },
@@ -643,8 +644,9 @@ class _OfferEditFormState extends State<OfferEditForm> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) {
                     final p = int.tryParse((v ?? '').trim());
-                    if (p == null)
+                    if (p == null) {
                       return 'Podaj poprawną ilość (liczba całkowita)';
+                    }
                     if (p < 0) return 'Ilość nie może być ujemna';
                     return null;
                   },

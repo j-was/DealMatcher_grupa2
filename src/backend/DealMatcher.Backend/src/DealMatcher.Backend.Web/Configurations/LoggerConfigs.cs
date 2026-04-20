@@ -1,4 +1,4 @@
-﻿namespace DealMatcher.Backend.Web.Configurations;
+namespace DealMatcher.Backend.Web.Configurations;
 
 public static class LoggerConfigs
 {

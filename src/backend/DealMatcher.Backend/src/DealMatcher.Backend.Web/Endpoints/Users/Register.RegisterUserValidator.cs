@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Users;
+﻿namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public sealed class RegisterUserValidator(IPasswordValidator passwordValidator) : Validator<RegisterUserRequest>
 {

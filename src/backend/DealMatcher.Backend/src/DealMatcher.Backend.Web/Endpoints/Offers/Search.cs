@@ -1,4 +1,4 @@
-using DealMatcher.Backend.UseCases.Features.Offer.Search;
+﻿using DealMatcher.Backend.UseCases.Features.Offer.Search;
 
 namespace DealMatcher.Backend.Web.Endpoints.Offers;
 

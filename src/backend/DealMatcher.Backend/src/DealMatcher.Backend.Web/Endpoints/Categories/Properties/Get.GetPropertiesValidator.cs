@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Categories.Properties;
+﻿namespace DealMatcher.Backend.Web.Endpoints.Categories.Properties;
 
 public class GetPropertiesValidator : Validator<GetPropertiesRequest>
 {

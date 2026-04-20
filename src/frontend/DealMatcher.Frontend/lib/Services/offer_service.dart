@@ -105,4 +105,121 @@ class OfferService {
       'Status: ${response.statusCode}',
     );
   }
+
+  Future<List<Offer>> getMyOffers() async {
+    final uri = Uri.parse('$baseUrl/v1/users/me/offers');
+
+    final response = await http.get(
+      uri,
+      headers: AuthService.instance.authHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List<dynamic>;
+      return json
+          .map((item) => Offer.fromJson(item as Map<String, dynamic>))
+          .toList();
+    }
+
+    if (response.statusCode == 204) {
+      return [];
+    }
+
+    if (response.statusCode == 401) {
+      await AuthService.instance.clearSession();
+      throw Exception('Sesja wygasła. Zaloguj się ponownie.');
+    }
+
+    throw Exception(
+      'Nie udało się pobrać Twoich ofert.'
+      'Status: ${response.statusCode}',
+    );
+  }
+
+  Future<Offer> updateOffer(
+    int offerId,
+    Map<String, dynamic> jsonOffer,
+    List<XFile> newImages,
+  ) async {
+    final uri = Uri.parse('$baseUrl/v1/offers/$offerId');
+
+    final request = http.MultipartRequest('PATCH', uri);
+    request.headers['Accept'] = 'application/json';
+    request.headers['Authorization'] =
+        'Bearer ${AuthService.instance.accessToken}';
+    request.fields['data'] = jsonEncode(jsonOffer);
+
+    for (final img in newImages) {
+      final bytes = await img.readAsBytes();
+      final originalName = img.name;
+      final extension = path
+          .extension(originalName)
+          .replaceFirst('.', '')
+          .toLowerCase();
+      final filename = path.extension(originalName).isEmpty
+          ? '${DateTime.now().millisecondsSinceEpoch}.$extension'
+          : originalName;
+
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'images',
+          bytes,
+          filename: filename,
+          contentType: MediaType('image', extension),
+        ),
+      );
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return Offer.fromJson(json);
+    }
+
+    if (response.statusCode == 401) {
+      await AuthService.instance.clearSession();
+      throw Exception('Sesja wygasła. Zaloguj się ponownie.');
+    }
+
+    if (response.statusCode == 403) {
+      throw Exception('Nie masz uprawnień do edycji tej oferty.');
+    }
+
+    throw Exception(
+      'Nie udało się zaktualizować oferty. Status: ${response.statusCode}',
+    );
+  }
+
+  Future<void> deleteOffer(int offerId) async {
+    final uri = Uri.parse('$baseUrl/v1/offers/$offerId');
+
+    final response = await http.delete(
+      uri,
+      headers: AuthService.instance.authHeaders(),
+    );
+
+    if (response.statusCode == 204) {
+      // Successfully deleted — no body returned.
+      return;
+    }
+
+    if (response.statusCode == 401) {
+      await AuthService.instance.clearSession();
+      throw Exception('Sesja wygasła. Zaloguj się ponownie.');
+    }
+
+    if (response.statusCode == 403) {
+      throw Exception('Nie masz uprawnień do usunięcia tej oferty.');
+    }
+
+    if (response.statusCode == 404) {
+      throw Exception('Oferta nie została znaleziona.');
+    }
+
+    throw Exception(
+      'Nie udało się usunąć oferty. Status: ${response.statusCode}',
+    );
+  }
 }

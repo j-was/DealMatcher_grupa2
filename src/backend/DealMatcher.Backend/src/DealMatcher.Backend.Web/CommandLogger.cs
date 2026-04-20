@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web;
+﻿namespace DealMatcher.Backend.Web;
 
 public sealed class CommandLogger<TCommand, TResult>(ILogger<TCommand> logger) :
   ICommandMiddleware<TCommand, TResult>

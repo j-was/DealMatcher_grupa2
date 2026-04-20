@@ -12,8 +12,8 @@ public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
         Get("/users/me");
         Summary(s =>
         {
-            s.Summary = "Zwraca dane zalogowanego użytkownika";
-            s.Description = "Jeżeli użytkownik jest zalogowany w sesji, to zwracany jest obiekt z jego podstawowymi danymi.";
+            s.Summary = "Get current user profile";
+            s.Description = "Returns profile information for the authenticated user";
         });
     }
 

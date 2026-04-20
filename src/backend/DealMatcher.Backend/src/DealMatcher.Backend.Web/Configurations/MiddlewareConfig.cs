@@ -1,4 +1,4 @@
-using Ardalis.ListStartupServices;
+﻿using Ardalis.ListStartupServices;
 using DealMatcher.Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

@@ -36,19 +36,20 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: Icon(isLoggedIn ? Icons.person : Icons.login),
                 ),
-                if (isLoggedIn)
+                if (isLoggedIn) ...[
                   IconButton(
                     tooltip: 'Wyloguj',
                     onPressed: () => _logout(context),
                     icon: const Icon(Icons.logout),
                   ),
-                IconButton(
-                  tooltip: 'Dodaj ofertę',
-                  onPressed: () {
-                    context.go('/offer');
-                  },
-                  icon: const Icon(Icons.add),
-                ),
+                  IconButton(
+                    tooltip: 'Dodaj ofertę',
+                    onPressed: () {
+                      context.go('/offer');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
               ],
             );
           },

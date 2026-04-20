@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Offers;
+﻿namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class Get(IMediator mediator) : Endpoint<GetOfferRequest, OfferDTO>
 {

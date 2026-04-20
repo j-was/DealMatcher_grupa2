@@ -62,9 +62,13 @@ class MainSideMenu extends StatelessWidget {
                 leading: Icon(Icons.play_arrow),
                 title: Text('Przeglądaj'),
               ),
-              const ListTile(
+              ListTile(
                 leading: Icon(Icons.shopping_cart),
                 title: Text('Koszyk'),
+                onTap: () {
+                  context.pop();
+                  context.go('/cart');
+                },
               ),
               ListTile(
                 leading: Icon(Icons.search),

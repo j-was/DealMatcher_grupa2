@@ -77,8 +77,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -87,9 +87,13 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Categorys", (string)null);
                 });
@@ -116,8 +120,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.PrimitiveCollection<string>("ImageUrls")
                         .IsRequired()
@@ -136,7 +140,7 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.PrimitiveCollection<string>("Tags")
                         .IsRequired()
@@ -144,15 +148,21 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Price");
+
                     b.HasIndex("SellerId");
+
+                    b.HasIndex("Status");
 
                     b.ToTable("Offers", (string)null);
                 });
@@ -173,7 +183,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -182,7 +193,8 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -191,13 +203,18 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("Status");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -221,7 +238,7 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                 {
                     b.OwnsMany("DealMatcher.Backend.Core.Aggregates.Category.CategoryProperty", "Properties", b1 =>
                         {
-                            b1.Property<int>("Categoryd")
+                            b1.Property<int>("CategoryId")
                                 .HasColumnType("int");
 
                             b1.Property<int>("Id")
@@ -229,6 +246,15 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                                 .HasColumnType("int");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("DeletedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<bool>("IsDeleted")
+                                .HasColumnType("bit");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
@@ -238,17 +264,18 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                             b1.PrimitiveCollection<string>("Options")
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<int>("Type")
-                                .HasColumnType("int");
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("Categoryd", "Id");
+                            b1.HasKey("CategoryId", "Id");
 
                             b1.HasIndex("Name");
 
                             b1.ToTable("CategoryProperties", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("Categoryd");
+                                .HasForeignKey("CategoryId");
                         });
 
                     b.Navigation("Properties");
@@ -256,6 +283,12 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Offer.Offer", b =>
                 {
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.Category.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
                         .WithMany()
                         .HasForeignKey("SellerId")

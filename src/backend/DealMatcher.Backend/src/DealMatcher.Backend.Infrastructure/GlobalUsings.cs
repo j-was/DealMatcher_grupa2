@@ -29,4 +29,4 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Tokens;
 global using MimeKit;
-
+global using DealMatcher.Backend.Core.Aggregates.Cart;

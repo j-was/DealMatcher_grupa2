@@ -1,7 +1,9 @@
+using DealMatcher.Backend.Core.Aggregates.Category;
+
 namespace DealMatcher.Backend.UseCases.Features.Category.Get;
 
 public sealed class GetAllCategoriesHandler(
-    IReadRepository<CategoryEntity> categoriesRepository,
+    IReadRepository<CategoryEnity> categoriesRepository,
     IMapper mapper) :
     IQueryHandler<GetAllCategoriesQuery, Result<List<CategoryDTO>>>
 {

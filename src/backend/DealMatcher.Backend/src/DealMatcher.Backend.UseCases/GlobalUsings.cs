@@ -12,6 +12,6 @@ global using DealMatcher.Backend.Core.Aggregates.User.Specifications;
 global using DealMatcher.Backend.Core.Interfaces;
 global using DealMatcher.Backend.UseCases.Mapping.Profiles;
 global using MediatR;
-global using CategoryEntity = DealMatcher.Backend.Core.Aggregates.Category.Category;
+global using CategoryEntity = DealMatcher.Backend.Core.Aggregates.Category.CategoryEnity;
 global using OfferEntity = DealMatcher.Backend.Core.Aggregates.Offer.Offer;
 global using UserEntity = DealMatcher.Backend.Core.Aggregates.User.User;

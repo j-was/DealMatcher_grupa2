@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.Category.Specifications;
 
-public sealed class CategoryByNameSpec : SingleResultSpecification<Category>
+public sealed class CategoryByNameSpec : SingleResultSpecification<CategoryEnity>
 {
     public CategoryByNameSpec(string categoryName)
     {

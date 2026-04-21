@@ -66,6 +66,9 @@
     <Compile Update="Endpoints\Offers\Create.CreateOfferRequest.cs">
       <DependentUpon>Create.cs</DependentUpon>
     </Compile>
+    <Compile Update="Endpoints\Offers\SearchOffersRequestValidator.cs">
+      <DependentUpon>Search.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

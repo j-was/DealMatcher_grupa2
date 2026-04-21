@@ -10,6 +10,11 @@ public class Get(IMediator mediator) : EndpointWithoutRequest<List<CategoryDTO>>
         AllowAnonymous();
         Version(1);
         Get("/categories");
+        Summary(s =>
+        {
+            s.Summary = "Get all available categories";
+            s.Description = "Returns a list of all product categories in the system";
+        });
     }
 
     public override async Task HandleAsync(CancellationToken ct)

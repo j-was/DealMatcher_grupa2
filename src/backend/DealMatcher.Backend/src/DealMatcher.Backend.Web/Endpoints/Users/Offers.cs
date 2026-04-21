@@ -31,12 +31,6 @@ public class MeOffers(IMediator mediator) : EndpointWithoutRequest<List<OfferDTO
         var query = new GetMyOffersQuery(userId);
         var result = await mediator.Send(query, ct);
 
-        if (result is null || result.Count == 0)
-        {
-            await SendNoContentAsync(ct);
-            return;
-        }
-
-        await SendOkAsync(result, ct);
+        await result.SendResult(this, ct: ct);
     }
 }

@@ -11,7 +11,7 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
 
         if (category is null)
         {
-            return Result.NotFound("Nie znaleziono kategorii");
+            return Result.Invalid(new ValidationError("Category not found"));
         }
 
         var properties = request.Properties
@@ -36,6 +36,6 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
 
         var dto = mapper.Map<OfferDTO>(offer);
 
-        return Result.Success(dto);
+        return Result.Created(dto);
     }
 }

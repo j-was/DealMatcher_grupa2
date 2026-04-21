@@ -15,6 +15,10 @@ public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
         AllowFileUploads();
         Version(1);
         Post("/offers");
+        Summary(s =>
+        {
+            s.Summary = "Create a new offer";
+        });
     }
 
     public override async Task HandleAsync(CreateOfferRequest req, CancellationToken ct)

@@ -66,9 +66,13 @@ class MainSideMenu extends StatelessWidget {
                   onTap: () => _logout(context),
                 ),
               ],
-              const ListTile(
+              ListTile(
                 leading: Icon(Icons.play_arrow),
                 title: Text('Przeglądaj'),
+                onTap: () {
+                  context.pop();
+                  context.go('/');
+                },
               ),
               ListTile(
                 leading: Icon(Icons.shopping_cart),

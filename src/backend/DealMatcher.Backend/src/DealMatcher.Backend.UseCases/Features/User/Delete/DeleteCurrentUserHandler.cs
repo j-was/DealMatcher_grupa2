@@ -16,7 +16,7 @@ public sealed class DeleteCurrentUserHandler(
         }
 
         user.UpdateStatus(UserStatus.Inactive);
-
+        user.Delete();
         await usersRepository.UpdateAsync(user, ct);
 
         return Result.Success();

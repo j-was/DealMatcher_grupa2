@@ -82,10 +82,11 @@ class _MainPageState extends State<MainPage> {
         SnackBar(content: Text('Nie udało się dodać do koszyka: $e')),
       );
     } finally {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isAddingToCart = false;
         });
+      }
     }
   }
 

@@ -11,7 +11,7 @@ public sealed class GetCartTotalQueryHandler(
     {
         var cartItems = await cartItemsRepository.ListAsync(new CartItemsByUserIdSpec(request.UserId), ct);
 
-        decimal total = 0m;
+        var total = 0m;
 
         foreach (var item in cartItems)
         {

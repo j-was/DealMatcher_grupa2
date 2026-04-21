@@ -117,7 +117,7 @@ class _CartPageState extends State<CartPage> {
                           borderRadius: BorderRadius.circular(18),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
+                              color: Colors.black.withAlpha(20),
                               blurRadius: 16,
                               offset: const Offset(0, 6),
                             ),

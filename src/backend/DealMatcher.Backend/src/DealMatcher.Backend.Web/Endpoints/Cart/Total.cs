@@ -2,10 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using DealMatcher.Backend.Core.Aggregates.Cart.DTOs;
 using DealMatcher.Backend.UseCases.Features.Cart.Total;
+namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
-namespace DealMatcher.Backend.Web.Endpoints.Cart.Total;
-
-public class Get(IMediator mediator) : EndpointWithoutRequest<CartTotalDTO>
+public class Total(IMediator mediator) : EndpointWithoutRequest<CartTotalDTO>
 {
     public override void Configure()
     {

@@ -26,14 +26,14 @@ public class GetAllPropertiesByCategoryNameQueryHandlerTests
             "Elektronika",
             "Opis",
             [
-                new("Stan", CategoryPropertyType.SELECT, ["Nowy"]),
-                new("Pamięć", CategoryPropertyType.NUMBER, null)
+                new("Stan", CategoryPropertyType.Select, ["Nowy"]),
+                new("Pamięć", CategoryPropertyType.Number, null)
             ]);
 
         var expectedDtos = new List<CategoryPropertyDTO>
         {
-            new("Stan", CategoryPropertyType.SELECT, ["Nowy"]),
-            new("Pamięć", CategoryPropertyType.NUMBER, null)
+            new("Stan", CategoryPropertyType.Select, ["Nowy"]),
+            new("Pamięć", CategoryPropertyType.Number, null)
         };
 
         _categoriesRepository

@@ -32,7 +32,7 @@ public class CreateNewOfferCommandHandlerTests
             {
                 ["Test Property"] = "Test Value"
             },
-            2);
+            2, 1);
 
         var category = new CategoryEntity("Electronics", "Electronic devices");
 

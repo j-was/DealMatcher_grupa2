@@ -53,6 +53,14 @@ class MainSideMenu extends StatelessWidget {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.list_alt),
+                  title: const Text('Moje oferty'),
+                  onTap: () {
+                    context.pop();
+                    context.go('/my-offers');
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.logout),
                   title: const Text('Wyloguj'),
                   onTap: () => _logout(context),

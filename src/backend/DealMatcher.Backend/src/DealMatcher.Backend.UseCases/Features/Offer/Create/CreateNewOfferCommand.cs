@@ -10,5 +10,6 @@ public sealed record CreateNewOfferCommand(
     List<string> Tags,
     int CategoryId,
     Dictionary<string, string> Properties,
-    int Availability
+    int Availability,
+    int SellerId
 ) : ICommand<Result<OfferDTO>>;

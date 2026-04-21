@@ -9,6 +9,8 @@ import 'package:frontend/Presentation/Pages/searched_offers_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/Presentation/Pages/profile_page.dart';
 import 'package:frontend/Services/auth_service.dart';
+import 'package:frontend/Presentation/Pages/my_offers_page.dart';
+import 'package:frontend/Presentation/Pages/offer_edit_page.dart';
 
 final router = GoRouter(
   refreshListenable: AuthService.instance,
@@ -17,7 +19,10 @@ final router = GoRouter(
     final location = state.matchedLocation;
 
     final isAuthRoute = location == '/login' || location == '/register';
-    final isProtectedRoute = location == '/offer' || location == '/profile';
+    final isProtectedRoute =
+        location == '/offer' ||
+        location == '/profile' ||
+        location.startsWith('/my-offers');
 
     if (!isLoggedIn && isProtectedRoute) {
       return '/login';
@@ -46,6 +51,19 @@ final router = GoRouter(
         GoRoute(
           path: 'profile',
           builder: (context, state) => const ProfilePage(),
+        ),
+        GoRoute(
+          path: 'my-offers',
+          builder: (context, state) => const MyOffersPage(),
+          routes: [
+            GoRoute(
+              path: ':offerId',
+              builder: (context, state) {
+                final offerId = int.parse(state.pathParameters['offerId']!);
+                return OfferEditPage(offerId: offerId);
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: 'search',

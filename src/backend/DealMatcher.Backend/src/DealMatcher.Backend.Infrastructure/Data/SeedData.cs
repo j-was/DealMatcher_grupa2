@@ -7,7 +7,7 @@ public static class SeedData
 
     public static async Task InitializeAsync(AppDbContext dbContext)
     {
-        if (!dbContext.Set<Category>().Any())
+        if (!dbContext.Set<CategoryEnity>().Any())
         {
             await SeedCategoriesAndCategoryProperties(dbContext);
         }
@@ -23,7 +23,7 @@ public static class SeedData
     }
     public static async Task SeedCategoriesAndCategoryProperties(AppDbContext dbContext)
     {
-        var categories = new List<Category>
+        var categories = new List<CategoryEnity>
     {
         new(
             "Inna",
@@ -115,7 +115,7 @@ public static class SeedData
         ),
     };
 
-        await dbContext.Set<Category>().AddRangeAsync(categories);
+        await dbContext.Set<CategoryEnity>().AddRangeAsync(categories);
         await dbContext.SaveChangesAsync();
     }
 

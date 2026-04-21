@@ -92,7 +92,7 @@ public class OfferTests
     [Fact]
     public void Constructor_Should_Throw_When_Image_Limit_Exceeded()
     {
-        var images = Enumerable.Repeat("x", OfferConstants.MaxImagesCount + 1)
+        var images = Enumerable.Repeat("x", DataSchemaConstants.MaxImagesCount + 1)
             .ToList();
 
         Should.Throw<ArgumentException>(() =>
@@ -111,7 +111,7 @@ public class OfferTests
     [Fact]
     public void Constructor_Should_Throw_When_Tag_Limit_Exceeded()
     {
-        var tags = Enumerable.Repeat("tag", OfferConstants.MaxTagsCount + 1)
+        var tags = Enumerable.Repeat("tag", DataSchemaConstants.MaxTagsCount + 1)
             .ToList();
 
         Should.Throw<ArgumentException>(() =>

@@ -7,12 +7,23 @@ public sealed class CategoryConfig : DealMatcherEntityBaseConfig<Category>
         base.Configure(builder);
         builder.ToTable($"{nameof(Category)}s");
 
+        builder.Property(c => c.Name)
+            .HasMaxLength(DataSchemaConstants.CategoryNameMaxLength)
+            .IsRequired();
+
+        builder.Property(c => c.Description)
+            .HasMaxLength(DataSchemaConstants.CategoryDescriptionMaxLength)
+            .IsRequired(false);
+
+        builder.HasIndex(c => c.Name)
+            .IsUnique();
+
         builder.OwnsMany(c => c.Properties, prop =>
         {
             prop.ToTable("CategoryProperties");
             prop.WithOwner().HasForeignKey("CategoryId");
             prop.HasIndex(p => p.Name);
-            prop.Property(p => p.Name).HasMaxLength(OfferConstants.PropertyNameMaxLength).IsRequired();
+            prop.Property(p => p.Name).HasMaxLength(DataSchemaConstants.PropertyNameMaxLength).IsRequired();
             prop.Property(p => p.Type).HasConversion(t => t.Value, t => CategoryPropertyType.FromValue(t)).IsRequired();
         });
     }

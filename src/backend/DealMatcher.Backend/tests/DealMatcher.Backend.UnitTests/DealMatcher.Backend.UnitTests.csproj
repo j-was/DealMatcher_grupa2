@@ -40,6 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DealMatcher.Backend.Core\DealMatcher.Backend.Core.csproj" />
     <ProjectReference Include="..\..\src\DealMatcher.Backend.UseCases\DealMatcher.Backend.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\DealMatcher.Backend.Infrastructure\DealMatcher.Backend.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

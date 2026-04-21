@@ -9,11 +9,25 @@ public sealed class CartItem : DealMatcherEntityBase, IAggregateRoot
 
     public CartItem(int userId, int offerId, int quantity)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(userId);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offerId);
+        ArgumentOutOfRangeException.ThrowIfLessThan(quantity, DataSchemaConstants.CartItemQuantityMinValue);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(quantity, DataSchemaConstants.CartItemQuantityMaxValue);
+
+        UserId = userId;
         OfferId = offerId;
         Quantity = quantity;
         AddedAt = DateTime.UtcNow;
-        UserId = userId;
     }
+
+    public void UpdateQuantity(int newQuantity)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(newQuantity, DataSchemaConstants.CartItemQuantityMinValue);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(newQuantity, DataSchemaConstants.CartItemQuantityMaxValue);
+
+        Quantity = newQuantity;
+    }
+
 
 #pragma warning disable CS8618
     private CartItem()

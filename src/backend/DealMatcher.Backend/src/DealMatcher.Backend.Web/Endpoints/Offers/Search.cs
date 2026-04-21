@@ -11,7 +11,7 @@ public class Search(IMediator mediator) : Endpoint<SearchOffersRequest, List<Off
         Post("/offers/search");
         Summary(s =>
         {
-            s.Summary = "Search offers";
+            s.Summary = "Search for offers";
             s.Description = "Creates a search query and returns matching offers";
         });
     }

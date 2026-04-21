@@ -11,13 +11,19 @@ public sealed class UserConfig : DealMatcherEntityBaseConfig<User>
             .HasConversion(s => s.Value, s => UserStatus.FromValue(s))
             .IsRequired();
         builder.Property(u => u.Name)
+            .HasMaxLength(DataSchemaConstants.UserNameMaxLength)
             .IsRequired();
         builder.Property(u => u.Surname)
+            .HasMaxLength(DataSchemaConstants.UserSurnameMaxLength)
             .IsRequired();
         builder.Property(u => u.Email)
+            .HasMaxLength(DataSchemaConstants.UserEmailMaxLength)
             .IsRequired();
         builder.Property(u => u.PasswordHash)
-            .IsRequired()
-            .HasMaxLength(128);
+            .HasMaxLength(DataSchemaConstants.UserPasswordHashLength)
+            .IsRequired();
+
+        builder.HasIndex(u => u.Status);
+        builder.HasIndex(u => u.Email);
     }
 }

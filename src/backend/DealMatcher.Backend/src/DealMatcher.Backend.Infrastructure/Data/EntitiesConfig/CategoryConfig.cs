@@ -10,9 +10,11 @@ public sealed class CategoryConfig : DealMatcherEntityBaseConfig<Category>
         builder.OwnsMany(c => c.Properties, prop =>
         {
             prop.ToTable("CategoryProperties");
-            prop.WithOwner().HasForeignKey("Categoryd");
+            prop.WithOwner().HasForeignKey("CategoryId");
             prop.HasIndex(p => p.Name);
             prop.Property(p => p.Name).HasMaxLength(OfferConstants.PropertyNameMaxLength).IsRequired();
+            prop.Property(p=>p.Type).HasConversion(t=>t.Value,t=>CategoryPropertyType.FromValue(t)).IsRequired();
         });
     }
 }
+

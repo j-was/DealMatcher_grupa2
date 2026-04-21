@@ -20,4 +20,15 @@ class CartItem {
        _offer = offer,
        _quantity = quantity,
        _addedAt = addedAt;
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      id: json['id'] ?? 0,
+      offer: Offer.fromJson(json['offer'] as Map<String, dynamic>),
+      quantity: json['quantity'] ?? 1,
+      addedAt:
+          DateTime.tryParse(json['addedAt']?.toString() ?? '') ??
+          DateTime.now(),
+    );
+  }
 }

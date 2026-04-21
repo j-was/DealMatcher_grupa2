@@ -26,19 +26,43 @@ class _OfferInCartState extends State<OfferInCart> {
     _quantity = widget.cartItem.quantity;
   }
 
-  void increaseQuantity() {
-    if (_quantity < widget.cartItem.offer.availability) {
+  Future<void> increaseQuantity() async {
+    if (_quantity >= widget.cartItem.offer.availability) return;
+
+    final oldQuantity = _quantity;
+    final newQuantity = _quantity + 1;
+    setState(() {
+      _quantity = newQuantity;
+    });
+
+    try {
+      await widget.onQuantityChanged(widget.cartItem.id, newQuantity);
+    } catch (_) {
+      if (!mounted) return;
       setState(() {
-        _quantity++;
+        _quantity = oldQuantity;
       });
+      rethrow;
     }
   }
 
-  void decreaseQuantity() {
-    if (_quantity > 1) {
+  Future<void> decreaseQuantity() async {
+    if (_quantity <= 1) return;
+
+    final oldQuantity = _quantity;
+    final newQuantity = _quantity - 1;
+    setState(() {
+      _quantity = newQuantity;
+    });
+
+    try {
+      await widget.onQuantityChanged(widget.cartItem.id, newQuantity);
+    } catch (_) {
+      if (!mounted) return;
       setState(() {
-        _quantity--;
+        _quantity = oldQuantity;
       });
+      rethrow;
     }
   }
 
@@ -92,7 +116,9 @@ class _OfferInCartState extends State<OfferInCart> {
                       child: IconButton(
                         padding: EdgeInsets.all(0),
                         iconSize: 20,
-                        onPressed: () {},
+                        onPressed: () async {
+                          await widget.onDelete(widget.cartItem.id);
+                        },
                         icon: const Icon(Icons.delete_outline),
                         color: Colors.grey,
                       ),

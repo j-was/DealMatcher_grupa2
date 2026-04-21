@@ -2,6 +2,7 @@ global using System.Diagnostics;
 global using System.Reflection;
 global using Ardalis.Result;
 global using Ardalis.SharedKernel;
+global using DealMatcher.Backend.Core;
 global using DealMatcher.Backend.Core.Aggregates.Offer.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
 global using DealMatcher.Backend.Core.Interfaces;

@@ -1,11 +1,11 @@
 namespace DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
 
-public sealed class CategoryConfig : DealMatcherEntityBaseConfig<Category>
+public sealed class CategoryConfig : DealMatcherEntityBaseConfig<CategoryEnity>
 {
-    public override void Configure(EntityTypeBuilder<Category> builder)
+    public override void Configure(EntityTypeBuilder<CategoryEnity> builder)
     {
         base.Configure(builder);
-        builder.ToTable($"{nameof(Category)}s");
+        builder.ToTable($"{nameof(CategoryEnity)}s");
 
         builder.Property(c => c.Name)
             .HasMaxLength(DataSchemaConstants.CategoryNameMaxLength)

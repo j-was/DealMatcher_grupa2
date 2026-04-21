@@ -13,7 +13,7 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
           .OnDelete(DeleteBehavior.Restrict)
           .IsRequired();
 
-        builder.HasOne<Category>()
+        builder.HasOne<CategoryEnity>()
             .WithMany()
             .HasForeignKey(o => o.CategoryId)
             .OnDelete(DeleteBehavior.Restrict)

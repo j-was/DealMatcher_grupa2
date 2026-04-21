@@ -29,14 +29,14 @@ public static class SeedData
             "Elektronika",
             "Urządzenia elektroniczne i akcesoria",
             [
-                new("Stan", CategoryPropertyType.SELECT,
+                new("Stan", CategoryPropertyType.Select,
                 [
                     "Nowy",
                     "Używany",
                     "Uszkodzony"
                 ]),
-                new("Pamięć", CategoryPropertyType.NUMBER, null),
-                new("Kolor", CategoryPropertyType.SELECT,
+                new("Pamięć", CategoryPropertyType.Number, null),
+                new("Kolor", CategoryPropertyType.Select,
                 [
                     "Czarny",
                     "Biały",
@@ -51,8 +51,8 @@ public static class SeedData
             "Sport",
             "Sprzęt i akcesoria sportowe",
             [
-                new( "Rozmiar ramy", CategoryPropertyType.TEXT, null),
-                new("Kolor", CategoryPropertyType.SELECT,
+                new( "Rozmiar ramy", CategoryPropertyType.Text, null),
+                new("Kolor", CategoryPropertyType.Select,
                 [
                     "Czarny",
                     "Biały",
@@ -60,7 +60,7 @@ public static class SeedData
                     "Niebieski",
                     "Inny"
                 ]),
-                new("Rok produkcji", CategoryPropertyType.NUMBER, null),
+                new("Rok produkcji", CategoryPropertyType.Number, null),
             ]
         ),
 
@@ -68,7 +68,7 @@ public static class SeedData
             "Meble",
             "Meble do domu i biura",
             [
-                new( "Kolor", CategoryPropertyType.SELECT,
+                new( "Kolor", CategoryPropertyType.Select,
                 [
                     "Biały",
                     "Czarny",
@@ -76,8 +76,8 @@ public static class SeedData
                     "Szary",
                     "Inny"
                 ]),
-                new("Wymiary", CategoryPropertyType.TEXT, null),
-                new( "Stan", CategoryPropertyType.SELECT,
+                new("Wymiary", CategoryPropertyType.Text, null),
+                new( "Stan", CategoryPropertyType.Select,
                 [
                     "Nowy",
                     "Używany",
@@ -90,8 +90,8 @@ public static class SeedData
             "Odzież",
             "Odzież damska, męska i dziecięca",
             [
-                new( "Rozmiar", CategoryPropertyType.TEXT, null),
-                new("Kolor", CategoryPropertyType.SELECT,
+                new( "Rozmiar", CategoryPropertyType.Text, null),
+                new("Kolor", CategoryPropertyType.Select,
                 [
                     "Czarny",
                     "Biały",
@@ -99,7 +99,7 @@ public static class SeedData
                     "Czerwony",
                     "Inny"
                 ]),
-                new("Stan", CategoryPropertyType.SELECT,
+                new("Stan", CategoryPropertyType.Select,
                 [
                     "Nowy",
                     "Używany",

@@ -8,13 +8,15 @@ public class CreateNewOfferCommandHandlerTests
     private readonly IMapper _mapper;
     private readonly CreateNewOfferCommandHandler _handler;
     private readonly IReadRepository<CategoryEntity> _categoriesRepository;
+    private readonly IImageService _imageService;
 
     public CreateNewOfferCommandHandlerTests()
     {
         _offerRepository = Substitute.For<IRepository<OfferEntity>>();
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _mapper);
+        _imageService = Substitute.For<IImageService>();
+        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper);
     }
 
     [Fact]
@@ -23,14 +25,14 @@ public class CreateNewOfferCommandHandlerTests
         var command = new CreateNewOfferCommand("Test offer",
             "Test description",
             100.00,
-            ["https://example.com/image.jpg"],
+            [],
             ["Test tag"],
             5,
             new Dictionary<string, string>
             {
                 ["Test Property"] = "Test Value"
             },
-            2);
+            2, 1);
 
         var category = new CategoryEntity("Electronics", "Electronic devices");
 
@@ -39,7 +41,7 @@ public class CreateNewOfferCommandHandlerTests
             Title: "Test Offer",
             Description: "Test Description",
             Price: 100.00,
-            Images: ["https://example.com/image.jpg"],
+            Images: [],
             Seller: new SellerDTO(1, "John"),
             Tags: ["Test tag"],
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),

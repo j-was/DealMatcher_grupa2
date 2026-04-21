@@ -32,5 +32,13 @@ public sealed class User :
     {
         PasswordHash = passwordHash;
     }
-
+    public void UpdateProfile(string name, string surname)
+    {
+        Name = name;
+        Surname = surname;
+    }
+    public void UpdateStatus(UserStatus status)
+    {
+        Status = status;
+    }
 }

@@ -12,6 +12,7 @@ global using Azure.Storage.Blobs.Models;
 global using BCrypt;
 global using BCrypt.Net;
 global using DealMatcher.Backend.Core;
+global using DealMatcher.Backend.Core.Aggregates.Cart;
 global using DealMatcher.Backend.Core.Aggregates.Category;
 global using DealMatcher.Backend.Core.Aggregates.Offer;
 global using DealMatcher.Backend.Core.Aggregates.User;
@@ -29,4 +30,3 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Tokens;
 global using MimeKit;
-

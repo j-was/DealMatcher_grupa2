@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using DealMatcher.Backend.UseCases.Features.User.Get;
 
 namespace DealMatcher.Backend.Web.Endpoints.Users;
@@ -7,19 +8,18 @@ public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
 {
     public override void Configure()
     {
-        AllowAnonymous();
         Version(1);
         Get("/users/me");
         Summary(s =>
         {
-            s.Summary = "Zwraca dane zalogowanego użytkownika";
-            s.Description = "Jeżeli użytkownik jest zalogowany w sesji, to zwracany jest obiekt z jego podstawowymi danymi.";
+            s.Summary = "Get current user profile";
+            s.Description = "Returns profile information for the authenticated user";
         });
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!int.TryParse(userIdFromClaim, out var userId))
         {

@@ -49,7 +49,7 @@ public class LoginHandlerTests
 
         result.IsSuccess.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
-        result.Value.AccesToken.ShouldBe(expectedToken);
+        result.Value.AccessToken.ShouldBe(expectedToken);
         result.Value.User.ShouldBe(expectedUserDto);
 
         await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());

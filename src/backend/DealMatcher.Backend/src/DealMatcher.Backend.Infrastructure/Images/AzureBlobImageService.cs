@@ -16,7 +16,7 @@ public class AzureBlobImageService : IImageService
     {
         _logger = logger;
         var connectionString = config.GetValue<string>("AzureBlob:ConnectionString");
-        var containerName = config.GetValue<string>("AzureBlob:Container");
+        var containerName = config.GetValue<string>("AzureBlob:ContainerName");
         Guard.Against.NullOrEmpty(connectionString);
         Guard.Against.NullOrEmpty(containerName);
         _containerClient = new BlobContainerClient(connectionString, containerName);

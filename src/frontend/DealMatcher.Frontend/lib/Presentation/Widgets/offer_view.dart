@@ -1,23 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/offer.dart';
+import 'package:frontend/Services/cart_service.dart';
+import 'package:go_router/go_router.dart';
 
 class OfferView extends StatefulWidget {
   final Offer offer;
+
   const OfferView({super.key, required this.offer});
 
   @override
-  State<OfferView> createState() => OfferViewState();
+  State createState() => OfferViewState();
 }
 
 class OfferViewState extends State<OfferView> {
   bool ifExpanded = false;
+  bool _isAdding = false;
+
+  Future<void> _addToCart(BuildContext context) async {
+    if (_isAdding) return;
+
+    setState(() {
+      _isAdding = true;
+    });
+
+    try {
+      await CartService.instance.addToCart(offerId: widget.offer.id);
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Dodano do koszyka')));
+    } on StateError {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Zaloguj się, aby dodać do koszyka')),
+      );
+      context.go('/login');
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Nie udało się dodać do koszyka: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAdding = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = widget.offer.images.isNotEmpty;
+
     return Center(
       child: SizedBox(
         width: 400,
-        height: ifExpanded ? 550 : 425,
+        height: ifExpanded ? 610 : 425,
         child: InkWell(
           onTap: () {
             setState(() {
@@ -32,7 +72,23 @@ class OfferViewState extends State<OfferView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(widget.offer.images[0], fit: BoxFit.cover),
+                if (hasImage)
+                  SizedBox(
+                    height: 220,
+                    width: double.infinity,
+                    child: Image.network(
+                      widget.offer.images[0],
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey.shade300,
+                          child: const Center(
+                            child: Icon(Icons.broken_image_outlined),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 Expanded(
                   child: ListView(
                     children: [
@@ -43,7 +99,7 @@ class OfferViewState extends State<OfferView> {
                           children: [
                             Text(
                               widget.offer.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -69,11 +125,11 @@ class OfferViewState extends State<OfferView> {
                       ),
                       if (ifExpanded) ...[
                         Padding(
-                          padding: EdgeInsetsGeometry.fromLTRB(12, 0, 12, 12),
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               ...widget.offer.properties.map(
                                 (property) => Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,12 +139,39 @@ class OfferViewState extends State<OfferView> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text('Ilość: ${widget.offer.availability}'),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  onPressed:
+                                      widget.offer.availability <= 0 ||
+                                          _isAdding
+                                      ? null
+                                      : () => _addToCart(context),
+                                  icon: _isAdding
+                                      ? const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.shopping_cart_outlined,
+                                        ),
+                                  label: Text(
+                                    widget.offer.availability <= 0
+                                        ? 'Brak w magazynie'
+                                        : 'Dodaj do koszyka',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
                               Text(
                                 'Utworzono: ${widget.offer.createdAt.toString().split(' ')[0]}',
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             ],
                           ),

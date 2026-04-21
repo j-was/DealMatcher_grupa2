@@ -3,17 +3,17 @@ import 'package:frontend/Models/user_login_data.dart';
 import 'package:frontend/Presentation/Widgets/seperated_widget.dart';
 import 'package:frontend/Services/user_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:frontend/Services/auth_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
   final _userService = UserService();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -23,6 +23,13 @@ class _LoginFormState extends State<LoginForm> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  String _extractMessage(Object error) {
+    return error
+        .toString()
+        .replaceFirst('Exception: ', '')
+        .replaceFirst('Bad state: ', '');
   }
 
   @override
@@ -81,31 +88,28 @@ class _LoginFormState extends State<LoginForm> {
 
                   try {
                     final loginUserData = UserLoginData(
-                      email: _emailController.text,
+                      email: _emailController.text.trim(),
                       password: _passwordController.text,
                     );
 
-                    await _userService.loginUser(loginUserData);
-
-                    if (!context.mounted) {
-                      return;
-                    }
-
-                    context.go('/');
-                  } catch (e) {
-                    if (!context.mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Nie udało się zalogować użytkownika'),
-                      ),
+                    final response = await _userService.loginUser(
+                      loginUserData,
                     );
+                    await AuthService.instance.saveSession(response);
 
                     if (!context.mounted) {
                       return;
                     }
 
-                    context.go('/');
+                    context.go('/profile');
+                  } catch (e) {
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(_extractMessage(e))));
                   }
                 },
                 child: const Text(

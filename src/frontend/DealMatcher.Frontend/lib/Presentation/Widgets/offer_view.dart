@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/offer.dart';
-import 'package:frontend/Services/cart_service.dart';
-import 'package:go_router/go_router.dart';
 
 class OfferView extends StatefulWidget {
   final Offer offer;
@@ -14,41 +12,6 @@ class OfferView extends StatefulWidget {
 
 class OfferViewState extends State<OfferView> {
   bool ifExpanded = false;
-  bool _isAdding = false;
-
-  Future<void> _addToCart(BuildContext context) async {
-    if (_isAdding) return;
-
-    setState(() {
-      _isAdding = true;
-    });
-
-    try {
-      await CartService.instance.addToCart(offerId: widget.offer.id);
-
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Dodano do koszyka')));
-    } on StateError {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Zaloguj się, aby dodać do koszyka')),
-      );
-      context.go('/login');
-    } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Nie udało się dodać do koszyka: $e')),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isAdding = false;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,34 +104,7 @@ class OfferViewState extends State<OfferView> {
                               ),
                               const SizedBox(height: 8),
                               Text('Ilość: ${widget.offer.availability}'),
-                              const SizedBox(height: 16),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton.icon(
-                                  onPressed:
-                                      widget.offer.availability <= 0 ||
-                                          _isAdding
-                                      ? null
-                                      : () => _addToCart(context),
-                                  icon: _isAdding
-                                      ? const SizedBox(
-                                          width: 16,
-                                          height: 16,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                      : const Icon(
-                                          Icons.shopping_cart_outlined,
-                                        ),
-                                  label: Text(
-                                    widget.offer.availability <= 0
-                                        ? 'Brak w magazynie'
-                                        : 'Dodaj do koszyka',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               Text(
                                 'Utworzono: ${widget.offer.createdAt.toString().split(' ')[0]}',
                                 style: const TextStyle(fontSize: 12),

@@ -4,6 +4,8 @@ import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
 import 'package:frontend/Presentation/Widgets/main_side_menu.dart';
 import 'package:frontend/Presentation/Widgets/reaction_buttons.dart';
 import 'package:frontend/Presentation/Widgets/searched_offer_section.dart';
+import 'package:frontend/Services/cart_service.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchedOffersPage extends StatefulWidget {
   final List<Offer> offers;
@@ -14,12 +16,46 @@ class SearchedOffersPage extends StatefulWidget {
 
 class _SearchedOffersPageState extends State<SearchedOffersPage> {
   int currIdx = 0;
-
+  bool _isAddingToCart = false;
   void nextOffer() {
     if (currIdx < widget.offers.length) {
       setState(() {
         currIdx++;
       });
+    }
+  }
+
+  Future<void> _addToCart() async {
+    if (currIdx >= widget.offers.length || _isAddingToCart) return;
+    final offer = widget.offers[currIdx];
+
+    setState(() {
+      _isAddingToCart = true;
+    });
+
+    try {
+      await CartService.instance.addToCart(offerId: offer.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Dodano do koszyka')));
+    } on StateError {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Zaloguj się, aby dodać do koszyka')),
+      );
+      context.go('/login');
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Nie udało się dodać do koszyka: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAddingToCart = false;
+        });
+      }
     }
   }
 
@@ -46,7 +82,11 @@ class _SearchedOffersPageState extends State<SearchedOffersPage> {
                   ),
                 ),
               ),
-            ReactionButtons(onDislike: nextOffer),
+            ReactionButtons(
+              onDislike: nextOffer,
+              onLike: nextOffer,
+              onSuperlike: currIdx < widget.offers.length ? _addToCart : null,
+            ),
           ],
         ),
       ),

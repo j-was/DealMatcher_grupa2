@@ -108,9 +108,14 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data: # Zmieniono z application/json
             schema:
               $ref: "#/components/schemas/OfferCreateRequest"
+            encoding:
+              properties:
+                contentType: application/json
+              tags:
+                contentType: application/json
       responses:
         201:
           description: Offer created successfully
@@ -550,10 +555,6 @@ paths:
                   type: string
                 surname:
                   type: string
-                phone:
-                  type: string
-                address:
-                  type: string
       responses:
         200:
           description: Profile updated successfully
@@ -586,7 +587,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Offer"
         204:
-          description: No offers found
+          description: User has no offers
         401:
           description: Unauthorized
         500:
@@ -611,7 +612,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Conversation"
         401:
-          description: Unauthorized
+          description: Unauthorized - banned users receive this as well
         500:
           description: Internal server error
 
@@ -1214,9 +1215,6 @@ components:
               type: integer
             name:
               type: string
-            rating:
-              type: number
-              format: float
         category:
           $ref: "#/components/schemas/Category"
         tags:
@@ -1256,9 +1254,10 @@ components:
           format: double
         images:
           type: array
+          description: A list of image files (binary format)
           items:
             type: string
-            format: uri
+            format: binary
         categoryId:
           type: integer
         tags:
@@ -1267,6 +1266,7 @@ components:
             type: string
         properties:
           type: object
+          description: A dictionary of properties (string -> string)
           additionalProperties: true
         availability:
           type: integer
@@ -1314,7 +1314,11 @@ components:
             type: string
         properties:
           type: object
-          additionalProperties: true
+          description: "A map of property names to lists of strings interpreted differently in case of TEXT, BOOLEAN, SELECT (all allowed values), NUMBER (min and max value)"
+          additionalProperties:
+            type: array
+            items:
+              type: string
         searchPhrase:
           type: string
         limit:
@@ -1345,13 +1349,6 @@ components:
           type: string
         surname:
           type: string
-        phone:
-          type: string
-        address:
-          type: string
-        rating:
-          type: number
-          format: float
         status:
           type: string
           enum: [ACTIVE, INACTIVE, BANNED]

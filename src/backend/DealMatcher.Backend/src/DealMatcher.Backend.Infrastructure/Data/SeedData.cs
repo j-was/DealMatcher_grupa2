@@ -26,6 +26,12 @@ public static class SeedData
         var categories = new List<Category>
     {
         new(
+            "Inna",
+            "Inne produkty",
+            []
+            ),
+
+        new(
             "Elektronika",
             "Urządzenia elektroniczne i akcesoria",
             [

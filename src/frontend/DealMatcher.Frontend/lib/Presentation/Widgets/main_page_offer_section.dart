@@ -5,8 +5,13 @@ import 'package:frontend/Services/offer_service.dart';
 
 class MainPageOfferSection extends StatelessWidget {
   final int offerId;
+  final void Function(Offer)? onOfferLoaded;
 
-  const MainPageOfferSection({super.key, required this.offerId});
+  const MainPageOfferSection({
+    super.key,
+    required this.offerId,
+    this.onOfferLoaded,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class MainPageOfferSection extends StatelessWidget {
         if (offer == null) {
           return Center(child: Text('Brak ofert'));
         }
-
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          onOfferLoaded?.call(offer);
+        });
         return SingleChildScrollView(child: OfferView(offer: offer));
       },
     );

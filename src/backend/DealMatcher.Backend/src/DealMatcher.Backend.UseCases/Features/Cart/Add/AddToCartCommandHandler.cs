@@ -1,6 +1,4 @@
-using Ardalis.Result;
 using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
-using DealMatcher.Backend.UseCases.Mapping.Profiles;
 
 namespace DealMatcher.Backend.UseCases.Features.Cart.Add;
 

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SuperlikeButton extends StatelessWidget {
-  const SuperlikeButton({super.key});
+  final VoidCallback? onPressed;
+  const SuperlikeButton({super.key, this.onPressed});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 60,
       height: 60,
       child: IconButton(
-        onPressed: () => {},
+        onPressed: onPressed ?? () {},
         icon: Icon(
           Icons.star_rounded,
           color: const Color.fromARGB(255, 250, 210, 12),

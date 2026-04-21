@@ -5,7 +5,7 @@ public sealed class CartItemConfig : DealMatcherEntityBaseConfig<CartItem>
     public override void Configure(EntityTypeBuilder<CartItem> builder)
     {
         base.Configure(builder);
-        builder.ToTable($"{nameof(Offer)}s");
+        builder.ToTable($"{nameof(CartItem)}s");
 
         builder.HasOne<User>()
             .WithMany()

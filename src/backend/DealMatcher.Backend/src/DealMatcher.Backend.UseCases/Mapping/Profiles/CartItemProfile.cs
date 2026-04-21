@@ -4,7 +4,7 @@ public sealed class CartItemProfile : Profile
 {
     public sealed record CartItemInfo(CartItem Item, OfferEntity Offer);
 
-    public  CartItemProfile()
+    public CartItemProfile()
     {
         CreateMap<CartItemInfo, CartItemDTO>()
             .ForCtorParam(nameof(CartItemDTO.Id), opt => opt.MapFrom(src => src.Item.Id))

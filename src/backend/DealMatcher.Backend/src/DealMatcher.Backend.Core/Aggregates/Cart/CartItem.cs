@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.Cart;
 
-public sealed class CartItem: DealMatcherEntityBase, IAggregateRoot
+public sealed class CartItem : DealMatcherEntityBase, IAggregateRoot
 {
     public int UserId { get; private set; }
     public int OfferId { get; private set; }

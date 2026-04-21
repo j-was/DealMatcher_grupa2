@@ -13,7 +13,7 @@ public sealed class CategoryConfig : DealMatcherEntityBaseConfig<Category>
             prop.WithOwner().HasForeignKey("CategoryId");
             prop.HasIndex(p => p.Name);
             prop.Property(p => p.Name).HasMaxLength(OfferConstants.PropertyNameMaxLength).IsRequired();
-            prop.Property(p=>p.Type).HasConversion(t=>t.Value,t=>CategoryPropertyType.FromValue(t)).IsRequired();
+            prop.Property(p => p.Type).HasConversion(t => t.Value, t => CategoryPropertyType.FromValue(t)).IsRequired();
         });
     }
 }

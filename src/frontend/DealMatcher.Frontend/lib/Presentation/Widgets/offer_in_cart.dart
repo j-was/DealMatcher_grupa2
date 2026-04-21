@@ -3,8 +3,15 @@ import 'package:frontend/Models/cart_item.dart';
 
 class OfferInCart extends StatefulWidget {
   final CartItem cartItem;
+  final Future<void> Function(int cartItemId, int quantity) onQuantityChanged;
+  final Future<void> Function(int cartItemId) onDelete;
 
-  const OfferInCart({super.key, required this.cartItem});
+  const OfferInCart({
+    super.key,
+    required this.cartItem,
+    required this.onQuantityChanged,
+    required this.onDelete,
+  });
 
   @override
   State<OfferInCart> createState() => _OfferInCartState();

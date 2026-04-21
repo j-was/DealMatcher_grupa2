@@ -206,8 +206,8 @@ public static class SeedData
             categories.TryGetValue(categoryName, out var id) ? id : categories["Inna"];
 
         // Elektronika offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "iPhone 13 Pro 256GB",
                 description: "Sprzedam iPhone 13 Pro w kolorze grafitowym. Bez śladów użytkowania. Komplet z pudełkiem i ładowarką.",
@@ -287,11 +287,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Sport offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Rower górski Trek Marlin 5",
                 description: "Rower górski Trek Marlin 5, rocznik 2022. Przejechane około 500km, regularnie serwisowany.",
@@ -338,11 +338,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Meble offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Sofa narożna szara",
                 description: "Sofa narożna w kolorze szarym, wymiary 250x180cm. Zakupiona rok temu, używana sporadycznie.",
@@ -407,11 +407,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Odzież offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Kurtka zimowa Nike rozmiar L",
                 description: "Sprzedam kurtkę zimową Nike w rozmiarze L. Kolor czarny, noszona jeden sezon. Ciepła i lekka, idealna na zimę.",
@@ -476,11 +476,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Książki offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Czysty kod - Robert C. Martin",
                 description: "Książka w stanie idealnym, czytana raz. Wydanie polskie.",
@@ -530,11 +530,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Motoryzacja offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Opony zimowe 205/55 R16 komplet",
                 description: "Komplet 4 opon zimowych Michelin. Bieżnik 6mm, używane jeden sezon.",
@@ -586,11 +586,11 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         // Nieruchomości offers
-        offers.AddRange(new[]
-        {
+        offers.AddRange(
+        [
             new Offer(
                 title: "Mieszkanie 3-pokojowe Kraków",
                 description: "Przestronne mieszkanie 65m2 w Krakowie. 3 pokoje, kuchnia, łazienka. Balkon, piwnica, miejsce parkingowe.",
@@ -640,7 +640,7 @@ public static class SeedData
                 ],
                 availability: 1
             ),
-        });
+        ]);
 
         await dbContext.Set<Offer>().AddRangeAsync(offers);
         await dbContext.SaveChangesAsync();

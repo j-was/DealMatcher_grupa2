@@ -11,6 +11,11 @@ public class Get(IMediator mediator)
         AllowAnonymous();
         Version(1);
         Get("/categories/{CategoryName}/properties");
+        Summary(s =>
+        {
+            s.Summary = "Get properties for a specific category";
+            s.Description = "Returns all configurable properties for the given category";
+        });
     }
 
     public override async Task HandleAsync(GetPropertiesRequest req, CancellationToken ct)

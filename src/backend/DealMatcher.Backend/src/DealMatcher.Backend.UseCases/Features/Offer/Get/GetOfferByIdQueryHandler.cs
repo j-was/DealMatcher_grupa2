@@ -26,6 +26,6 @@ public sealed class GetOfferByIdQueryHandler(
             offerDTO = mapper.Map<OfferDTO>(new OfferProfile.OfferInfo(offer, seller, category));
         }
 
-        return offer is null ? Result.NotFound() : Result.Success(offerDTO);
+        return Result.Success(offerDTO);
     }
 }

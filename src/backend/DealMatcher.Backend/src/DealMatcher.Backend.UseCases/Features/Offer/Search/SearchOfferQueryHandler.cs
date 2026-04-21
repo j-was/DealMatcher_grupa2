@@ -7,6 +7,10 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
     {
         var offers = await offersRepository.ListAsync(cancellationToken);
         var searchedOffers = offers.Where(o => ValidOffer(o, request)).Take(request.Limit).ToList();
+        if (searchedOffers.Count == 0)
+        {
+            return Result.NoContent();
+        }
 
         var response = mapper.Map<List<OfferDTO>>(searchedOffers);
 

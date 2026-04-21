@@ -14,4 +14,8 @@ public sealed class CategoryProperty : DealMatcherEntityBase, IAggregateRoot
         this.Type = Type;
         this.Options = Options;
     }
+
+#pragma warning disable CS8618
+    private CategoryProperty() { /* EF */ }
+#pragma warning restore CS8618
 }

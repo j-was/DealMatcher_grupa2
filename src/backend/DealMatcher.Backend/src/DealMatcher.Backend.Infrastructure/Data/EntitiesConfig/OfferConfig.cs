@@ -13,12 +13,18 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
           .OnDelete(DeleteBehavior.Restrict)
           .IsRequired();
 
+        builder.HasOne<Category>()
+            .WithMany()
+            .HasForeignKey(o => o.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
         builder.Property(o => o.Title)
-            .HasMaxLength(OfferConstants.TitleMaxLength)
+            .HasMaxLength(DataSchemaConstants.TitleMaxLength)
             .IsRequired();
 
         builder.Property(o => o.Description)
-            .HasMaxLength(OfferConstants.DescriptionMaxLength)
+            .HasMaxLength(DataSchemaConstants.DescriptionMaxLength)
             .IsRequired();
 
         builder.Property(o => o.Price)
@@ -35,11 +41,11 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
           .IsRequired();
 
         builder.PrimitiveCollection(o => o.Tags)
-          .ElementType(t => t.HasMaxLength(OfferConstants.TagMaxLength))
+          .ElementType(t => t.HasMaxLength(DataSchemaConstants.TagMaxLength))
           .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.PrimitiveCollection(o => o.ImageUrls)
-          .ElementType(t => t.HasMaxLength(OfferConstants.ImageUrlMaxLength))
+          .ElementType(t => t.HasMaxLength(DataSchemaConstants.ImageUrlMaxLength))
           .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.OwnsMany(o => o.Properties, prop =>
@@ -47,11 +53,16 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
             prop.ToTable("OfferProperties");
             prop.WithOwner().HasForeignKey("OfferId");
             prop.HasIndex(p => p.Name);
-            prop.Property(p => p.Name).HasMaxLength(OfferConstants.PropertyNameMaxLength).IsRequired();
-            prop.Property(p => p.Value).HasMaxLength(OfferConstants.PropertyMaxValue).IsRequired();
+            prop.Property(p => p.Name).HasMaxLength(DataSchemaConstants.PropertyNameMaxLength).IsRequired();
+            prop.Property(p => p.Value).HasMaxLength(DataSchemaConstants.PropertyValueMaxLength).IsRequired();
         });
 
         builder.Navigation(o => o.Properties)
           .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        builder.HasIndex(o => o.SellerId);
+        builder.HasIndex(o => o.CategoryId);
+        builder.HasIndex(o => o.Status);
+        builder.HasIndex(o => o.Price);
     }
 }

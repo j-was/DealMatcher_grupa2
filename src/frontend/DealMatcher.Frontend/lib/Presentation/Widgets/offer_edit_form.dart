@@ -140,16 +140,16 @@ class _OfferEditFormState extends State<OfferEditForm> {
         for (final property in properties) {
           final existing = existingMap[property.name];
           switch (property.type) {
-            case 2: // boolean
+            case "BOOLEAN": 
               _propertyValues[property.name] = existing == 'true';
               break;
-            case 3: // select
+            case "SELECT":
               final firstOption = property.options.isNotEmpty
                   ? property.options.first
                   : null;
               _propertyValues[property.name] = existing ?? firstOption;
               break;
-            default: // text (0) / numeric (1)
+            default: // text  / numeric 
               _propertyValues[property.name] = existing ?? '';
               break;
           }
@@ -217,7 +217,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
 
   Widget _buildPropertyField(CategoryProperty property) {
     switch (property.type) {
-      case 0: // text
+      case "TEXT": // text
         return _PropPad(
           child: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),
@@ -230,7 +230,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
                 : null,
           ),
         );
-      case 1: // numeric
+      case "NUMERIC": // numeric
         return _PropPad(
           child: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),
@@ -248,7 +248,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
             },
           ),
         );
-      case 2: // boolean
+      case "BOOLEAN": // boolean
         return _PropPad(
           child: SwitchListTile(
             title: Text(
@@ -261,7 +261,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
             contentPadding: EdgeInsets.zero,
           ),
         );
-      case 3: // select
+      case "SELECT": // select
         return _PropPad(
           child: DropdownButtonFormField<String>(
             initialValue: _propertyValues[property.name] as String?,

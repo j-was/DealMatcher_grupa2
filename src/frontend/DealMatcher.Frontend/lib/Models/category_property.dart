@@ -1,7 +1,7 @@
 class CategoryProperty {
   final int _id;
   final String _name;
-  final int _type;
+  final String _type;
   final List<String> _options;
 
   int get id => _id;

@@ -13,7 +13,7 @@ class CategoryProperty {
     int id = -1,
     required String name,
     required String description,
-    required int type,
+    required String type,
     required List<String> options,
   }) : _id = id,
        _name = name,

@@ -6,7 +6,7 @@ class CategoryProperty {
 
   int get id => _id;
   String get name => _name;
-  int get type => _type;
+  String get type => _type;
   List<String> get options => _options;
 
   const CategoryProperty({

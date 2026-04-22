@@ -34,6 +34,6 @@ global using Serilog.Extensions.Logging;
 global using Shouldly;
 global using Xunit;
 global using CartItemEntity = DealMatcher.Backend.Core.Aggregates.Cart.CartItem;
-global using CategoryEntity = DealMatcher.Backend.Core.Aggregates.Category.CategoryEnity;
+global using CategoryEntity = DealMatcher.Backend.Core.Aggregates.Category.Category;
 global using OfferEntity = DealMatcher.Backend.Core.Aggregates.Offer.Offer;
 global using UserEntity = DealMatcher.Backend.Core.Aggregates.User.User;

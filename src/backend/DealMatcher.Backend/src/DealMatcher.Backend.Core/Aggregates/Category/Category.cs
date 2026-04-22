@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.Category;
 
-public sealed class CategoryEnity :
+public sealed class Category :
     DealMatcherEntityBase,
     IAggregateRoot
 {
@@ -8,7 +8,7 @@ public sealed class CategoryEnity :
     public string Description { get; private set; }
     public List<CategoryProperty> Properties { get; private set; }
 
-    public CategoryEnity(string name, string description, List<CategoryProperty>? properties = null)
+    public Category(string name, string description, List<CategoryProperty>? properties = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
@@ -29,7 +29,7 @@ public sealed class CategoryEnity :
     }
 
 #pragma warning disable CS8618
-    private CategoryEnity() { /* EF */ }
+    private Category() { /* EF */ }
 #pragma warning restore CS8618
 
     private static void ValidateProperties(IEnumerable<CategoryProperty> properties)

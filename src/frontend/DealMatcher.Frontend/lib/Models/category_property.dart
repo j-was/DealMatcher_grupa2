@@ -1,19 +1,19 @@
 class CategoryProperty {
   final int _id;
   final String _name;
-  final int _type;
+  final String _type;
   final List<String> _options;
 
   int get id => _id;
   String get name => _name;
-  int get type => _type;
+  String get type => _type;
   List<String> get options => _options;
 
   const CategoryProperty({
     int id = -1,
     required String name,
     required String description,
-    required int type,
+    required String type,
     required List<String> options,
   }) : _id = id,
        _name = name,

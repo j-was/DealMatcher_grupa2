@@ -5,7 +5,7 @@ namespace DealMatcher.Backend.UseCases.Features.Offer.Get;
 public sealed class GetOfferByIdQueryHandler(
     IReadRepository<OfferEntity> offersRepository,
     IReadRepository<UserEntity> usersRepository,
-    IReadRepository<CategoryEnity> categoriesRepository,
+    IReadRepository<CategoryEntity> categoriesRepository,
     IMapper mapper) :
     IQueryHandler<GetOfferByIdQuery, Result<OfferDTO>>
 {

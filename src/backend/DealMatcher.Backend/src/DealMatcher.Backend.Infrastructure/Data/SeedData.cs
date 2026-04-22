@@ -8,7 +8,7 @@ public static class SeedData
 
     public static async Task InitializeAsync(AppDbContext dbContext)
     {
-        if (!dbContext.Set<CategoryEnity>().Any())
+        if (!dbContext.Set<Category>().Any())
         {
             await SeedCategoriesAndCategoryProperties(dbContext);
         }
@@ -25,7 +25,7 @@ public static class SeedData
 
     public static async Task SeedCategoriesAndCategoryProperties(AppDbContext dbContext)
     {
-        var categories = new List<CategoryEnity>
+        var categories = new List<Category>
         {
             new(
                 "Inna",
@@ -165,7 +165,7 @@ public static class SeedData
             ),
         };
 
-        await dbContext.Set<CategoryEnity>().AddRangeAsync(categories);
+        await dbContext.Set<Category>().AddRangeAsync(categories);
         await dbContext.SaveChangesAsync();
     }
 
@@ -196,7 +196,7 @@ public static class SeedData
             .ToList();
 
         // Create a dictionary for category lookup by name
-        var categories = await dbContext.Set<CategoryEnity>()
+        var categories = await dbContext.Set<Category>()
             .ToDictionaryAsync(c => c.Name, c => c.Id);
 
         var offers = new List<Offer>();

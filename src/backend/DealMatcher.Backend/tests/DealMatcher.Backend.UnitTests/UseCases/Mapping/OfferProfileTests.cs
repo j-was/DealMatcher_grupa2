@@ -272,9 +272,9 @@ public class OfferProfileTests
         return new User("placeholder@mail.com", "John", "Doe");
     }
 
-    private static CategoryEnity CreateCategoryEntity()
+    private static Category CreateCategoryEntity()
     {
-        return new CategoryEnity
+        return new Category
         (
             "Electronics",
             "Electronic devices and accessories"

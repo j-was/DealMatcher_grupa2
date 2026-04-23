@@ -65,19 +65,19 @@ class SearchFormState extends State<SearchForm> {
 
         for (final property in properties) {
           switch (property.type) {
-            case 0:
+            case "TEXT":
               _textPropertiesControllers[property.name] = [
                 TextEditingController(),
               ];
               _propertyValues[property.name] = [''];
               break;
-            case 1:
+            case "NUMBER":
               _propertyValues[property.name] = ['', ''];
               break;
-            case 2:
+            case "BOOLEAN":
               _propertyValues[property.name] = [false];
               break;
-            case 3:
+            case "SELECT":
               _propertyValues[property.name] = [
                 property.options.isNotEmpty ? property.options.first : null,
               ];
@@ -95,7 +95,7 @@ class SearchFormState extends State<SearchForm> {
 
   Widget buildPropertyField(CategoryProperty property) {
     switch (property.type) {
-      case 0:
+      case "TEXT":
         final controllers = _textPropertiesControllers[property.name] ??= [
           TextEditingController(),
         ];
@@ -148,7 +148,7 @@ class SearchFormState extends State<SearchForm> {
             ],
           ),
         );
-      case 1:
+      case "NUMBER":
         final values = (_propertyValues[property.name]) ?? ['', ''];
         return SeparatedWidget(
           widget: Column(
@@ -222,7 +222,7 @@ class SearchFormState extends State<SearchForm> {
             ],
           ),
         );
-      case 2:
+      case "BOOLEAN":
         return SeparatedWidget(
           widget: SwitchListTile(
             title: Text(
@@ -237,7 +237,7 @@ class SearchFormState extends State<SearchForm> {
             },
           ),
         );
-      case 3:
+      case "SELECT":
         final selectedValues =
             (_propertyValues[property.name])?.cast<String>() ?? [];
         return SeparatedWidget(

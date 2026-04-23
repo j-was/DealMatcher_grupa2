@@ -85,10 +85,10 @@ class AddOfferFormState extends State<AddOfferForm> {
 
         for (final property in properties) {
           switch (property.type) {
-            case 2:
+            case "BOOLEAN":
               _propertyValues[property.name] = false;
               break;
-            case 3:
+            case "SELECT":
               _propertyValues[property.name] = property.options.isNotEmpty
                   ? property.options.first
                   : null;
@@ -106,7 +106,7 @@ class AddOfferFormState extends State<AddOfferForm> {
 
   Widget buildPropertyField(CategoryProperty property) {
     switch (property.type) {
-      case 0:
+      case "TEXT":
         return SeparatedWidget(
           widget: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),
@@ -124,7 +124,7 @@ class AddOfferFormState extends State<AddOfferForm> {
             },
           ),
         );
-      case 1:
+      case "NUMBER":
         return SeparatedWidget(
           widget: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),
@@ -145,7 +145,7 @@ class AddOfferFormState extends State<AddOfferForm> {
             },
           ),
         );
-      case 2:
+      case "BOOLEAN":
         return SeparatedWidget(
           widget: SwitchListTile(
             title: Text(
@@ -160,7 +160,7 @@ class AddOfferFormState extends State<AddOfferForm> {
             },
           ),
         );
-      case 3:
+      case "SELECT":
         return SeparatedWidget(
           widget: DropdownButtonFormField<String>(
             initialValue: _propertyValues[property.name] as String?,

@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Category;
-
 namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
 
 public sealed class CategoryProfile : Profile

@@ -1,7 +1,9 @@
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
 import 'package:frontend/Presentation/Pages/cart_page.dart';
+import 'package:frontend/Presentation/Pages/conversation_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
+import 'package:frontend/Presentation/Pages/my_conversations_page.dart';
 import 'package:frontend/Presentation/Pages/register_page.dart';
 import 'package:frontend/Presentation/Pages/login_page.dart';
 import 'package:frontend/Presentation/Pages/search_offers_page.dart';
@@ -22,7 +24,8 @@ final router = GoRouter(
     final isProtectedRoute =
         location == '/offer' ||
         location == '/profile' ||
-        location.startsWith('/my-offers');
+        location.startsWith('/my-offers') ||
+        location.startsWith('/chats');
 
     if (!isLoggedIn && isProtectedRoute) {
       return '/login';
@@ -77,6 +80,21 @@ final router = GoRouter(
           },
         ),
         GoRoute(path: 'cart', builder: (context, state) => CartPage()),
+        GoRoute(
+          path: 'conversations',
+          builder: (context, state) => const MyConversationsPage(),
+          routes: [
+            GoRoute(
+              path: ':conversationId',
+              builder: (context, state) {
+                final conversationId = int.parse(
+                  state.pathParameters['conversationId']!,
+                );
+                return ConversationPage(conversationId: conversationId);
+              },
+            ),
+          ],
+        ),
       ],
     ),
   ],

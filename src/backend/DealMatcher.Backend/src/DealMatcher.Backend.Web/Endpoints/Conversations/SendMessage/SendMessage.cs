@@ -1,11 +1,10 @@
 using System.Security.Claims;
 using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
 using DealMatcher.Backend.UseCases.Features.Conversation.SendMessage;
-using DealMatcher.Backend.Web.Endpoints.Conversations.Messages;
 using DealMatcher.Backend.Web.Realtime;
 using Microsoft.AspNetCore.SignalR;
 
-namespace DealMatcher.Backend.Web.Endpoints.Conversations;
+namespace DealMatcher.Backend.Web.Endpoints.Conversations.SendMessage;
 
 public class SendMessage(IMediator mediator, IHubContext<ConversationHub> hubContext)
     : Endpoint<SendMessageRequest, MessageDTO>

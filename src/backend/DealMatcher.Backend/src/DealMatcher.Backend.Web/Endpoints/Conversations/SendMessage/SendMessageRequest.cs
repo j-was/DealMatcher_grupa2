@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Conversations.Messages;
+namespace DealMatcher.Backend.Web.Endpoints.Conversations.SendMessage;
 
 public sealed class SendMessageRequest
 {

@@ -8,6 +8,10 @@ namespace DealMatcher.Backend.Infrastructure.Migrations;
 /// <inheritdoc />
 public partial class AddConversations : Migration
 {
+    private static readonly string[] OfferBuyerSellerColumns =
+    [
+        "OfferId", "BuyerId", "SellerId"
+    ];
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
@@ -95,7 +99,7 @@ public partial class AddConversations : Migration
         migrationBuilder.CreateIndex(
             name: "IX_Conversations_OfferId_BuyerId_SellerId",
             table: "Conversations",
-            columns: new[] { "OfferId", "BuyerId", "SellerId" },
+            columns: OfferBuyerSellerColumns,
             unique: true);
 
         migrationBuilder.CreateIndex(

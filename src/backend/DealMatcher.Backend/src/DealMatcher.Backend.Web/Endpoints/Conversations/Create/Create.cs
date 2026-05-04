@@ -2,7 +2,7 @@ using System.Security.Claims;
 using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
 using DealMatcher.Backend.UseCases.Features.Conversation.Create;
 
-namespace DealMatcher.Backend.Web.Endpoints.Conversations;
+namespace DealMatcher.Backend.Web.Endpoints.Conversations.Create;
 
 public class Create(IMediator mediator) : Endpoint<CreateConversationRequest, ConversationDTO>
 {

@@ -2,7 +2,7 @@ using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
 
 namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
 
-public sealed class ConversationProfile: Profile
+public sealed class ConversationProfile : Profile
 {
     public ConversationProfile()
     {
@@ -24,16 +24,16 @@ public sealed class ConversationProfile: Profile
             .ForCtorParam(nameof(ConversationDTO.Status), opt => opt.MapFrom(src => src.Status.ToString()))
             .ForCtorParam(nameof(ConversationDTO.CreatedAt), opt => opt.MapFrom(src => src.CreatedAt));
 
-         CreateMap<ConversationEntity, ConversationDetailsDTO>()
-            .ForCtorParam(nameof(ConversationDetailsDTO.Id), opt => opt.MapFrom(src => src.Id))
-            .ForCtorParam(nameof(ConversationDetailsDTO.OfferId), opt => opt.MapFrom(src => src.OfferId))
-            .ForCtorParam(nameof(ConversationDetailsDTO.BuyerId), opt => opt.MapFrom(src => src.BuyerId))
-            .ForCtorParam(nameof(ConversationDetailsDTO.SellerId), opt => opt.MapFrom(src => src.SellerId))
-            .ForCtorParam(nameof(ConversationDetailsDTO.LastMessage), opt => opt.MapFrom(src => src.LastMessage))
-            .ForCtorParam(nameof(ConversationDetailsDTO.LastMessageAt), opt => opt.MapFrom(src => src.LastMessageAt))
-            .ForCtorParam(nameof(ConversationDetailsDTO.UnreadCount), opt => opt.MapFrom(src => src.UnreadCount))
-            .ForCtorParam(nameof(ConversationDetailsDTO.Status), opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForCtorParam(nameof(ConversationDetailsDTO.CreatedAt), opt => opt.MapFrom(src => src.CreatedAt))
-            .ForCtorParam(nameof(ConversationDetailsDTO.Messages), opt => opt.MapFrom(src => src.Messages));
+        CreateMap<ConversationEntity, ConversationDetailsDTO>()
+           .ForCtorParam(nameof(ConversationDetailsDTO.Id), opt => opt.MapFrom(src => src.Id))
+           .ForCtorParam(nameof(ConversationDetailsDTO.OfferId), opt => opt.MapFrom(src => src.OfferId))
+           .ForCtorParam(nameof(ConversationDetailsDTO.BuyerId), opt => opt.MapFrom(src => src.BuyerId))
+           .ForCtorParam(nameof(ConversationDetailsDTO.SellerId), opt => opt.MapFrom(src => src.SellerId))
+           .ForCtorParam(nameof(ConversationDetailsDTO.LastMessage), opt => opt.MapFrom(src => src.LastMessage))
+           .ForCtorParam(nameof(ConversationDetailsDTO.LastMessageAt), opt => opt.MapFrom(src => src.LastMessageAt))
+           .ForCtorParam(nameof(ConversationDetailsDTO.UnreadCount), opt => opt.MapFrom(src => src.UnreadCount))
+           .ForCtorParam(nameof(ConversationDetailsDTO.Status), opt => opt.MapFrom(src => src.Status.ToString()))
+           .ForCtorParam(nameof(ConversationDetailsDTO.CreatedAt), opt => opt.MapFrom(src => src.CreatedAt))
+           .ForCtorParam(nameof(ConversationDetailsDTO.Messages), opt => opt.MapFrom(src => src.Messages));
     }
 }

@@ -16,7 +16,7 @@ public sealed class MessageConfig
             .HasForeignKey(m => m.SenderId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
-        
+
         builder.HasOne<Conversation>()
             .WithMany(c => c.Messages)
             .HasForeignKey(m => m.ConversationId)

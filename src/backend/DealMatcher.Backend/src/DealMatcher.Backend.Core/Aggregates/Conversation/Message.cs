@@ -4,9 +4,9 @@ public class Message : DealMatcherEntityBase,
     IAggregateRoot
 {
     public int ConversationId { get; private set; }
-    public int SenderId {get; private set;}
-    public string Content {get; private set;}
-    public MessageStatus Status {get; private set;}
+    public int SenderId { get; private set; }
+    public string Content { get; private set; }
+    public MessageStatus Status { get; private set; }
 
     public Message(
         int conversationId,
@@ -21,12 +21,12 @@ public class Message : DealMatcherEntityBase,
         Status = MessageStatus.SENT;
     }
 
-    #pragma warning disable CS8618
+#pragma warning disable CS8618
     private Message()
     {
         /* EF */
     }
-    #pragma warning restore CS8618
+#pragma warning restore CS8618
 
     public void MarkAsDelivered()
     {

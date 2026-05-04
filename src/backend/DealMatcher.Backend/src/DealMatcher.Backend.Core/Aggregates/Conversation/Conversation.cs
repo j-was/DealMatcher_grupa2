@@ -3,19 +3,19 @@ namespace DealMatcher.Backend.Core.Aggregates.Conversation;
 public class Conversation : DealMatcherEntityBase,
     IAggregateRoot
 {
-    public int OfferId {get; private set;}
-    public int BuyerId {get; private set;}
-    public int SellerId {get; private set;}
+    public int OfferId { get; private set; }
+    public int BuyerId { get; private set; }
+    public int SellerId { get; private set; }
 
-    public string LastMessage {get; private set;}
-    public DateTime LastMessageAt {get; private set;}
-    public int UnreadCount {get; private set;}
-    public ConversationStatus Status {get; private set;}
-    public List<Message> Messages {get; private set;} = [];
+    public string LastMessage { get; private set; }
+    public DateTime LastMessageAt { get; private set; }
+    public int UnreadCount { get; private set; }
+    public ConversationStatus Status { get; private set; }
+    public List<Message> Messages { get; private set; } = [];
 
     public Conversation(
         int offerId,
-        int buyerId, 
+        int buyerId,
         int sellerId,
         string initialMessage
     )
@@ -37,12 +37,12 @@ public class Conversation : DealMatcherEntityBase,
         AddMessage(buyerId, initialMessage);
     }
 
-    #pragma warning disable CS8618
+#pragma warning disable CS8618
     private Conversation()
     {
         /* EF */
     }
-    #pragma warning restore CS8618
+#pragma warning restore CS8618
 
     public Message AddMessage(int senderId, string content)
     {

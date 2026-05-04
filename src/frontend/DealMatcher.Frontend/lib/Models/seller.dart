@@ -16,4 +16,10 @@ class Seller {
     : _id = json['id'] ?? 0,
       _name = json['name'] ?? '',
       _rating = (json['rating'] ?? 0).toDouble();
+
+  Map<String, dynamic> toJson() => {
+    'id': _id,
+    'name': _name,
+    'rating': _rating,
+  };
 }

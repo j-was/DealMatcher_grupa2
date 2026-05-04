@@ -61,6 +61,14 @@ class MainSideMenu extends StatelessWidget {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.chat_bubble_outline),
+                  title: const Text('Moje wiadomości'),
+                  onTap: () {
+                    context.pop();
+                    context.go('/conversations');
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.logout),
                   title: const Text('Wyloguj'),
                   onTap: () => _logout(context),

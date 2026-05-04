@@ -1,5 +1,6 @@
 using System.Text;
 using DealMatcher.Backend.Web.Configurations;
+using DealMatcher.Backend.Web.Realtime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -25,6 +26,7 @@ public sealed class Program
         try
         {
             builder.Services.AddServiceConfigs(appLogger, builder);
+            builder.Services.AddSignalR();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -83,6 +85,7 @@ public sealed class Program
             app.UseCors("AllowFrontend");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.MapHub<ConversationHub>("/hubs/conversations");
 
             await app.UseAppMiddlewareAndSeedDatabase();
 

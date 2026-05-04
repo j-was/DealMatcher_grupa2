@@ -165,6 +165,7 @@ class _OfferInCartState extends State<OfferInCart> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 12),
                   ],
                 ),
               ],

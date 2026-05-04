@@ -4,6 +4,7 @@ import 'package:frontend/Models/cart_total.dart';
 import 'package:frontend/Presentation/Widgets/cart.dart';
 import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
 import 'package:frontend/Services/cart_service.dart';
+import 'package:frontend/Presentation/Widgets/purchase_form.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -17,7 +18,6 @@ class _CartPageState extends State<CartPage> {
 
   late Future<List<CartItem>> _cartFuture;
   late Future<CartTotal> _totalFuture;
-
   @override
   void initState() {
     super.initState();
@@ -139,6 +139,34 @@ class _CartPageState extends State<CartPage> {
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headlineMedium
                                   ?.copyWith(fontWeight: FontWeight.w800),
+                            ),
+                            const SizedBox(height: 16),
+
+                            Center(
+                              child: SizedBox(
+                                width: 220,
+                                child: ElevatedButton(
+                                  onPressed: items.isEmpty
+                                      ? null
+                                      : () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (_) => Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(
+                                                  context,
+                                                ).viewInsets.bottom,
+                                              ),
+                                              child: PurchaseForm(
+                                                cartItems: items,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                  child: const Text('Złóż zamówienie'),
+                                ),
+                              ),
                             ),
                           ],
                         ),

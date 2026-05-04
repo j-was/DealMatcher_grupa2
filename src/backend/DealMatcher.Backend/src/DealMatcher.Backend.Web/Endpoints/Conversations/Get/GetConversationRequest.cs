@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Conversation.Get;
+namespace DealMatcher.Backend.Web.Endpoints.Conversations.Get;
 
 public sealed class GetConversationRequest
 {

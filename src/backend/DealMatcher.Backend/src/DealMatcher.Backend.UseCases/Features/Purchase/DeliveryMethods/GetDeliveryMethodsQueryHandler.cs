@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.UseCases.Features.Purchase.DeliveryMethods;
 
-public sealed class GetDeliveryMethodsQueryHandlerr(
+public sealed class GetDeliveryMethodsQueryHandler(
     IReadRepository<DeliveryMethod> methodsRepository,
     IMapper mapper) :
     IQueryHandler<GetDeliveryMethodsQuery, Result<List<DeliveryMethodDTO>>>

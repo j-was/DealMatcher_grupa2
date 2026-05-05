@@ -15,6 +15,8 @@ global using DealMatcher.Backend.Core.Aggregates.Conversation.Specifications;
 global using DealMatcher.Backend.Core.Aggregates.Offer;
 global using DealMatcher.Backend.Core.Aggregates.Offer.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.Offer.Specifications;
+global using DealMatcher.Backend.Core.Aggregates.Payment;
+global using DealMatcher.Backend.Core.Aggregates.Payment.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User;
 global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User.Specifications;

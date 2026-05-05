@@ -4,6 +4,7 @@ import 'package:frontend/Presentation/Pages/cart_page.dart';
 import 'package:frontend/Presentation/Pages/conversation_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
 import 'package:frontend/Presentation/Pages/my_conversations_page.dart';
+import 'package:frontend/Presentation/Pages/payment_page.dart';
 import 'package:frontend/Presentation/Pages/register_page.dart';
 import 'package:frontend/Presentation/Pages/login_page.dart';
 import 'package:frontend/Presentation/Pages/search_offers_page.dart';
@@ -100,6 +101,15 @@ final router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'payment/:paymentMethodId/:price',
+          builder: (context, state) {
+            final paymentMethodId = state.pathParameters['paymentMethodId'];
+            final price = double.parse(state.pathParameters['price']!);
+
+            return PaymentPage(paymentMethodId: paymentMethodId!, price: price);
+          },
         ),
       ],
     ),

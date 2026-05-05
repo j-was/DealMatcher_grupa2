@@ -1,4 +1,6 @@
-using DealMatcher.Backend.Infrastructure.Authentication;
+
+
+using DealMatcher.Backend.Core.Aggregates.Payment;
 
 namespace DealMatcher.Backend.Infrastructure.Data;
 
@@ -21,6 +23,68 @@ public static class SeedData
         {
             await SeedOffers(dbContext);
         }
+
+        if (!dbContext.Set<PaymentMethod>().Any())
+        {
+            await SeedPaymentMethods(dbContext);
+        }
+
+        if (!dbContext.Set<DeliveryMethod>().Any())
+        {
+            await SeedDeliveryMethods(dbContext);
+        }
+    }
+
+    public static async Task SeedPaymentMethods(AppDbContext dbContext)
+    {
+        var paymentMethods = new List<PaymentMethod>
+    {
+        new(
+            "blik",
+            "BLIK",
+            "Polski Standard Płatności",
+            DefaultImageUrl
+        ),
+        new(
+            "card",
+            "Karta płatnicza",
+            "Visa / Mastercard / American Express",
+            DefaultImageUrl
+        ),
+        new(
+            "transfer",
+            "Przelew bankowy",
+            "Szybki przelew online",
+            DefaultImageUrl
+        ),
+    };
+
+        await dbContext.Set<PaymentMethod>().AddRangeAsync(paymentMethods);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public static async Task SeedDeliveryMethods(AppDbContext dbContext)
+    {
+        var deliveryMethods = new List<DeliveryMethod>
+    {
+        new(
+            "parcel_locker",
+            "Paczkomat",
+            "Dostawa do paczkomatu InPost",
+            12.99m,
+            2
+        ),
+        new(
+            "courier",
+            "Kurier",
+            "Dostawa kurierem pod wskazany adres",
+            19.99m,
+            1
+        ),
+    };
+
+        await dbContext.Set<DeliveryMethod>().AddRangeAsync(deliveryMethods);
+        await dbContext.SaveChangesAsync();
     }
 
     public static async Task SeedCategoriesAndCategoryProperties(AppDbContext dbContext)

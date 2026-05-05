@@ -44,6 +44,8 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 // Seed the database with test data.
                 SeedData.SeedCategoriesAndCategoryProperties(db).Wait();
                 SeedData.SeedOffers(db).Wait();
+                SeedData.SeedDeliveryMethods(db).Wait();
+                SeedData.SeedPaymentMethods(db).Wait();
                 //}
             }
             catch (Exception ex)

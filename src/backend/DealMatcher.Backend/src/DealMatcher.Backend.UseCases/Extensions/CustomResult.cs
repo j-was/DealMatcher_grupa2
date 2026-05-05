@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.UseCases.Extensions;
 
-public partial class CustomResult :  OneOfBase<Result, RedirectResult>
+public partial class CustomResult : OneOfBase<Result, RedirectResult>
 {
     protected CustomResult(OneOf<Result, RedirectResult> input) : base(input) { }
     public static implicit operator CustomResult(Result result) => new(result);
@@ -23,7 +23,7 @@ public partial class CustomResult :  OneOfBase<Result, RedirectResult>
     public static CustomResult Redirect(string url, bool permanent = false)
         => new RedirectResult(url, permanent);
 
-    public static  CustomResult Error(params string[] errors)
+    public static CustomResult Error(params string[] errors)
     {
         if (errors.Length == 0)
             return Error("An error occurred");

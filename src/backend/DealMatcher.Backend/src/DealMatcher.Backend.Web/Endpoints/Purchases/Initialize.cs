@@ -1,3 +1,5 @@
+using DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
+
 namespace DealMatcher.Backend.Web.Endpoints.Purchases;
 
 public class Initialize(IMediator mediator) : Endpoint<InitializePurchaseRequest>
@@ -24,7 +26,7 @@ public class Initialize(IMediator mediator) : Endpoint<InitializePurchaseRequest
             return;
         }
 
-        var request = new AddToCartCommand(userId, req.OfferId, req.Quantity);
+        var request = new InitializePurchaseCommand(userId, req.OfferId, req.PaymentMethodId, req.Quantity);
         var result = await mediator.Send(request, ct);
 
         await result.SendResult(this, ct);

@@ -1,15 +1,9 @@
 namespace DealMatcher.Backend.UseCases.Extensions;
 
-public class RedirectResult
+public class RedirectResult(string url, bool isPermanent = false)
 {
-    public string Url { get; }
-    public bool IsPermanent { get; }
-
-    public RedirectResult(string url, bool isPermanent = false)
-    {
-        Url = url ?? throw new ArgumentNullException(nameof(url));
-        IsPermanent = isPermanent;
-    }
+    public string Url { get; } = url ?? throw new ArgumentNullException(nameof(url));
+    public bool IsPermanent { get; } = isPermanent;
 }
 
 public static class RedirectResultExtensions

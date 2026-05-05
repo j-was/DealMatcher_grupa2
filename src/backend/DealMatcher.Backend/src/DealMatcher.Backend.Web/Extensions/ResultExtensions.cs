@@ -33,15 +33,15 @@ public static class ResultExtensions
         if (result.IsRedirect)
         {
             var redirect = result.AsT1;
-            await redirect.SendResult(endpoint, ct);
+            await redirect.SendResult(endpoint);
             return;
         }
 
-        Result standardResult = result.AsT0;
+        var standardResult = result.AsT0;
         await standardResult.SendResult(endpoint, ct);
     }
 
-    public static async Task SendResult(this RedirectResult redirectResult, IEndpoint endpoint, CancellationToken ct = default)
+    public static async Task SendResult(this RedirectResult redirectResult, IEndpoint endpoint)
     {
         var response = endpoint.HttpContext.Response;
 
@@ -54,7 +54,7 @@ public static class ResultExtensions
             response.StatusCode = 303;
         }
 
-        response.Headers["Location"] = redirectResult.Url;
+        response.Headers.Location = redirectResult.Url;
         await response.CompleteAsync();
     }
 

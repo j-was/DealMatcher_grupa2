@@ -15,3 +15,7 @@ global using FluentValidation;
 global using MediatR;
 global using Serilog;
 global using Serilog.Extensions.Logging;
+global using DealMatcher.Backend.UseCases.Features.Cart.Add;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using DealMatcher.Backend.UseCases.Extensions;

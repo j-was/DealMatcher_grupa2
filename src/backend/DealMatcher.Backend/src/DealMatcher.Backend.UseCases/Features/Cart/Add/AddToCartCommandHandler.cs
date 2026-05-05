@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
-
 namespace DealMatcher.Backend.UseCases.Features.Cart.Add;
 
 public sealed class AddToCartCommandHandler(

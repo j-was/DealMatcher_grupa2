@@ -13,6 +13,7 @@ import 'package:frontend/Presentation/Pages/profile_page.dart';
 import 'package:frontend/Services/auth_service.dart';
 import 'package:frontend/Presentation/Pages/my_offers_page.dart';
 import 'package:frontend/Presentation/Pages/offer_edit_page.dart';
+import 'package:frontend/Presentation/Pages/delivery_page.dart';
 
 final router = GoRouter(
   refreshListenable: AuthService.instance,
@@ -24,6 +25,7 @@ final router = GoRouter(
     final isProtectedRoute =
         location == '/offer' ||
         location == '/profile' ||
+        location == '/delivery' ||
         location.startsWith('/my-offers') ||
         location.startsWith('/chats');
 
@@ -80,6 +82,10 @@ final router = GoRouter(
           },
         ),
         GoRoute(path: 'cart', builder: (context, state) => CartPage()),
+        GoRoute(
+          path: 'delivery',
+          builder: (context, state) => const DeliveryPage(),
+        ),
         GoRoute(
           path: 'conversations',
           builder: (context, state) => const MyConversationsPage(),

@@ -8,13 +8,13 @@ public sealed class PaymentMethodProfile : Profile
     public PaymentMethodProfile()
     {
         CreateMap<PaymentMethod, PaymentMethodDTO>()
-            .ForCtorParam(nameof(PaymentMethodDTO.Id), 
+            .ForCtorParam(nameof(PaymentMethodDTO.Id),
                 opt => opt.MapFrom(src => src.StringId))
-            .ForCtorParam(nameof(PaymentMethodDTO.Name), 
+            .ForCtorParam(nameof(PaymentMethodDTO.Name),
                 opt => opt.MapFrom(src => src.Name))
-            .ForCtorParam(nameof(PaymentMethodDTO.Provider), 
+            .ForCtorParam(nameof(PaymentMethodDTO.Provider),
                 opt => opt.MapFrom(src => src.Provider))
-            .ForCtorParam(nameof(PaymentMethodDTO.Icon), 
+            .ForCtorParam(nameof(PaymentMethodDTO.Icon),
                 opt => opt.MapFrom(src => src.Icon));
     }
 }

@@ -1,7 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.Cart.Add;
-
 namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
 public class Add(IMediator mediator) : Endpoint<AddToCartRequest>

@@ -40,4 +40,8 @@ public class DataSchemaConstants
     public const int CartItemQuantityMinValue = 1;
     public const int CartItemQuantityMaxValue = 999;
 
+    public const int PaymentMethodNameMaxLength = 100;
+    public const int PaymentMethodProviderMaxLength = 100;
+    public const int DeliveryMethodNameMaxLength = 100;
+    public const int DeliveryMethodDescriptionMaxLength = 1000;
 }

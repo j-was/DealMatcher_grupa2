@@ -94,4 +94,4 @@ class Offer {
     'createdAt': _createdAt.toIso8601String(),
     'updatedAt': _updatedAt.toIso8601String(),
   };
- }
+}

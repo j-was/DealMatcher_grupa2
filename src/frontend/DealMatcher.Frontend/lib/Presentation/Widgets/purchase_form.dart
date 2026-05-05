@@ -4,6 +4,29 @@ import 'package:frontend/Models/delivery_method.dart';
 import 'package:frontend/Models/payment_method.dart';
 import 'package:frontend/Models/purchase_request.dart';
 import 'package:frontend/Services/purchase_service.dart';
+import 'package:go_router/go_router.dart';
+
+final List<DeliveryMethod> mockDeliveryMethods = [
+  DeliveryMethod(
+    id: 'd1',
+    name: 'Kurier',
+    price: 15.0,
+    estimatedDays: 2,
+    description: '',
+  ),
+  DeliveryMethod(
+    id: 'd2',
+    name: 'Paczkomat',
+    price: 10.0,
+    estimatedDays: 1,
+    description: '',
+  ),
+];
+
+final List<PaymentMethod> mockPaymentMethods = [
+  PaymentMethod(id: 'p1', name: 'BLIK', provider: '', icon: ''),
+  PaymentMethod(id: 'p2', name: 'Karta', provider: '', icon: ''),
+];
 
 class PurchaseForm extends StatefulWidget {
   final List<CartItem> cartItems;
@@ -105,8 +128,8 @@ class _PurchaseFormState extends State<PurchaseForm> {
     setState(() => _isSubmitting = false);
 
     if (failed.isEmpty) {
-      Navigator.of(context).pop();
-
+      // Navigator.of(context).pop();
+      context.go("/delivery");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Złożono zamówienie')));

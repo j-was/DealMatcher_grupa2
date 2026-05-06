@@ -9,13 +9,16 @@ public class InitializePurchaseCommandHandlerTests
 {
     private readonly IRepository<CartItem> _cartItemsRepository;
     private readonly IReadRepository<OfferEntity> _offersRepository;
+    private readonly IConfiguration _configuration;
     private readonly InitializePurchaseCommandHandler _handler;
 
     public InitializePurchaseCommandHandlerTests()
     {
         _cartItemsRepository = Substitute.For<IRepository<CartItem>>();
         _offersRepository = Substitute.For<IReadRepository<OfferEntity>>();
-        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository);
+        _configuration = Substitute.For<IConfiguration>();
+        _configuration["FrontendOrigin"].Returns("");
+        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration);
     }
 
     [Fact]
@@ -215,7 +218,7 @@ public class InitializePurchaseCommandHandlerTests
         result.IsRedirect.ShouldBeTrue();
 
         var redirectResult = result.AsT1;
-        redirectResult.Url.ShouldBe("payment/card/20");
+        redirectResult.Url.ShouldBe("/payment/card/20");
 
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.Received(1)

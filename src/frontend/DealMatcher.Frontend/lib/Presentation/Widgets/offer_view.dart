@@ -151,7 +151,10 @@ class OfferViewState extends State<OfferView> {
                                             strokeWidth: 2,
                                           ),
                                         )
-                                      : const Icon(Icons.chat_bubble_outline),
+                                      : const Icon(
+                                          Icons.chat_bubble_outline,
+                                          color: Colors.black87,
+                                        ),
                                 ),
                               ],
                             ),

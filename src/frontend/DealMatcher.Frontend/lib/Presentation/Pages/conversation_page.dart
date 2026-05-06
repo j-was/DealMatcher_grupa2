@@ -115,9 +115,31 @@ class _ConversationPageState extends State<ConversationPage> {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-        child: Text(
-          message.content,
-          style: const TextStyle(color: Colors.white),
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 280),
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: isMine
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(16),
+              topRight: const Radius.circular(16),
+              bottomLeft: Radius.circular(isMine ? 16 : 4),
+              bottomRight: Radius.circular(isMine ? 4 : 16),
+            ),
+          ),
+          child: Text(
+            message.content,
+            style: TextStyle(
+              color: isMine
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.onSurface,
+              fontSize: 15,
+              height: 1.3,
+            ),
+          ),
         ),
       ),
     );
@@ -174,6 +196,7 @@ class _ConversationPageState extends State<ConversationPage> {
                           decoration: const InputDecoration(
                             hintText: 'Napisz wiadomość...',
                             border: OutlineInputBorder(),
+                            fillColor: Colors.white54,
                           ),
                         ),
                       ),

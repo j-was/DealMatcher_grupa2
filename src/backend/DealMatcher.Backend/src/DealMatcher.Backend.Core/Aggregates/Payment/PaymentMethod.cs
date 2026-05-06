@@ -19,10 +19,11 @@ public sealed class PaymentMethod :
 
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
 
-        StringId = id;
+        StringId = id.Trim();
         Name = name.Trim();
         Provider = provider.Trim();
         Icon = icon.Trim();
+
     }
 
 #pragma warning disable CS8618

@@ -88,7 +88,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
     });
   }
 
-  Future<void> _submitSingleItem(
+  Future<Uri> _submitSingleItem(
     CartItem item,
     String deliveryMethodId,
     String paymentMethodId,
@@ -100,7 +100,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
       quantity: item.quantity,
     );
 
-    await _purchaseService.initializePurchase(request);
+    return await _purchaseService.initializePurchase(request);
   }
 
   Future<void> _submitAll() async {
@@ -113,10 +113,14 @@ class _PurchaseFormState extends State<PurchaseForm> {
 
     final List<String> success = [];
     final List<String> failed = [];
+    Uri? redirectUri;
 
     for (final item in widget.cartItems) {
       try {
-        await _submitSingleItem(item, deliveryId, paymentId);
+        final uri = await _submitSingleItem(item, deliveryId, paymentId);
+
+        redirectUri ??= uri;
+
         success.add(item.offer.title);
       } catch (e) {
         failed.add(item.offer.title);
@@ -128,8 +132,16 @@ class _PurchaseFormState extends State<PurchaseForm> {
     setState(() => _isSubmitting = false);
 
     if (failed.isEmpty) {
-      // Navigator.of(context).pop();
-      context.go("/delivery");
+      if (redirectUri != null) {
+        final route = redirectUri.hasQuery
+            ? '${redirectUri.path}?${redirectUri.query}'
+            : redirectUri.path;
+
+        context.go(route);
+      } else {
+        context.go("/delivery");
+      }
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Złożono zamówienie')));

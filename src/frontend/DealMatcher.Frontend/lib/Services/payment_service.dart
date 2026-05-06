@@ -27,19 +27,32 @@ class PaymentService {
     return List.empty();
   }
 
-  Future<String?> initialize(PurchaseRequest req) async {
+  Future<String> initialize(PurchaseRequest req) async {
     final uri = Uri.parse('$baseUrl/v1/purchases/initialize');
+    final client = http.Client();
 
-    final response = await http.post(
-      uri,
-      headers: {'Accept': 'application/json'},
-      body: req.toJson(),
-    );
+    try {
+      final request = http.Request('POST', uri)
+        ..headers['Accept'] = 'application/json'
+        ..headers['Content-Type'] = 'application/json'
+        ..body = jsonEncode(req.toJson())
+        ..followRedirects = false;
 
-    if (response.statusCode == 303) {
-      return null;
+      final response = await client.send(request);
+
+      if (response.statusCode == 303) {
+        final location = response.headers['location'];
+
+        if (location == null) {
+          throw Exception("Backend nie zwrócił Location");
+        }
+
+        return location;
+      }
+
+      throw Exception("Błąd ${response.statusCode}. Spróbuj ponownie");
+    } finally {
+      client.close();
     }
-
-    return "Błąd ${response.statusCode}. Spróbuj ponownie";
   }
 }

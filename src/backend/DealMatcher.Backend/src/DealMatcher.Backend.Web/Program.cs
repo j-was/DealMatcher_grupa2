@@ -76,7 +76,7 @@ public sealed class Program
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()
-                        .WithExposedHeaders("Content-Disposition");
+                        .WithExposedHeaders("Content-Disposition", "Location");
                 });
             });
 

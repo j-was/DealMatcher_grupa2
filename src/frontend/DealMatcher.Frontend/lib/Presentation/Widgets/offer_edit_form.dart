@@ -230,7 +230,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
                 : null,
           ),
         );
-      case "NUMERIC": // numeric
+      case "NUMBER": // numeric
         return _PropPad(
           child: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),

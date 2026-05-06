@@ -183,7 +183,15 @@ class _CartPageState extends State<CartPage> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             children: const [
                               SizedBox(height: 120),
-                              Center(child: Text('Koszyk jest pusty')),
+                              Center(
+                                child: Text(
+                                  'Koszyk jest pusty',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white54,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         : Cart(

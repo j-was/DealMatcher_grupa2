@@ -76,4 +76,22 @@ class Offer {
       _status = json['status'] ?? 'ACTIVE',
       _createdAt = DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       _updatedAt = DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+    'id': _id,
+    'title': _title,
+    'description': _description,
+    'price': _price,
+    'images': _images,
+    'seller': _seller.toJson(),
+    'category': _category.toJson(),
+    'tags': _tags,
+    'properties': {
+      for (final property in _properties) property.$1: property.$2,
+    },
+    'availability': _availability,
+    'status': _status,
+    'createdAt': _createdAt.toIso8601String(),
+    'updatedAt': _updatedAt.toIso8601String(),
+  };
 }

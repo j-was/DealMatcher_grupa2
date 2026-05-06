@@ -140,7 +140,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
         for (final property in properties) {
           final existing = existingMap[property.name];
           switch (property.type) {
-            case "BOOLEAN": 
+            case "BOOLEAN":
               _propertyValues[property.name] = existing == 'true';
               break;
             case "SELECT":
@@ -149,7 +149,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
                   : null;
               _propertyValues[property.name] = existing ?? firstOption;
               break;
-            default: // text  / numeric 
+            default: // text  / numeric
               _propertyValues[property.name] = existing ?? '';
               break;
           }
@@ -230,7 +230,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
                 : null,
           ),
         );
-      case "NUMERIC": // numeric
+      case "NUMBER": // numeric
         return _PropPad(
           child: TextFormField(
             initialValue: (_propertyValues[property.name] ?? '').toString(),

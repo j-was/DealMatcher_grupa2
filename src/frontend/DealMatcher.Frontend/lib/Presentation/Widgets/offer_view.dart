@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/offer.dart';
+import 'package:frontend/Services/conversation_service.dart';
+import 'package:go_router/go_router.dart';
 
 class OfferView extends StatefulWidget {
   final Offer offer;
@@ -12,6 +14,72 @@ class OfferView extends StatefulWidget {
 
 class OfferViewState extends State<OfferView> {
   bool ifExpanded = false;
+  bool _conversationLoading = false;
+  final ConversationService _conversationService = ConversationService();
+
+  Future<void> _startConversation() async {
+    final controller = TextEditingController();
+
+    final message = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Napisz do autora oferty'),
+        content: TextField(controller: controller, minLines: 3, maxLines: 10),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Anuluj'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final text = controller.text.trim();
+              if (text.isEmpty) {
+                return;
+              }
+
+              Navigator.pop(context, text);
+            },
+            child: const Text('Wyślij'),
+          ),
+        ],
+      ),
+    );
+
+    if (message == null || message.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _conversationLoading = true;
+    });
+
+    try {
+      final conversation = await _conversationService.createConversation(
+        offerId: widget.offer.id,
+        initialMessage: message,
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      context.push('conversations/${conversation.id}');
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _conversationLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +128,35 @@ class OfferViewState extends State<OfferView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.offer.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    widget.offer.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: _conversationLoading
+                                      ? null
+                                      : _startConversation,
+                                  icon: _conversationLoading
+                                      ? const SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.chat_bubble_outline,
+                                          color: Colors.black87,
+                                        ),
+                                ),
+                              ],
                             ),
                             Text('${widget.offer.price.toStringAsFixed(2)} zł'),
                             const SizedBox(height: 12),

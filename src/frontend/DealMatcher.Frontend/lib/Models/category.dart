@@ -5,7 +5,7 @@ class Category {
 
   int get id => _id;
   String get name => _name;
-  String get decription => _description;
+  String get description => _description;
 
   const Category({
     int id = -1,
@@ -19,4 +19,10 @@ class Category {
     : _id = json['id'] ?? 0,
       _name = json['name'] ?? '',
       _description = json['description'] ?? '';
+
+  Map<String, dynamic> toJson() => {
+    'id': _id,
+    'name': _name,
+    'description': _description,
+  };
 }

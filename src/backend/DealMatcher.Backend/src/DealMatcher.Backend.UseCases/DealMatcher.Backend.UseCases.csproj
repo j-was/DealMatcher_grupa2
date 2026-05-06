@@ -5,6 +5,7 @@
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="OneOf" />
   </ItemGroup>
 
   <ItemGroup>

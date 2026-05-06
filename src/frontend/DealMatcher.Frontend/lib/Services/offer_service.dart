@@ -100,8 +100,24 @@ class OfferService {
       return Offer.fromJson(json);
     }
 
+    if (response.statusCode == 400) {
+      throw Exception(
+        'Nieprawidłowe dane oferty. Sprawdź wymagane pola: tytuł, opis, cenę oraz kategorię.',
+      );
+    }
+
+    if (response.statusCode == 401) {
+      throw Exception(
+        'Nie jesteś zalogowany lub sesja wygasła. Zaloguj się ponownie.',
+      );
+    }
+
+    if (response.statusCode == 500) {
+      throw Exception('Wystąpił błąd serwera. Spróbuj ponownie później.');
+    }
+
     throw Exception(
-      'Nie udało się pobrać oferty.'
+      'Nieoczekiwany błąd'
       'Status: ${response.statusCode}',
     );
   }

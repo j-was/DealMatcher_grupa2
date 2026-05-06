@@ -1,8 +1,10 @@
+using Microsoft.Extensions.Configuration;
+
 namespace DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
 
 public sealed class InitializePurchaseCommandHandler(
     IRepository<CartItem> cartItemsRepository,
-    IReadRepository<OfferEntity> offersRepository)
+    IReadRepository<OfferEntity> offersRepository, IConfiguration configuration)
     : IRequestHandler<InitializePurchaseCommand, CustomResult>
 {
     public async Task<CustomResult> Handle(InitializePurchaseCommand request, CancellationToken cancellationToken)
@@ -29,8 +31,9 @@ public sealed class InitializePurchaseCommandHandler(
                 await cartItemsRepository.UpdateAsync(item, cancellationToken);
             }
 
-            var url = "/payment";
-            url += $"/{request.PaymentMethodId}/{total}";
+            var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
+
+            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{total}";
 
             return new RedirectResult(url);
         }
@@ -57,8 +60,10 @@ public sealed class InitializePurchaseCommandHandler(
 
             cartItem.Delete();
             await cartItemsRepository.UpdateAsync(cartItem, cancellationToken);
-            var url = "payment";
-            url += $"/{request.PaymentMethodId}/{offer.Price * request.Quantity}";
+
+            var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
+
+            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{offer.Price * request.Quantity}";
 
             return new RedirectResult(url);
         }

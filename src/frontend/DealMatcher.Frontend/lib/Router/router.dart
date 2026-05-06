@@ -103,7 +103,7 @@ final router = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'v1/purchases/payment/:paymentMethodId/:price',
+          path: 'payment/:paymentMethodId/:price',
           builder: (context, state) {
             final paymentMethodId = state.pathParameters['paymentMethodId'];
             final price = double.parse(state.pathParameters['price']!);

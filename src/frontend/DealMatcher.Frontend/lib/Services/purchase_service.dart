@@ -70,10 +70,25 @@ class PurchaseService {
 
     if (response.statusCode == 303) {
       final location = response.headers['location'];
+
       if (location == null || location.trim().isEmpty) {
         throw Exception('Brak adresu przekierowania do płatności.');
       }
+
       return Uri.parse(location);
+    }
+
+    if (response.statusCode == 200) {
+      final finalUrl = response.request?.url;
+
+      if (finalUrl != null && finalUrl.path.startsWith('/payment/')) {
+        return finalUrl;
+      }
+
+      throw Exception(
+        'Brak adresu przekierowania do płatności. '
+        'Status: ${response.statusCode}, URL: $finalUrl',
+      );
     }
 
     if (response.statusCode == 400) {

@@ -16,6 +16,8 @@ import 'package:frontend/Presentation/Pages/my_offers_page.dart';
 import 'package:frontend/Presentation/Pages/offer_edit_page.dart';
 import 'package:frontend/Presentation/Pages/delivery_page.dart';
 import 'package:frontend/Presentation/Pages/banned_users_page.dart';
+import 'package:frontend/Presentation/Pages/admin_offer_activity_page.dart';
+import 'package:frontend/Presentation/Pages/admin_user_activity_page.dart';
 
 final router = GoRouter(
   refreshListenable: AuthService.instance,
@@ -30,7 +32,8 @@ final router = GoRouter(
         location == '/profile' ||
         location == '/delivery' ||
         location.startsWith('/my-offers') ||
-        location.startsWith('/chats');
+        location.startsWith('/chats') ||
+        location.startsWith('/admin');
 
     if (!isLoggedIn && isProtectedRoute) {
       return '/login';
@@ -122,6 +125,20 @@ final router = GoRouter(
         GoRoute(
           path: '/admin/bans',
           builder: (context, state) => const BannedUsersPage(),
+        ),
+        GoRoute(
+          path: 'admin/activity/user/:userId',
+          builder: (context, state) {
+            final userId = int.parse(state.pathParameters['userId']!);
+            return AdminUserActivityPage(userId: userId);
+          },
+        ),
+        GoRoute(
+          path: 'admin/activity/offer/:offerId',
+          builder: (context, state) {
+            final offerId = int.parse(state.pathParameters['offerId']!);
+            return AdminOfferActivityPage(offerId: offerId);
+          },
         ),
       ],
     ),

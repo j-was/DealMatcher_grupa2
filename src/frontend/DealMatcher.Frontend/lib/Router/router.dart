@@ -15,11 +15,13 @@ import 'package:frontend/Services/auth_service.dart';
 import 'package:frontend/Presentation/Pages/my_offers_page.dart';
 import 'package:frontend/Presentation/Pages/offer_edit_page.dart';
 import 'package:frontend/Presentation/Pages/delivery_page.dart';
+import 'package:frontend/Presentation/Pages/banned_users_page.dart';
 
 final router = GoRouter(
   refreshListenable: AuthService.instance,
   redirect: (context, state) {
     final isLoggedIn = AuthService.instance.isAuthenticated;
+    final isAdmin = AuthService.instance.isAdmin;
     final location = state.matchedLocation;
 
     final isAuthRoute = location == '/login' || location == '/register';
@@ -35,6 +37,12 @@ final router = GoRouter(
     }
 
     if (isLoggedIn && isAuthRoute) {
+      return '/profile';
+    }
+    if (!isLoggedIn && location.startsWith('/admin')) {
+      return '/login';
+    }
+    if (location.startsWith('/admin') && !isAdmin) {
       return '/profile';
     }
 
@@ -110,6 +118,10 @@ final router = GoRouter(
 
             return PaymentPage(paymentMethodId: paymentMethodId!, price: price);
           },
+        ),
+        GoRoute(
+          path: '/admin/bans',
+          builder: (context, state) => const BannedUsersPage(),
         ),
       ],
     ),

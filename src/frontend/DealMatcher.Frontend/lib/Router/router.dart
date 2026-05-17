@@ -1,5 +1,6 @@
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
+import 'package:frontend/Presentation/Pages/admin_menu_page.dart';
 import 'package:frontend/Presentation/Pages/cart_page.dart';
 import 'package:frontend/Presentation/Pages/conversation_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
@@ -123,22 +124,28 @@ final router = GoRouter(
           },
         ),
         GoRoute(
-          path: '/admin/bans',
-          builder: (context, state) => const BannedUsersPage(),
-        ),
-        GoRoute(
-          path: 'admin/activity/user/:userId',
-          builder: (context, state) {
-            final userId = int.parse(state.pathParameters['userId']!);
-            return AdminUserActivityPage(userId: userId);
-          },
-        ),
-        GoRoute(
-          path: 'admin/activity/offer/:offerId',
-          builder: (context, state) {
-            final offerId = int.parse(state.pathParameters['offerId']!);
-            return AdminOfferActivityPage(offerId: offerId);
-          },
+          path: 'admin',
+          builder: (context, state) => const AdminMenuPage(),
+          routes: [
+            GoRoute(
+              path: 'admin/bans',
+              builder: (context, state) => const BannedUsersPage(),
+            ),
+            GoRoute(
+              path: 'activity/user/:userId',
+              builder: (context, state) {
+                final userId = int.parse(state.pathParameters['userId']!);
+                return AdminUserActivityPage(userId: userId);
+              },
+            ),
+            GoRoute(
+              path: 'activity/offer/:offerId',
+              builder: (context, state) {
+                final offerId = int.parse(state.pathParameters['offerId']!);
+                return AdminOfferActivityPage(offerId: offerId);
+              },
+            ),
+          ],
         ),
       ],
     ),

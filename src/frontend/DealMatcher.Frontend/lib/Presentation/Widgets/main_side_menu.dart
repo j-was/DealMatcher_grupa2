@@ -98,6 +98,15 @@ class MainSideMenu extends StatelessWidget {
                   context.go('/search');
                 },
               ),
+              if (AuthService.instance.isAdmin)
+                ListTile(
+                  leading: Icon(Icons.admin_panel_settings),
+                  title: Text('Menu administratora'),
+                  onTap: () {
+                    context.pop();
+                    context.go('/admin');
+                  },
+                ),
               const ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Ustawienia'),

@@ -785,7 +785,7 @@ paths:
               required:
                 - offerId
                 - deliveryMethodId
-                - paymentMethodId
+                - paymentMethodIdgit 
               properties:
                 offerId:
                   type: integer

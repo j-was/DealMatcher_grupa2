@@ -20,7 +20,22 @@ class AdminMenuPage extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    context.go('/admin');
+                    context.go('/admin/bans');
+                  },
+                  icon: const Icon(Icons.people, color: Colors.white54),
+                  label: const Text(
+                    'Zablokowani użytkownicy',
+                    style: TextStyle(color: Colors.white54),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: 240,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context.go('/admin/users');
                   },
                   icon: const Icon(Icons.people, color: Colors.white54),
                   label: const Text(
@@ -35,7 +50,7 @@ class AdminMenuPage extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    context.go('/admin');
+                    context.go('/admin/offers');
                   },
                   icon: const Icon(Icons.local_offer, color: Colors.white54),
                   label: const Text(

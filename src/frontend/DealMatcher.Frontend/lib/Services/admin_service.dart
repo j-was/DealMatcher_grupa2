@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:frontend/Models/admin_offers_response.dart';
+import 'package:frontend/Models/admin_users_response.dart';
 import 'package:frontend/Models/user.dart';
 import 'package:frontend/Services/auth_service.dart';
 import 'package:frontend/Models/activity_record.dart';
@@ -11,6 +13,82 @@ class AdminService {
 
   Map<String, String> _headers() {
     return AuthService.instance.authHeaders();
+  }
+
+  Future<AdminUsersResponse> getUsers({
+    int page = 1,
+    int limit = 20,
+    String? status,
+  }) async {
+    final queryParameters = <String, String>{
+      'page': page.toString(),
+      'limit': limit.toString(),
+    };
+
+    if (status != null && status.isNotEmpty) {
+      queryParameters['status'] = status;
+    }
+
+    final uri = Uri.parse(
+      '$baseUrl/v1/admin/users',
+    ).replace(queryParameters: queryParameters);
+
+    final response = await http.get(uri, headers: _headers());
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map;
+      return AdminUsersResponse.fromJson(json);
+    }
+
+    if (response.statusCode == 401) {
+      throw Exception('Unauthorized');
+    }
+
+    if (response.statusCode == 403) {
+      throw Exception('Forbidden - admin only');
+    }
+
+    throw Exception(
+      'Failed to load user activity. Status code: ${response.statusCode}',
+    );
+  }
+
+  Future<AdminOffersResponse> getOffers({
+    int page = 1,
+    int limit = 20,
+    String? status,
+  }) async {
+    final queryParameters = <String, String>{
+      'page': page.toString(),
+      'limit': limit.toString(),
+    };
+
+    if (status != null && status.isNotEmpty) {
+      queryParameters['status'] = status;
+    }
+
+    final uri = Uri.parse(
+      '$baseUrl/v1/admin/offers',
+    ).replace(queryParameters: queryParameters);
+
+    final response = await http.get(uri, headers: _headers());
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map;
+      return AdminOffersResponse.fromJson(json);
+    }
+
+    if (response.statusCode == 401) {
+      throw Exception('Unauthorized');
+    }
+
+    if (response.statusCode == 403) {
+      throw Exception('Forbidden - admin only');
+    }
+
+    throw Exception(
+      'Failed to load user activity. Status code: ${response.statusCode}',
+    );
   }
 
   Future<List<ActivityRecord>> getUserActivity(

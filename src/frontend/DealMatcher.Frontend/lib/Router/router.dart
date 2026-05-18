@@ -1,6 +1,8 @@
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
 import 'package:frontend/Presentation/Pages/admin_menu_page.dart';
+import 'package:frontend/Presentation/Pages/admin_offers_page.dart';
+import 'package:frontend/Presentation/Pages/admin_users_page.dart';
 import 'package:frontend/Presentation/Pages/cart_page.dart';
 import 'package:frontend/Presentation/Pages/conversation_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
@@ -128,8 +130,16 @@ final router = GoRouter(
           builder: (context, state) => const AdminMenuPage(),
           routes: [
             GoRoute(
-              path: 'admin/bans',
+              path: 'bans',
               builder: (context, state) => const BannedUsersPage(),
+            ),
+            GoRoute(
+              path: 'users',
+              builder: (context, state) => const AdminUsersPage(),
+            ),
+            GoRoute(
+              path: 'offers',
+              builder: (context, state) => const AdminOffersPage(),
             ),
             GoRoute(
               path: 'activity/user/:userId',

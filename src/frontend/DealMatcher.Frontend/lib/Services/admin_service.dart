@@ -33,7 +33,15 @@ class AdminService {
       '$baseUrl/v1/admin/users',
     ).replace(queryParameters: queryParameters);
 
-    final response = await http.get(uri, headers: _headers());
+    final authHeaders = AuthService.instance.authHeaders();
+
+    final headers = <String, String>{
+      if (authHeaders['Authorization'] != null)
+        'Authorization': authHeaders['Authorization']!,
+      'Accept': 'application/json',
+    };
+
+    final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map;
@@ -49,7 +57,7 @@ class AdminService {
     }
 
     throw Exception(
-      'Failed to load user activity. Status code: ${response.statusCode}',
+      'Failed to load users. Status code: ${response.statusCode}. Body: ${response.body}',
     );
   }
 
@@ -71,7 +79,15 @@ class AdminService {
       '$baseUrl/v1/admin/offers',
     ).replace(queryParameters: queryParameters);
 
-    final response = await http.get(uri, headers: _headers());
+    final authHeaders = AuthService.instance.authHeaders();
+
+    final headers = <String, String>{
+      if (authHeaders['Authorization'] != null)
+        'Authorization': authHeaders['Authorization']!,
+      'Accept': 'application/json',
+    };
+
+    final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map;
@@ -87,7 +103,7 @@ class AdminService {
     }
 
     throw Exception(
-      'Failed to load user activity. Status code: ${response.statusCode}',
+      'Failed to load offers. Status code: ${response.statusCode}. Body: ${response.body}',
     );
   }
 

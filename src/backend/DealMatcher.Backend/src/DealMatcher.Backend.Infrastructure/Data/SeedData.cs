@@ -249,6 +249,12 @@ public static class SeedData
             new("joanna.szymanska@email.com", "Joanna", "Szymańska"),
         };
 
+        User admin = new("admin@email.com", "Administrator", "DealMatcher");
+        admin.UpdateStatus(UserStatus.Admin);
+        admin.SetNewHash("$2a$12$oUd9B1BARUhJSpmGLUM0aO1CTGoiWubvZNklTyqBQQvLmzVuTNVOm");
+
+        users.Add(admin);
+
         await dbContext.Set<User>().AddRangeAsync(users);
         await dbContext.SaveChangesAsync();
     }

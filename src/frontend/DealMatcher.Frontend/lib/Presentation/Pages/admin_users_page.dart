@@ -3,6 +3,7 @@ import 'package:frontend/Models/admin_users_response.dart';
 import 'package:frontend/Models/user.dart';
 import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
 import 'package:frontend/Services/admin_service.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminUsersPage extends StatefulWidget {
   const AdminUsersPage({super.key});
@@ -131,28 +132,43 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   }
 
   Widget _buildUserCard(User user) => Card(
-    child: ListTile(
-      leading: CircleAvatar(child: Text(_getUserInitials(user))),
-      title: Text(
-        '${user.name} ${user.surname}',
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          color: Colors.white60,
+    color: Colors.amber,
+    child: Stack(
+      children: [
+        ListTile(
+          leading: CircleAvatar(child: Text(_getUserInitials(user))),
+          title: Text(
+            '${user.name} ${user.surname}',
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.white70,
+            ),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(user.email),
+                const SizedBox(height: 4),
+                Text('ID: ${user.id}'),
+                Text('Status: ${user.status}'),
+                Text('Utworzono: ${_formatDate(user.createdAt)}'),
+              ],
+            ),
+          ),
         ),
-      ),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(user.email),
-            const SizedBox(height: 4),
-            Text('ID: ${user.id}'),
-            Text('Status: ${user.status}'),
-            Text('Utworzono: ${_formatDate(user.createdAt)}'),
-          ],
+        Positioned(
+          top: 4,
+          right: 4,
+          child: TextButton(
+            child: Text("Aktywność użytkownika"),
+            onPressed: () {
+              context.go('admin/activity/user/${user.id}');
+            },
+          ),
         ),
-      ),
+      ],
     ),
   );
 

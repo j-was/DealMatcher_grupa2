@@ -22,8 +22,7 @@ class AuthService extends ChangeNotifier {
   String? get accessToken => _accessToken;
   User? get currentUser => _currentUser;
 
-  // Temporary hardcoded admin check - replace with real role-based logic when available
-  bool get isAdmin => true;
+  bool get isAdmin => _currentUser?.status == 'ADMIN';
 
   Future<void> restoreSession() async {
     try {

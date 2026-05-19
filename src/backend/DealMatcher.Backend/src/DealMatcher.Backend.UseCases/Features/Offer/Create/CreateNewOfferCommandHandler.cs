@@ -38,7 +38,7 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
         var dto = mapper.Map<OfferDTO>(offer);
 
         await publisher.Publish(new OfferCreatedEvent(offer.SellerId, offer.Id, offer.Title, offer.Description,
-            offer.Price, offer.Availability),cancellationToken);
+            offer.Price, offer.Availability), cancellationToken);
 
         return Result.Created(dto);
     }

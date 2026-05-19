@@ -19,8 +19,8 @@ public class InitializePurchaseCommandHandlerTests
         _offersRepository = Substitute.For<IReadRepository<OfferEntity>>();
         _configuration = Substitute.For<IConfiguration>();
         _configuration["FrontendOrigin"].Returns("");
-        _publisher =  Substitute.For<IPublisher>();
-        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration,_publisher);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration, _publisher);
     }
 
     [Fact]

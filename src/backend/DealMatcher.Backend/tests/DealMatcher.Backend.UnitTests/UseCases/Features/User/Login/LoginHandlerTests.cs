@@ -16,12 +16,12 @@ public class LoginHandlerTests
         _passwordHashService = Substitute.For<IPasswordHashService>();
         _mapper = Substitute.For<IMapper>();
         _tokenProvider = Substitute.For<ITokenProvider>();
-        _publisher =  Substitute.For<IPublisher>();
+        _publisher = Substitute.For<IPublisher>();
         _handler = new LoginHandler(
             _usersRepository,
             _passwordHashService,
             _mapper,
-            _tokenProvider,_publisher);
+            _tokenProvider, _publisher);
     }
 
     [Fact]

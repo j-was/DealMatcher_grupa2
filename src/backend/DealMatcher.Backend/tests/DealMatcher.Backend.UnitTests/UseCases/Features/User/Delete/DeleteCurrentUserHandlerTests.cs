@@ -9,8 +9,8 @@ public class DeleteCurrentUserHandlerTests
     public DeleteCurrentUserHandlerTests()
     {
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
-        _publisher =  Substitute.For<IPublisher>();
-        _handler = new DeleteCurrentUserHandler(_usersRepository,_publisher);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new DeleteCurrentUserHandler(_usersRepository, _publisher);
     }
 
     [Fact]

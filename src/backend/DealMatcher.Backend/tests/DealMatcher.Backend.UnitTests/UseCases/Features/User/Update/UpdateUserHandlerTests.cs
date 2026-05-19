@@ -11,8 +11,8 @@ public class UpdateUserHandlerTests
     {
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
         _mapper = Substitute.For<IMapper>();
-        _publisher =  Substitute.For<IPublisher>();
-        _handler = new UpdateUserHandler(_usersRepository, _mapper,_publisher);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new UpdateUserHandler(_usersRepository, _mapper, _publisher);
     }
 
     [Fact]

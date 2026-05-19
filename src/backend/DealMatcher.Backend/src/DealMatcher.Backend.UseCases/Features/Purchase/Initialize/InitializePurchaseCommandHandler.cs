@@ -33,7 +33,7 @@ public sealed class InitializePurchaseCommandHandler(
 
                 item.Delete();
                 await cartItemsRepository.UpdateAsync(item, cancellationToken);
-                await publisher.Publish(new OfferPurchasedEvent(offer.SellerId, offer.Id, item.Quantity,offer.Availability,price),cancellationToken);
+                await publisher.Publish(new OfferPurchasedEvent(offer.SellerId, offer.Id, item.Quantity, offer.Availability, price), cancellationToken);
             }
 
             var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');

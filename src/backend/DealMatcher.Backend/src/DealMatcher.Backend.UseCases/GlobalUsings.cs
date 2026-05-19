@@ -14,6 +14,7 @@ global using DealMatcher.Backend.Core.Aggregates.Payment.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User;
 global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User.Specifications;
+global using DealMatcher.Backend.Core.Events;
 global using DealMatcher.Backend.Core.Interfaces;
 global using DealMatcher.Backend.UseCases.Extensions;
 global using DealMatcher.Backend.UseCases.Mapping.Profiles;
@@ -24,4 +25,3 @@ global using ConversationEntity = DealMatcher.Backend.Core.Aggregates.Conversati
 global using MessageEntity = DealMatcher.Backend.Core.Aggregates.Conversation.Message;
 global using OfferEntity = DealMatcher.Backend.Core.Aggregates.Offer.Offer;
 global using UserEntity = DealMatcher.Backend.Core.Aggregates.User.User;
-global using DealMatcher.Backend.Core.Events;

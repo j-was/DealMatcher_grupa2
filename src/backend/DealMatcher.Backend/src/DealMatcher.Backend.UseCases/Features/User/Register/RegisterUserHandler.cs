@@ -23,7 +23,7 @@ public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPassw
         var res = mapper.Map<UserDTO>(user);
 
         await publisher.Publish(
-            new UserCreatedEvent(user.Id,user.Name, user.Surname),
+            new UserCreatedEvent(user.Id, user.Name, user.Surname),
             cancellationToken);
 
         return Result.Created(res);

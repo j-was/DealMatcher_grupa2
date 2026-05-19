@@ -18,7 +18,7 @@ public class CreateNewOfferCommandHandlerTests
         _mapper = Substitute.For<IMapper>();
         _imageService = Substitute.For<IImageService>();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper,_publisher);
+        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper, _publisher);
     }
 
     [Fact]

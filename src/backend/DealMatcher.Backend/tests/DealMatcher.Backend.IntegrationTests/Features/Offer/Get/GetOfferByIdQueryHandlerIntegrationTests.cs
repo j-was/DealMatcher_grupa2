@@ -30,7 +30,7 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
 
         _mapper = mapperConfig.CreateMapper();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,_publisher);
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper, _publisher);
     }
 
     [Fact]

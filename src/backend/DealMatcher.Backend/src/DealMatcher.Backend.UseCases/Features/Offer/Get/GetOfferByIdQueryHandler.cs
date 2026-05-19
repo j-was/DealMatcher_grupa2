@@ -30,7 +30,7 @@ public sealed class GetOfferByIdQueryHandler(
             offerDTO = mapper.Map<OfferDTO>(new OfferProfile.OfferInfo(offer, seller, category));
         }
 
-        await publisher.Publish(new OfferViewedEvent(offer.SellerId, offer.Id),cancellationToken);
+        await publisher.Publish(new OfferViewedEvent(offer.SellerId, offer.Id), cancellationToken);
 
         return Result.Success(offerDTO);
     }

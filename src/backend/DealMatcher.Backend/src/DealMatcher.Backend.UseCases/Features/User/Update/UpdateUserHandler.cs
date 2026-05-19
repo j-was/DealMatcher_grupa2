@@ -20,7 +20,7 @@ public sealed class UpdateUserHandler(
         await usersRepository.UpdateAsync(user, ct);
 
         await publisher.Publish(
-            new UserUpdatedEvent(user.Id,user.Name, user.Surname),
+            new UserUpdatedEvent(user.Id, user.Name, user.Surname),
             ct);
 
         return Result.Success(mapper.Map<UserDTO>(user));

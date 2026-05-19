@@ -13,11 +13,11 @@ public class RegisterUserHandlerTests
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
         _passwordHasher = Substitute.For<IPasswordHashService>();
         _mapper = Substitute.For<IMapper>();
-        _publisher =  Substitute.For<IPublisher>();
+        _publisher = Substitute.For<IPublisher>();
         _handler = new RegisterUserHandler(
             _usersRepository,
             _passwordHasher,
-            _mapper,_publisher);
+            _mapper, _publisher);
     }
 
     [Fact]

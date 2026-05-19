@@ -16,7 +16,7 @@ public class GetOfferByIdQueryHandlerTests
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,_publisher);
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper, _publisher);
     }
 
     [Fact]

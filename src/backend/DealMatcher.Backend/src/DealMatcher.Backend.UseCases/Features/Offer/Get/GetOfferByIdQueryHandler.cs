@@ -1,4 +1,5 @@
 using DealMatcher.Backend.Core.Aggregates.Category;
+using DealMatcher.Backend.Core.Events;
 
 namespace DealMatcher.Backend.UseCases.Features.Offer.Get;
 
@@ -6,7 +7,8 @@ public sealed class GetOfferByIdQueryHandler(
     IReadRepository<OfferEntity> offersRepository,
     IReadRepository<UserEntity> usersRepository,
     IReadRepository<CategoryEntity> categoriesRepository,
-    IMapper mapper) :
+    IMapper mapper,
+    IPublisher publisher) :
     IQueryHandler<GetOfferByIdQuery, Result<OfferDTO>>
 {
     public async Task<Result<OfferDTO>> Handle(GetOfferByIdQuery request, CancellationToken cancellationToken)
@@ -27,6 +29,8 @@ public sealed class GetOfferByIdQueryHandler(
         {
             offerDTO = mapper.Map<OfferDTO>(new OfferProfile.OfferInfo(offer, seller, category));
         }
+
+        await publisher.Publish(new OfferViewedEvent(offer.SellerId, offer.Id),cancellationToken);
 
         return Result.Success(offerDTO);
     }

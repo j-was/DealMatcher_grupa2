@@ -1,10 +1,12 @@
+using DealMatcher.Backend.Core.Events;
 using Microsoft.Extensions.Configuration;
 
 namespace DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
 
 public sealed class InitializePurchaseCommandHandler(
     IRepository<CartItem> cartItemsRepository,
-    IReadRepository<OfferEntity> offersRepository, IConfiguration configuration)
+    IReadRepository<OfferEntity> offersRepository, IConfiguration configuration,
+    IPublisher publisher)
     : IRequestHandler<InitializePurchaseCommand, CustomResult>
 {
     public async Task<CustomResult> Handle(InitializePurchaseCommand request, CancellationToken cancellationToken)
@@ -25,10 +27,13 @@ public sealed class InitializePurchaseCommandHandler(
                 if (offer is null)
                     continue;
 
-                total += offer.Price * item.Quantity;
+                var price = offer.Price * item.Quantity;
+
+                total += price;
 
                 item.Delete();
                 await cartItemsRepository.UpdateAsync(item, cancellationToken);
+                await publisher.Publish(new OfferPurchasedEvent(offer.SellerId, offer.Id, item.Quantity,offer.Availability,price),cancellationToken);
             }
 
             var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
@@ -63,7 +68,12 @@ public sealed class InitializePurchaseCommandHandler(
 
             var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
 
-            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{offer.Price * request.Quantity}";
+            var price = offer.Price * request.Quantity;
+
+            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{price}";
+            await publisher.Publish(
+                new OfferPurchasedEvent(offer.SellerId, offer.Id, cartItem.Quantity, offer.Availability, price),
+                cancellationToken);
 
             return new RedirectResult(url);
         }

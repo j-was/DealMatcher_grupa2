@@ -9,6 +9,7 @@ public class CreateNewOfferCommandHandlerTests
     private readonly CreateNewOfferCommandHandler _handler;
     private readonly IReadRepository<CategoryEntity> _categoriesRepository;
     private readonly IImageService _imageService;
+    private readonly IPublisher _publisher;
 
     public CreateNewOfferCommandHandlerTests()
     {
@@ -16,7 +17,8 @@ public class CreateNewOfferCommandHandlerTests
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
         _imageService = Substitute.For<IImageService>();
-        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper,_publisher);
     }
 
     [Fact]

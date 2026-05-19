@@ -3,7 +3,8 @@ using Ardalis.SharedKernel;
 namespace DealMatcher.Backend.UseCases.Features.User.Delete;
 
 public sealed class DeleteCurrentUserHandler(
-    IRepository<UserEntity> usersRepository
+    IRepository<UserEntity> usersRepository,
+    IPublisher publisher
 ) : IRequestHandler<DeleteCurrentUserCommand, Result>
 {
     public async Task<Result> Handle(DeleteCurrentUserCommand request, CancellationToken ct)
@@ -18,6 +19,10 @@ public sealed class DeleteCurrentUserHandler(
         user.UpdateStatus(UserStatus.Inactive);
         user.Delete();
         await usersRepository.UpdateAsync(user, ct);
+
+        await publisher.Publish(
+            new UserDeletedEvent(user.Id),
+            ct);
 
         return Result.Success();
     }

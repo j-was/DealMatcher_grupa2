@@ -4,11 +4,13 @@ public class DeleteCurrentUserHandlerTests
 {
     private readonly IRepository<UserEntity> _usersRepository;
     private readonly DeleteCurrentUserHandler _handler;
+    private readonly IPublisher _publisher;
 
     public DeleteCurrentUserHandlerTests()
     {
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
-        _handler = new DeleteCurrentUserHandler(_usersRepository);
+        _publisher =  Substitute.For<IPublisher>();
+        _handler = new DeleteCurrentUserHandler(_usersRepository,_publisher);
     }
 
     [Fact]
@@ -23,6 +25,7 @@ public class DeleteCurrentUserHandlerTests
 
         result.IsSuccess.ShouldBeTrue();
         user.Status.ShouldBe(UserStatus.Inactive);
+
         await _usersRepository.Received(1).UpdateAsync(user, Arg.Any<CancellationToken>());
     }
 

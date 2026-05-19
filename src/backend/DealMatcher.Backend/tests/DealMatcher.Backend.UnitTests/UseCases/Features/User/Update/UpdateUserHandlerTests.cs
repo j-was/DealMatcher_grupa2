@@ -5,12 +5,14 @@ public class UpdateUserHandlerTests
     private readonly IRepository<UserEntity> _usersRepository;
     private readonly IMapper _mapper;
     private readonly UpdateUserHandler _handler;
+    private readonly IPublisher _publisher;
 
     public UpdateUserHandlerTests()
     {
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new UpdateUserHandler(_usersRepository, _mapper);
+        _publisher =  Substitute.For<IPublisher>();
+        _handler = new UpdateUserHandler(_usersRepository, _mapper,_publisher);
     }
 
     [Fact]

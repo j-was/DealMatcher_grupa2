@@ -1,6 +1,4 @@
-
-
-
+using MediatR;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DealMatcher.Backend.IntegrationTests.Features.Offer.Get;
@@ -12,6 +10,7 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
     private readonly IReadRepository<UserEntity> _usersRepository;
     private readonly IReadRepository<CategoryEntity> _categoriesRepository;
     private readonly IMapper _mapper;
+    private readonly IPublisher _publisher;
     private readonly GetOfferByIdQueryHandler _handler;
 
     public GetOfferByIdQueryHandlerTests()
@@ -30,7 +29,8 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
         NullLoggerFactory.Instance);
 
         _mapper = mapperConfig.CreateMapper();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,_publisher);
     }
 
     [Fact]

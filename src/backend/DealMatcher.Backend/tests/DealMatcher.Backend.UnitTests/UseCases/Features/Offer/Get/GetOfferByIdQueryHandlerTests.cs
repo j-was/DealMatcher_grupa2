@@ -7,6 +7,7 @@ public class GetOfferByIdQueryHandlerTests
     private readonly GetOfferByIdQueryHandler _handler;
     private readonly IReadRepository<UserEntity> _usersRepository;
     private readonly IReadRepository<CategoryEntity> _categoriesRepository;
+    private readonly IPublisher _publisher;
 
     public GetOfferByIdQueryHandlerTests()
     {
@@ -14,7 +15,8 @@ public class GetOfferByIdQueryHandlerTests
         _usersRepository = Substitute.For<IReadRepository<UserEntity>>();
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,_publisher);
     }
 
     [Fact]

@@ -5,7 +5,7 @@ public class GetUserActivity(IMediator mediator) : Endpoint<GetUserActivityReque
     public override void Configure()
     {
         Version(1);
-        Get("/admin/activity/user");
+        Get("/admin/activity/user/{UserId:int}");
         Summary(s =>
         {
             s.Summary = "Get user activity (admin)";

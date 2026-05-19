@@ -1,19 +1,22 @@
+using DealMatcher.Backend.UseCases.Features.User.Get;
+using GetUserQuery = DealMatcher.Backend.UseCases.Features.User.Get.GetUserQuery;
+
 namespace DealMatcher.Backend.Web.Endpoints.Admin;
 
-public class GetOfferActivity(IMediator mediator) : Endpoint<GetOfferActivityRequest>
+public class GetUser(IMediator mediator) : Endpoint<GetUserRequest>
 {
     public override void Configure()
     {
         Version(1);
-        Get("/admin/activity/offer/{OfferId:int}");
+        Get("/admin/users/{UserId:int}");
         Summary(s =>
         {
-            s.Summary = "Get offer activity (admin)";
-            s.Description = "Returns activity history for a specific offer";
+            s.Summary = "Get users for admin";
+            s.Description = "Returns paginated users list for admin";
         });
     }
 
-    public override async Task HandleAsync(GetOfferActivityRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetUserRequest req, CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -24,7 +27,7 @@ public class GetOfferActivity(IMediator mediator) : Endpoint<GetOfferActivityReq
             return;
         }
 
-        var request = new GetOfferActivityQuery(req.OfferId, userId);
+        var request = new GetUserAdminQuery(req.UserId, userId);
         var result = await mediator.Send(request, ct);
 
         await result.SendResult(this, ct);

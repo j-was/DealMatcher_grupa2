@@ -1,6 +1,9 @@
+using DealMatcher.Backend.Core.Events;
+
 namespace DealMatcher.Backend.UseCases.Features.User.Register;
 
-public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPasswordHashService passwordHasher, IMapper mapper) : IRequestHandler<RegisterUserCommand, Result<UserDTO>>
+public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPasswordHashService passwordHasher, IMapper mapper,
+    IPublisher publisher) : IRequestHandler<RegisterUserCommand, Result<UserDTO>>
 {
     public async Task<Result<UserDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
@@ -18,6 +21,11 @@ public class RegisterUserHandler(IRepository<UserEntity> usersRepository, IPassw
         await usersRepository.SaveChangesAsync(cancellationToken);
 
         var res = mapper.Map<UserDTO>(user);
+
+        await publisher.Publish(
+            new UserCreatedEvent(user.Id, user.Name, user.Surname),
+            cancellationToken);
+
         return Result.Created(res);
     }
 }

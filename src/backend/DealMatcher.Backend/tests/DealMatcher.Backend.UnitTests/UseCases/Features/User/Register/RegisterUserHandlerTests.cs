@@ -6,16 +6,18 @@ public class RegisterUserHandlerTests
     private readonly IPasswordHashService _passwordHasher;
     private readonly IMapper _mapper;
     private readonly RegisterUserHandler _handler;
+    private readonly IPublisher _publisher;
 
     public RegisterUserHandlerTests()
     {
         _usersRepository = Substitute.For<IRepository<UserEntity>>();
         _passwordHasher = Substitute.For<IPasswordHashService>();
         _mapper = Substitute.For<IMapper>();
+        _publisher = Substitute.For<IPublisher>();
         _handler = new RegisterUserHandler(
             _usersRepository,
             _passwordHasher,
-            _mapper);
+            _mapper, _publisher);
     }
 
     [Fact]

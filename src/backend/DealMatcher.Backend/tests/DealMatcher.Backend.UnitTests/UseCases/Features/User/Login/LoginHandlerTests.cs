@@ -7,6 +7,8 @@ public class LoginHandlerTests
     private readonly IMapper _mapper;
     private readonly ITokenProvider _tokenProvider;
     private readonly LoginHandler _handler;
+    private readonly IPublisher _publisher;
+
 
     public LoginHandlerTests()
     {
@@ -14,11 +16,12 @@ public class LoginHandlerTests
         _passwordHashService = Substitute.For<IPasswordHashService>();
         _mapper = Substitute.For<IMapper>();
         _tokenProvider = Substitute.For<ITokenProvider>();
+        _publisher = Substitute.For<IPublisher>();
         _handler = new LoginHandler(
             _usersRepository,
             _passwordHashService,
             _mapper,
-            _tokenProvider);
+            _tokenProvider, _publisher);
     }
 
     [Fact]

@@ -11,6 +11,7 @@ public class InitializePurchaseCommandHandlerTests
     private readonly IReadRepository<OfferEntity> _offersRepository;
     private readonly IConfiguration _configuration;
     private readonly InitializePurchaseCommandHandler _handler;
+    private readonly IPublisher _publisher;
 
     public InitializePurchaseCommandHandlerTests()
     {
@@ -18,7 +19,8 @@ public class InitializePurchaseCommandHandlerTests
         _offersRepository = Substitute.For<IReadRepository<OfferEntity>>();
         _configuration = Substitute.For<IConfiguration>();
         _configuration["FrontendOrigin"].Returns("");
-        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration);
+        _publisher = Substitute.For<IPublisher>();
+        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration, _publisher);
     }
 
     [Fact]

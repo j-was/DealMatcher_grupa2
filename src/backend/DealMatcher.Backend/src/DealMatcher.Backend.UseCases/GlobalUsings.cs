@@ -25,3 +25,4 @@ global using ConversationEntity = DealMatcher.Backend.Core.Aggregates.Conversati
 global using MessageEntity = DealMatcher.Backend.Core.Aggregates.Conversation.Message;
 global using OfferEntity = DealMatcher.Backend.Core.Aggregates.Offer.Offer;
 global using UserEntity = DealMatcher.Backend.Core.Aggregates.User.User;
+global using DealMatcher.Backend.Core.Aggregates.Admin.Specifications;

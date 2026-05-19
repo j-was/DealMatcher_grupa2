@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.UseCases.Features.Ban.GetUsers;
+namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
 public class GetUserQueryHandler(
     IRepository<UserEntity> usersRepository, IRepository<OfferEntity> offersRepository, IRepository<ActivityRecord> activityRepository) : IRequestHandler<GetUserAdminQuery, Result<UserDetailsDTO>>

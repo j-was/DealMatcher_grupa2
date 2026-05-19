@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.UseCases.Features.Ban.DTOs;
+namespace DealMatcher.Backend.UseCases.Features.Admin.DTOs;
 
 public sealed record AdminOffersDTO
 (

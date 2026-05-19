@@ -1,5 +1,5 @@
 using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-using DealMatcher.Backend.UseCases.Features.Ban.CreateBan;
+using DealMatcher.Backend.UseCases.Features.Admin.CreateBan;
 
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 

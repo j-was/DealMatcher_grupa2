@@ -1,6 +1,6 @@
-using DealMatcher.Backend.UseCases.Features.Ban.DTOs;
+using DealMatcher.Backend.UseCases.Features.Admin.DTOs;
 
-namespace DealMatcher.Backend.UseCases.Features.Ban.GetUsers;
+namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
 public sealed class GetUsersQueryHandler(IReadRepository<UserEntity> usersRepository, IMapper mapper) : IQueryHandler<GetUsersQuery, Result<AdminUsersDTO>>
 {

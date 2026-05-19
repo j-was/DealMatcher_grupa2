@@ -1,4 +1,4 @@
-using DealMatcher.Backend.UseCases.Features.Ban.GetUsers;
+using DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
 namespace DealMatcher.Backend.Web.Endpoints.Admin;
 

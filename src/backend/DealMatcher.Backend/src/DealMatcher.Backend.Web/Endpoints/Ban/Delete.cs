@@ -1,4 +1,4 @@
-using DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
+using DealMatcher.Backend.UseCases.Features.Admin.DeleteBan;
 
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 

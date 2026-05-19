@@ -34,7 +34,7 @@ IReadRepository<UserEntity> usersRepository, IMapper mapper) : ICommandHandler<C
         var ban = new BanEntity(request.Ban.UserId, request.Ban.Reason, request.UserId, request.Ban.ExpiresAt);
 
         await bansRepository.AddAsync(ban, cancellationToken);
-        
+
         return Result.Success(mapper.Map<BanDTO>(ban));
     }
 }

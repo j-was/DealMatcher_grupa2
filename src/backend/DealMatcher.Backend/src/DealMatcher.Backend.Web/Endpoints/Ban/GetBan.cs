@@ -10,7 +10,7 @@ public sealed class GetBan(IMediator mediator) : Endpoint<GetBanRequest>
         Get("/ban/{banId}");
         Summary(s =>
         {
-             s.Summary = "Get ban details";
+            s.Summary = "Get ban details";
             s.Description = "Returns detailed information about a specific ban (admin only)";
         });
     }

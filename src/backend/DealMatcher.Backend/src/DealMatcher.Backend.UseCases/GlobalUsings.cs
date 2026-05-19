@@ -1,6 +1,8 @@
 global using Ardalis.Result;
 global using Ardalis.SharedKernel;
 global using AutoMapper;
+global using DealMatcher.Backend.Core.Aggregates.Admin;
+global using DealMatcher.Backend.Core.Aggregates.Admin.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.Cart;
 global using DealMatcher.Backend.Core.Aggregates.Cart.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;

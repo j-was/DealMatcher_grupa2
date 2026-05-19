@@ -1,6 +1,6 @@
 using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
 
-namespace DealMatcher.Backend.UseCases.Features.Admin.GetBans;
+namespace DealMatcher.Backend.UseCases.Features.Ban.GetBans;
 
 public sealed class GetBansQueryHandler(
     IReadRepository<BanEntity> bansRepository,
@@ -21,12 +21,12 @@ public sealed class GetBansQueryHandler(
 
         if (request.UserId.HasValue)
         {
-            bans = bans.Where(b => b.UserId == request.UserId.Value).ToList();
+            bans = [.. bans.Where(b => b.UserId == request.UserId.Value)];
         }
 
         if (request.Active.HasValue)
         {
-            bans = bans.Where(b => b.IsActive == request.Active.Value).ToList();
+            bans = [.. bans.Where(b => b.IsActive == request.Active.Value)];
         }
 
         var items = bans

@@ -1,7 +1,6 @@
 using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-using DealMatcher.Backend.UseCases.Features.Ban.CreateBan;
 
-namespace DealMatcher.Backend.UseCases.Features.Admin.CreateBan;
+namespace DealMatcher.Backend.UseCases.Features.Ban.CreateBan;
 
 public sealed class CreateBanCommandHandler(IRepository<BanEntity> bansRepository,
 IReadRepository<UserEntity> usersRepository, IMapper mapper) : ICommandHandler<CreateBanCommand, Result<BanDTO>>

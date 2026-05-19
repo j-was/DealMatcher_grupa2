@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.UseCases.Features.Admin.GetActivity;
+namespace DealMatcher.Backend.UseCases.Features.Ban.GetActivity;
 
 public class GetUserActivityQueryHandler(IReadRepository<UserEntity> usersRepository, IReadRepository<ActivityRecord> activityRepository, IMapper mapper) : IQueryHandler<GetUserActivityQuery, Result<List<ActivityRecordDTO>>>
 {

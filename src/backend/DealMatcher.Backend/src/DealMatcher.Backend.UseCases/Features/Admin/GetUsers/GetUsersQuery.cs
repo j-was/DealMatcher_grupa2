@@ -1,5 +1,5 @@
-using DealMatcher.Backend.UseCases.Features.Admin.DTOs;
+using DealMatcher.Backend.UseCases.Features.Ban.DTOs;
 
-namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
+namespace DealMatcher.Backend.UseCases.Features.Ban.GetUsers;
 
 public sealed record GetUsersQuery(int Page, int Limit, string? Status, int UserId) : IQuery<Result<AdminUsersDTO>>;

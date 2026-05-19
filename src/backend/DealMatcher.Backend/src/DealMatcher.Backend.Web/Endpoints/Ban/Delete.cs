@@ -1,6 +1,6 @@
-using DealMatcher.Backend.UseCases.Features.Admin.DeleteBan;
+using DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
 
-namespace DealMatcher.Backend.Web.Endpoints.Bans;
+namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class Delete(IMediator mediator) : Endpoint<DeleteRequest>
 {

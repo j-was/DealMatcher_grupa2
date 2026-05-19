@@ -1,4 +1,4 @@
-namespace DealMatcher.Backend.Web.Endpoints.Bans;
+namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class DeleteRequest
 {

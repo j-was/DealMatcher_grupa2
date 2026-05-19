@@ -1,6 +1,6 @@
-using DealMatcher.Backend.UseCases.Features.Admin.DTOs;
+using DealMatcher.Backend.UseCases.Features.Ban.DTOs;
 
-namespace DealMatcher.Backend.UseCases.Features.Admin.GetOffers;
+namespace DealMatcher.Backend.UseCases.Features.Ban.GetOffers;
 
 public sealed class GetOffersQueryHandler(IReadRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository,
     IReadRepository<UserEntity> usersRepository, IMapper mapper) : IQueryHandler<GetOffersQuery, Result<AdminOffersDTO>>

@@ -13,6 +13,7 @@ global using BCrypt;
 global using BCrypt.Net;
 global using DealMatcher.Backend.Core;
 global using DealMatcher.Backend.Core.Aggregates.Admin;
+global using DealMatcher.Backend.Core.Aggregates.Ban;
 global using DealMatcher.Backend.Core.Aggregates.Cart;
 global using DealMatcher.Backend.Core.Aggregates.Category;
 global using DealMatcher.Backend.Core.Aggregates.Offer;

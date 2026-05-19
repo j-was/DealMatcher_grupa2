@@ -21,6 +21,7 @@ global using DealMatcher.Backend.UseCases.Extensions;
 global using DealMatcher.Backend.UseCases.Mapping.Profiles;
 global using MediatR;
 global using OneOf;
+global using BanEntity = DealMatcher.Backend.Core.Aggregates.Ban.Ban;
 global using CategoryEntity = DealMatcher.Backend.Core.Aggregates.Category.Category;
 global using ConversationEntity = DealMatcher.Backend.Core.Aggregates.Conversation.Conversation;
 global using MessageEntity = DealMatcher.Backend.Core.Aggregates.Conversation.Message;

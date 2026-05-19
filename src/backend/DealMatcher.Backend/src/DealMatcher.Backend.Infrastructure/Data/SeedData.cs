@@ -257,6 +257,25 @@ public static class SeedData
 
         await dbContext.Set<User>().AddRangeAsync(users);
         await dbContext.SaveChangesAsync();
+
+        var bans = new List<Ban>
+        {
+            new(
+                users[0].Id,
+                "Naruszenie regulaminu platformy.",
+                admin.Id,
+                DateTime.UtcNow.AddDays(7)
+            ),
+            new(
+                users[1].Id,
+                "Podejrzana aktywność konta.",
+                admin.Id,
+                DateTime.UtcNow.AddDays(14)
+            )
+        };
+
+        await dbContext.Set<Ban>().AddRangeAsync(bans);
+        await dbContext.SaveChangesAsync();
     }
 
     public static async Task SeedOffers(AppDbContext dbContext)

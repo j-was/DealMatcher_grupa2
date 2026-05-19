@@ -3,6 +3,7 @@ import 'package:frontend/Models/admin_offers_response.dart';
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
 import 'package:frontend/Services/admin_service.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminOffersPage extends StatefulWidget {
   const AdminOffersPage({super.key});
@@ -138,29 +139,47 @@ class _AdminOffersPageState extends State<AdminOffersPage> {
   }
 
   Widget _buildOfferCard(Offer offer) => Card(
-    child: ListTile(
-      leading: CircleAvatar(
-        child: Text(offer.id.toString(), style: const TextStyle(fontSize: 12)),
-      ),
-      title: Text(
-        offer.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          color: Colors.white60,
+    color: Colors.amber,
+    child: Stack(
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            child: Text(
+              offer.id.toString(),
+              style: const TextStyle(fontSize: 12),
+            ),
+          ),
+          title: Text(
+            offer.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.white70,
+            ),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('ID: ${offer.id}'),
+                Text('Cena: ${offer.price}'),
+                Text('Status: ${offer.status}'),
+                Text('Utworzono: ${_formatDate(offer.createdAt)}'),
+              ],
+            ),
+          ),
         ),
-      ),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('ID: ${offer.id}'),
-            Text('Cena: ${offer.price}'),
-            Text('Status: ${offer.status}'),
-            Text('Utworzono: ${_formatDate(offer.createdAt)}'),
-          ],
+        Positioned(
+          top: 4,
+          right: 4,
+          child: TextButton(
+            child: Text("Aktywność oferty"),
+            onPressed: () {
+              context.go('admin/activity/offer/${offer.id}');
+            },
+          ),
         ),
-      ),
+      ],
     ),
   );
 

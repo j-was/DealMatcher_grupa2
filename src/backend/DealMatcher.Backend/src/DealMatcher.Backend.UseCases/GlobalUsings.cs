@@ -3,6 +3,7 @@ global using Ardalis.SharedKernel;
 global using AutoMapper;
 global using DealMatcher.Backend.Core.Aggregates.Admin;
 global using DealMatcher.Backend.Core.Aggregates.Admin.DTOs;
+global using DealMatcher.Backend.Core.Aggregates.Admin.Specifications;
 global using DealMatcher.Backend.Core.Aggregates.Cart;
 global using DealMatcher.Backend.Core.Aggregates.Cart.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
@@ -25,4 +26,3 @@ global using ConversationEntity = DealMatcher.Backend.Core.Aggregates.Conversati
 global using MessageEntity = DealMatcher.Backend.Core.Aggregates.Conversation.Message;
 global using OfferEntity = DealMatcher.Backend.Core.Aggregates.Offer.Offer;
 global using UserEntity = DealMatcher.Backend.Core.Aggregates.User.User;
-global using DealMatcher.Backend.Core.Aggregates.Admin.Specifications;

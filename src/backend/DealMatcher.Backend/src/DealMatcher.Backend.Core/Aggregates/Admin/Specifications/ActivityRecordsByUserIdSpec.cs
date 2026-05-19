@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.Core.Aggregates.Admin.Specifications;
 
-public class ActivityRecordsByUserIdSpec: Specification<ActivityRecord>
+public class ActivityRecordsByUserIdSpec : Specification<ActivityRecord>
 {
     public ActivityRecordsByUserIdSpec(int userId)
     {

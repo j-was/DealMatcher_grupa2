@@ -44,4 +44,6 @@ public class DataSchemaConstants
     public const int PaymentMethodProviderMaxLength = 100;
     public const int DeliveryMethodNameMaxLength = 100;
     public const int DeliveryMethodDescriptionMaxLength = 1000;
+
+    public const int BanReasonMaxLength = 500;
 }

@@ -10,6 +10,7 @@ global using DealMatcher.Backend.Core.Aggregates.Payment.DTOs;
 global using DealMatcher.Backend.Core.Aggregates.User.DTOs;
 global using DealMatcher.Backend.Core.Interfaces;
 global using DealMatcher.Backend.UseCases.Extensions;
+global using DealMatcher.Backend.UseCases.Features.Admin.GetActivity;
 global using DealMatcher.Backend.UseCases.Features.Cart.Add;
 global using DealMatcher.Backend.UseCases.Features.Offer.Get;
 global using DealMatcher.Backend.UseCases.Features.Purchase.DeliveryMethods;

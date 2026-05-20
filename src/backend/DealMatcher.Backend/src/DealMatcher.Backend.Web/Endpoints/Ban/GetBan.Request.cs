@@ -2,6 +2,6 @@ namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class GetBanRequest
 {
-    [BindFrom("banId")]
+    [RouteParam]
     public int BanId { get; set; }
 }

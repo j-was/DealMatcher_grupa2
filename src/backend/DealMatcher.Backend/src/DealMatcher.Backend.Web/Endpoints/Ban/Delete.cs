@@ -2,12 +2,12 @@ using DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
 
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
-public sealed class Delete(IMediator mediator) : Endpoint<DeleteRequest>
+public sealed class Delete(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
         Version(1);
-        Delete("/ban/{banId}");
+        Delete("/bans/{banId}");
         Summary(s =>
         {
             s.Summary = "Remove a ban";
@@ -15,7 +15,7 @@ public sealed class Delete(IMediator mediator) : Endpoint<DeleteRequest>
         });
     }
 
-    public override async Task HandleAsync(DeleteRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -25,7 +25,9 @@ public sealed class Delete(IMediator mediator) : Endpoint<DeleteRequest>
             return;
         }
 
-        var command = new DeleteBanCommand(adminId, req.BanId);
+        var banId = Route<int>("banId");
+
+        var command = new DeleteBanCommand(adminId, banId);
 
         var result = await mediator.Send(command, ct);
 

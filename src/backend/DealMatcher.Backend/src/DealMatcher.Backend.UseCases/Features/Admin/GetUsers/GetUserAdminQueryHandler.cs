@@ -1,6 +1,6 @@
 namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
-public class GetUserQueryHandler(
+public class GetUserAdminQueryHandler(
     IRepository<UserEntity> usersRepository, IRepository<OfferEntity> offersRepository, IRepository<ActivityRecord> activityRepository) : IRequestHandler<GetUserAdminQuery, Result<UserDetailsDTO>>
 {
     public async Task<Result<UserDetailsDTO>> Handle(GetUserAdminQuery request, CancellationToken ct)
@@ -28,10 +28,10 @@ public class GetUserQueryHandler(
         foreach (var offer in offers)
         {
             var spec3 = new ActivityRecordsByOfferIdSpec(offer.Id);
-            var records3 = await activityRepository.ListAsync(spec, ct);
+            var records3 = await activityRepository.ListAsync(spec3, ct);
             if (records3.Count != 0)
             {
-                totalSales += records.Where(a => a.Action == ActionType.Purchase).Count();
+                totalSales += records3.Where(a => a.Action == ActionType.Purchase).Count();
             }
         }
         var totalPurchases = 0;
@@ -40,7 +40,12 @@ public class GetUserQueryHandler(
             totalPurchases = records.Where(a => a.Action == ActionType.Purchase).Count();
         }
 
-        var response = new UserDetailsDTO(user.Id, user.Email, user.Name, user.Surname, user.Status.Value.ToUpper(), user.CreatedAt, offers.Count, totalSales, totalPurchases, records[0].CreatedAt);
+        var lastActivityAt = records
+            .OrderByDescending(r => r.CreatedAt)
+            .FirstOrDefault()
+            ?.CreatedAt;
+
+        var response = new UserDetailsDTO(user.Id, user.Email, user.Name, user.Surname, user.Status.Value.ToUpper(), user.CreatedAt, offers.Count, totalSales, totalPurchases, lastActivityAt ?? DateTime.UtcNow);
 
         return Result.Success(response);
     }

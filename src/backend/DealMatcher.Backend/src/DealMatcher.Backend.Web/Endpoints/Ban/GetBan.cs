@@ -2,12 +2,12 @@ using DealMatcher.Backend.UseCases.Features.Ban.GetBanById;
 
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
-public sealed class GetBan(IMediator mediator) : Endpoint<GetBanRequest>
+public sealed class GetBan(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
         Version(1);
-        Get("/ban/{banId}");
+        Get("/bans/{banId}");
         Summary(s =>
         {
             s.Summary = "Get ban details";
@@ -15,7 +15,7 @@ public sealed class GetBan(IMediator mediator) : Endpoint<GetBanRequest>
         });
     }
 
-    public override async Task HandleAsync(GetBanRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -25,7 +25,9 @@ public sealed class GetBan(IMediator mediator) : Endpoint<GetBanRequest>
             return;
         }
 
-        var query = new GetBanByIdQuery(adminId, req.BanId);
+        var banId = Route<int>("banId");
+
+        var query = new GetBanByIdQuery(adminId, banId);
 
         var result = await mediator.Send(query, ct);
 

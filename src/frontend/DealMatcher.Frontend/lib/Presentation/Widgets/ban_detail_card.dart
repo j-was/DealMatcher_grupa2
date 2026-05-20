@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/ban.dart';
 import 'package:frontend/Models/user.dart';
+import 'package:frontend/Services/ban_service.dart';
 
 class BanDetailCard extends StatelessWidget {
   final Ban? ban;
   final User? user;
   final bool loadingUser;
+  final BanService _banService = BanService();
 
-  const BanDetailCard({
+  BanDetailCard({
     super.key,
     required this.ban,
     required this.user,
@@ -88,6 +90,17 @@ class BanDetailCard extends StatelessWidget {
               _infoRow(
                 'Wygasa',
                 ban!.expiresAt == null ? 'Nigdy' : _formatDate(ban!.expiresAt!),
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: () async {
+                    await _banService.removeBan(ban!.id);
+                  },
+                  child: Text(
+                    "Odbanuj użytkownika",
+                    style: TextStyle(fontSize: 16, color: Colors.redAccent),
+                  ),
+                ),
               ),
             ],
           ],

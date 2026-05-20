@@ -3,7 +3,7 @@ using GetUserQuery = DealMatcher.Backend.UseCases.Features.User.Get.GetUserQuery
 
 namespace DealMatcher.Backend.Web.Endpoints.Admin;
 
-public class GetUser(IMediator mediator) : Endpoint<GetUserRequest>
+public class GetUser(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -16,18 +16,20 @@ public class GetUser(IMediator mediator) : Endpoint<GetUserRequest>
         });
     }
 
-    public override async Task HandleAsync(GetUserRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (!int.TryParse(userIdRaw, out var userId))
+        if (!int.TryParse(userIdRaw, out var adminId))
         {
             await SendUnauthorizedAsync(ct);
             return;
         }
 
-        var request = new GetUserAdminQuery(req.UserId, userId);
+        int userId = Route<int>("UserId");
+
+        var request = new GetUserAdminQuery(userId, adminId);
         var result = await mediator.Send(request, ct);
 
         await result.SendResult(this, ct);

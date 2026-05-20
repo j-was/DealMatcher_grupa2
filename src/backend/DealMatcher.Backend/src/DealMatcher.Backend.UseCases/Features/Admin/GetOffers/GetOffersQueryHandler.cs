@@ -22,7 +22,7 @@ public sealed class GetOffersQueryHandler(IReadRepository<OfferEntity> offersRep
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
             offers = [.. offers.Where(offer => string.Equals(
-                offer.Status.Value, request.Status, StringComparison.OrdinalIgnoreCase
+                offer.Status.Value.ToUpper(), request.Status, StringComparison.OrdinalIgnoreCase
             ))];
         }
 

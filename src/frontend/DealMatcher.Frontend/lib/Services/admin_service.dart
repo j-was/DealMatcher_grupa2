@@ -11,8 +11,16 @@ import 'package:http/http.dart' as http;
 class AdminService {
   static const String baseUrl = String.fromEnvironment('API_URL');
 
-  Map<String, String> _headers() {
-    return AuthService.instance.authHeaders();
+  // Map<String, String> _headers() {
+  //   return AuthService.instance.authHeaders();
+  // }
+  Map<String, String> _getJsonGetHeaders() {
+    final authHeaders = AuthService.instance.authHeaders();
+    return {
+      'Accept': 'application/json',
+      if (authHeaders['Authorization'] != null)
+        'Authorization': authHeaders['Authorization']!,
+    };
   }
 
   Future<AdminUsersResponse> getUsers({
@@ -122,11 +130,12 @@ class AdminService {
       queryParameters['to'] = to.toUtc().toIso8601String();
     }
 
-    final uri = Uri.parse('$baseUrl/v1/admin/activity/user/$userId').replace(
-      queryParameters: queryParameters.isEmpty ? null : queryParameters,
-    );
+    // final uri = Uri.parse('$baseUrl/v1/admin/activity/user/$userId').replace(
+    //   queryParameters: queryParameters.isEmpty ? null : queryParameters,
+    // );
 
-    final response = await http.get(uri, headers: _headers());
+    final uri = Uri.parse('$baseUrl/v1/admin/activity/user/$userId');
+    final response = await http.get(uri, headers: _getJsonGetHeaders());
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;
@@ -169,11 +178,12 @@ class AdminService {
       queryParameters['to'] = to.toUtc().toIso8601String();
     }
 
-    final uri = Uri.parse('$baseUrl/v1/admin/activity/offer/$offerId').replace(
-      queryParameters: queryParameters.isEmpty ? null : queryParameters,
-    );
+    // final uri = Uri.parse('$baseUrl/v1/admin/activity/offer/$offerId').replace(
+    //   queryParameters: queryParameters.isEmpty ? null : queryParameters,
+    // );
+    final uri = Uri.parse('$baseUrl/v1/admin/activity/offer/$offerId');
 
-    final response = await http.get(uri, headers: _headers());
+    final response = await http.get(uri, headers: _getJsonGetHeaders());
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;

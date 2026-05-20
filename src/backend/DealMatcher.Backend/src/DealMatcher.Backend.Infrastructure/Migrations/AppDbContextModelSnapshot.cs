@@ -22,6 +22,94 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Admin.ActivityRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ActivityRecords", (string)null);
+                });
+
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Ban.Ban", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IssuedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IssuedBy");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bans", (string)null);
+                });
+
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Cart.CartItem", b =>
                 {
                     b.Property<int>("Id")
@@ -412,6 +500,66 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Admin.ActivityRecord", b =>
+                {
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.Offer.Offer", null)
+                        .WithMany()
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsMany("DealMatcher.Backend.Core.Aggregates.Admin.ActivityDetail", "Details", b1 =>
+                        {
+                            b1.Property<int>("ActivityId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ActivityId", "Id");
+
+                            b1.HasIndex("Name");
+
+                            b1.ToTable("ActivityRecordDetails", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityId");
+                        });
+
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Ban.Ban", b =>
+                {
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
+                        .WithMany()
+                        .HasForeignKey("IssuedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Cart.CartItem", b =>

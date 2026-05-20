@@ -1,5 +1,8 @@
 import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Presentation/Pages/add_offer_page.dart';
+import 'package:frontend/Presentation/Pages/admin_menu_page.dart';
+import 'package:frontend/Presentation/Pages/admin_offers_page.dart';
+import 'package:frontend/Presentation/Pages/admin_users_page.dart';
 import 'package:frontend/Presentation/Pages/cart_page.dart';
 import 'package:frontend/Presentation/Pages/conversation_page.dart';
 import 'package:frontend/Presentation/Pages/main_page.dart';
@@ -15,11 +18,15 @@ import 'package:frontend/Services/auth_service.dart';
 import 'package:frontend/Presentation/Pages/my_offers_page.dart';
 import 'package:frontend/Presentation/Pages/offer_edit_page.dart';
 import 'package:frontend/Presentation/Pages/delivery_page.dart';
+import 'package:frontend/Presentation/Pages/banned_users_page.dart';
+import 'package:frontend/Presentation/Pages/admin_offer_activity_page.dart';
+import 'package:frontend/Presentation/Pages/admin_user_activity_page.dart';
 
 final router = GoRouter(
   refreshListenable: AuthService.instance,
   redirect: (context, state) {
     final isLoggedIn = AuthService.instance.isAuthenticated;
+    final isAdmin = AuthService.instance.isAdmin;
     final location = state.matchedLocation;
 
     final isAuthRoute = location == '/login' || location == '/register';
@@ -28,13 +35,20 @@ final router = GoRouter(
         location == '/profile' ||
         location == '/delivery' ||
         location.startsWith('/my-offers') ||
-        location.startsWith('/chats');
+        location.startsWith('/chats') ||
+        location.startsWith('/admin');
 
     if (!isLoggedIn && isProtectedRoute) {
       return '/login';
     }
 
     if (isLoggedIn && isAuthRoute) {
+      return '/profile';
+    }
+    if (!isLoggedIn && location.startsWith('/admin')) {
+      return '/login';
+    }
+    if (location.startsWith('/admin') && !isAdmin) {
       return '/profile';
     }
 
@@ -110,6 +124,38 @@ final router = GoRouter(
 
             return PaymentPage(paymentMethodId: paymentMethodId!, price: price);
           },
+        ),
+        GoRoute(
+          path: 'admin',
+          builder: (context, state) => const AdminMenuPage(),
+          routes: [
+            GoRoute(
+              path: 'bans',
+              builder: (context, state) => const BannedUsersPage(),
+            ),
+            GoRoute(
+              path: 'users',
+              builder: (context, state) => const AdminUsersPage(),
+            ),
+            GoRoute(
+              path: 'offers',
+              builder: (context, state) => const AdminOffersPage(),
+            ),
+            GoRoute(
+              path: 'activity/user/:userId',
+              builder: (context, state) {
+                final userId = int.parse(state.pathParameters['userId']!);
+                return AdminUserActivityPage(userId: userId);
+              },
+            ),
+            GoRoute(
+              path: 'activity/offer/:offerId',
+              builder: (context, state) {
+                final offerId = int.parse(state.pathParameters['offerId']!);
+                return AdminOfferActivityPage(offerId: offerId);
+              },
+            ),
+          ],
         ),
       ],
     ),

@@ -22,6 +22,8 @@ class AuthService extends ChangeNotifier {
   String? get accessToken => _accessToken;
   User? get currentUser => _currentUser;
 
+  bool get isAdmin => _currentUser?.status == 'ADMIN';
+
   Future<void> restoreSession() async {
     try {
       final token = await _prefs.getString(_accessTokenKey);

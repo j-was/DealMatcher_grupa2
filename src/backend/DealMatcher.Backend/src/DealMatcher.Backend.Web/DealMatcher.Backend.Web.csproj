@@ -78,6 +78,21 @@
     <Compile Update="Endpoints\Purchases\Initialize.InitializePurchaseRequest.cs">
       <DependentUpon>Initialize.cs</DependentUpon>
     </Compile>
+    <Compile Update="Endpoints\Admin\GetOfferActivityRequest.cs">
+      <DependentUpon>GetOfferActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Admin\GetUserActivityRequest.cs">
+      <DependentUpon>GetUserActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Admin\GetOffers.GetOffersRequest.cs">
+      <DependentUpon>GetOffers.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Admin\GetUsers.GetUsersRequest.cs">
+      <DependentUpon>GetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Admin\GetUserRequest.cs">
+      <DependentUpon>GetUser.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

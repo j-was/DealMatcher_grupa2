@@ -1,7 +1,8 @@
 namespace DealMatcher.Backend.UseCases.Features.User.Login;
 
 public class LoginHandler(
-    IRepository<UserEntity> usersRepository, IPasswordHashService passwordHashService, IMapper mapper, ITokenProvider tokenService) : IRequestHandler<LoginCommand, Result<LoginDTO>>
+    IRepository<UserEntity> usersRepository, IPasswordHashService passwordHashService, IMapper mapper, ITokenProvider tokenService,
+    IPublisher publisher) : IRequestHandler<LoginCommand, Result<LoginDTO>>
 {
     public async Task<Result<LoginDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
@@ -23,6 +24,11 @@ public class LoginHandler(
         }
 
         var res = new LoginDTO(tokenService.GenerateToken(user), mapper.Map<UserDTO>(user));
+
+        await publisher.Publish(
+            new UserLoggedInEvent(user.Id),
+            cancellationToken);
+
         return Result.Success(res);
     }
 }

@@ -249,7 +249,32 @@ public static class SeedData
             new("joanna.szymanska@email.com", "Joanna", "Szymańska"),
         };
 
+        User admin = new("admin@email.com", "Administrator", "DealMatcher");
+        admin.UpdateStatus(UserStatus.Admin);
+        admin.SetNewHash("$2a$12$oUd9B1BARUhJSpmGLUM0aO1CTGoiWubvZNklTyqBQQvLmzVuTNVOm");
+
+        users.Add(admin);
+
         await dbContext.Set<User>().AddRangeAsync(users);
+        await dbContext.SaveChangesAsync();
+
+        var bans = new List<Ban>
+        {
+            new(
+                users[0].Id,
+                "Naruszenie regulaminu platformy.",
+                admin.Id,
+                DateTime.UtcNow.AddDays(7)
+            ),
+            new(
+                users[1].Id,
+                "Podejrzana aktywność konta.",
+                admin.Id,
+                DateTime.UtcNow.AddDays(14)
+            )
+        };
+
+        await dbContext.Set<Ban>().AddRangeAsync(bans);
         await dbContext.SaveChangesAsync();
     }
 

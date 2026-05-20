@@ -221,7 +221,7 @@ paths:
       tags:
         - offers
       summary: Update offer status
-      description: Changes offer status (ACTIVE/PROMOTED/SOLD - permissions apply)
+      description: Changes offer status (ACTIVE/PROMOTED/SOLD - permissions apply (user can changed their offer's statis to SOLD, admin can change DRAFT to ACTIVE))
       security:
         - bearerAuth: []
       parameters:
@@ -797,13 +797,19 @@ paths:
                   type: integer
                   default: 1
       responses:
-        303:
-          description: Redirect to payment provider
-          headers:
-            Location:
+        200:
+          description: Purchase initialized successfully
+          content:
+            application/json:
               schema:
-                type: string
-              description: URL to external payment gateway
+                type: object
+                required:
+                  - redirectUrl
+                properties:
+                  redirectUrl:
+                    type: string
+                    format: uri
+                    description: Payment provider redirect URL with orderId query parameter
         400:
           description: Invalid purchase data
         401:

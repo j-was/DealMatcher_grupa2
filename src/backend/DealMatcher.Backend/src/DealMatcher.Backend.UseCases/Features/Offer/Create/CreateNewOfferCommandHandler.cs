@@ -1,8 +1,9 @@
 using DealMatcher.Backend.Core.Aggregates.Offer;
+using DealMatcher.Backend.Core.Events;
 
 namespace DealMatcher.Backend.UseCases.Features.Offer.Create;
 
-public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository, IImageService imageService, IMapper mapper)
+public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository, IImageService imageService, IMapper mapper, IPublisher publisher)
 : ICommandHandler<CreateNewOfferCommand, Result<OfferDTO>>
 {
     public async Task<Result<OfferDTO>> Handle(CreateNewOfferCommand request, CancellationToken cancellationToken)
@@ -35,6 +36,9 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
         await offersRepository.SaveChangesAsync(cancellationToken);
 
         var dto = mapper.Map<OfferDTO>(offer);
+
+        await publisher.Publish(new OfferCreatedEvent(offer.SellerId, offer.Id, offer.Title, offer.Description,
+            offer.Price, offer.Availability), cancellationToken);
 
         return Result.Created(dto);
     }

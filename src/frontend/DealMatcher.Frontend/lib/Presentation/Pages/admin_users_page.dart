@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Models/admin_users_response.dart';
+import 'package:frontend/Models/ban_request.dart';
 import 'package:frontend/Models/user.dart';
 import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
 import 'package:frontend/Services/admin_service.dart';
+import 'package:frontend/Services/ban_service.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminUsersPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class AdminUsersPage extends StatefulWidget {
 
 class _AdminUsersPageState extends State<AdminUsersPage> {
   final AdminService _adminService = AdminService();
+  final BanService _banService = BanService();
   final List<String> _statuses = ['_', 'ACTIVE', 'INACTIVE', 'BANNED'];
   String _selectedStatus = '_';
 
@@ -168,6 +171,63 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
             },
           ),
         ),
+        if (user.status != 'BANNED')
+          Positioned(
+            top: 40,
+            right: 4,
+            child: TextButton(
+              child: Text(
+                "Zbanuj użytkownika",
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              onPressed: () async {
+                final reason = await showDialog<String>(
+                  context: context,
+                  builder: (context) {
+                    final controller = TextEditingController();
+
+                    return AlertDialog(
+                      title: const Text("Powód bana"),
+                      content: TextField(
+                        controller: controller,
+                        autofocus: true,
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          hintText: "Wpisz powód bana...",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Anuluj"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            final text = controller.text.trim();
+
+                            if (text.isEmpty) {
+                              return;
+                            }
+
+                            Navigator.of(context).pop(text);
+                          },
+                          child: const Text("Zbanuj"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                if (reason == null || reason.isEmpty) {
+                  return;
+                }
+
+                BanRequest req = BanRequest(userId: user.id, reason: reason);
+                await _banService.banUser(req);
+              },
+            ),
+          ),
       ],
     ),
   );

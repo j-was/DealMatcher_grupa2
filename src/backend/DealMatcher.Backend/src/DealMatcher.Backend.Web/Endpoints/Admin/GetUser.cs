@@ -27,7 +27,7 @@ public class GetUser(IMediator mediator) : EndpointWithoutRequest
             return;
         }
 
-        int userId = Route<int>("UserId");
+        var userId = Route<int>("UserId");
 
         var request = new GetUserAdminQuery(userId, adminId);
         var result = await mediator.Send(request, ct);

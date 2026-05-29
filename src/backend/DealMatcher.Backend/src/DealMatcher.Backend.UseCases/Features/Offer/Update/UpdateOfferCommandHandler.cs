@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ardalis.Result;
 using Ardalis.SharedKernel;
 using AutoMapper;
@@ -36,8 +37,17 @@ public sealed class UpdateOfferCommandHandler(
         }
 
         var properties = request.Properties?
-            .Select(p => new OfferProperty(p.Key, p.ToString()))
-            .ToList();
+        .Select(p =>
+        {
+            var value = p.Value is JsonElement json
+                ? (json.ValueKind == JsonValueKind.String
+                    ? json.GetString() ?? string.Empty
+                    : json.GetRawText())
+                : JsonSerializer.Serialize(p.Value);
+
+            return new OfferProperty(p.Key, value);
+        })
+        .ToList();
 
         offer.Update(
             title: request.Title,

@@ -1,22 +1,22 @@
-using DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
+using DealMatcher.Backend.UseCases.Features.Purchase.Complete;
 
 namespace DealMatcher.Backend.Web.Endpoints.Purchases;
 
-public class Initialize(IMediator mediator)
-    : Endpoint<InitializePurchaseRequest, InitializePurchaseResponse>
+public class Complete(IMediator mediator)
+    : EndpointWithoutRequest
 {
     public override void Configure()
     {
         Version(1);
-        Post("/purchases/initialize");
+        Delete("/purchases/complete");
         Summary(s =>
         {
-            s.Summary = "Initialize purchase";
-            s.Description = "Creates an order and redirects to external payment provider";
+            s.Summary = "Completes purchase";
+            s.Description = "Completes purchase and removing purchasing offer from the cart";
         });
     }
 
-    public override async Task HandleAsync(InitializePurchaseRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -27,7 +27,7 @@ public class Initialize(IMediator mediator)
             return;
         }
 
-        var request = new InitializePurchaseCommand(userId, req.OfferId, req.PaymentMethodId, req.Quantity);
+        var request = new CompletePurchaseCommand(userId);
         var result = await mediator.Send(request, ct);
 
         await result.SendResult(this, ct);

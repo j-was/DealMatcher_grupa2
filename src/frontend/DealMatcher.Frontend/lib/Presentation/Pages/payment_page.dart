@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Presentation/Widgets/main_app_bar.dart';
-import 'package:go_router/go_router.dart';
+import 'package:frontend/Services/purchase_service.dart';
 
 class PaymentPage extends StatefulWidget {
   final String paymentMethodId;
@@ -163,13 +163,34 @@ class _PaymentPageState extends State<PaymentPage> {
                           _isLoading = true;
                         });
 
-                        await Future.delayed(const Duration(seconds: 2));
+                        try {
+                          await PurchaseService.instance.completePurchase();
 
-                        if (!context.mounted) {
-                          return;
+                          if (!context.mounted) {
+                            return;
+                          }
+                        } catch (error) {
+                          if (!context.mounted) {
+                            return;
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                error.toString().replaceFirst(
+                                  'Exception: ',
+                                  '',
+                                ),
+                              ),
+                            ),
+                          );
+                        } finally {
+                          if (context.mounted) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
                         }
-
-                        context.push('/cart');
                       },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

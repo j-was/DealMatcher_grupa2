@@ -7,9 +7,9 @@ public sealed class InitializePurchaseCommandHandler(
     IRepository<CartItem> cartItemsRepository,
     IReadRepository<OfferEntity> offersRepository, IConfiguration configuration,
     IPublisher publisher)
-    : IRequestHandler<InitializePurchaseCommand, CustomResult>
+    : IRequestHandler<InitializePurchaseCommand, Result<InitializePurchaseResponse>>
 {
-    public async Task<CustomResult> Handle(InitializePurchaseCommand request, CancellationToken cancellationToken)
+    public async Task<Result<InitializePurchaseResponse>> Handle(InitializePurchaseCommand request, CancellationToken cancellationToken)
     {
         if (request.OfferId == -2137)
         {
@@ -31,8 +31,6 @@ public sealed class InitializePurchaseCommandHandler(
 
                 total += price;
 
-                item.Delete();
-                await cartItemsRepository.UpdateAsync(item, cancellationToken);
                 await publisher.Publish(new OfferPurchasedEvent(offer.SellerId, offer.Id, item.Quantity, offer.Availability, price), cancellationToken);
             }
 
@@ -40,7 +38,7 @@ public sealed class InitializePurchaseCommandHandler(
 
             var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{total}";
 
-            return new RedirectResult(url);
+            return Result.Success(new InitializePurchaseResponse(url));
         }
         else
         {
@@ -63,9 +61,6 @@ public sealed class InitializePurchaseCommandHandler(
 
             var cartItem = cartItems.First(x => x.OfferId == request.OfferId);
 
-            cartItem.Delete();
-            await cartItemsRepository.UpdateAsync(cartItem, cancellationToken);
-
             var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
 
             var price = offer.Price * request.Quantity;
@@ -75,7 +70,7 @@ public sealed class InitializePurchaseCommandHandler(
                 new OfferPurchasedEvent(offer.SellerId, offer.Id, cartItem.Quantity, offer.Availability, price),
                 cancellationToken);
 
-            return new RedirectResult(url);
+            return Result.Success(new InitializePurchaseResponse(url));
         }
     }
 }

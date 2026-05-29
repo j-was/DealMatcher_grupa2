@@ -1,7 +1,10 @@
-namespace DealMatcher.Backend.Web.Endpoints.Offers;
+using Ardalis.Result;
 
-public sealed record UpdateOfferRequest(
+namespace DealMatcher.Backend.UseCases.Features.Offer.Update;
+
+public sealed record UpdateOfferCommand(
     int OfferId,
+    int UserId,
     string? Title,
     string? Description,
     double? Price,
@@ -9,4 +12,4 @@ public sealed record UpdateOfferRequest(
     List<string>? Tags,
     Dictionary<string, object>? Properties,
     int? Availability
-);
+) : IRequest<Result<object>>;

@@ -2,7 +2,7 @@ using DealMatcher.Backend.UseCases.Features.Purchase.Complete;
 
 namespace DealMatcher.Backend.Web.Endpoints.Purchases;
 
-public class Complete(IMediator mediator) 
+public class Complete(IMediator mediator)
     : EndpointWithoutRequest
 {
     public override void Configure()

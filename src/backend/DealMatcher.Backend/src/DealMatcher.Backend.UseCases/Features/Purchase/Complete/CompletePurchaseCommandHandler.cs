@@ -7,7 +7,7 @@ public sealed class CompletePurchaseCommandHandler(
     public async Task<Result> Handle(CompletePurchaseCommand request, CancellationToken cancellationToken)
     {
         var cartItems = await cartRepository.ListAsync(new CartItemsByUserIdSpec(request.UserId), cancellationToken);
-        
+
         foreach (var item in cartItems)
         {
             item.Delete();

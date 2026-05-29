@@ -1,6 +1,7 @@
 using DealMatcher.Backend.Core.Aggregates.Cart;
 using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
 using DealMatcher.Backend.Core.Aggregates.Offer;
+using DealMatcher.Backend.Core.Events;
 using DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
 
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Purchase.Initialize;
@@ -39,12 +40,13 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeFalse();
 
         await _cartItemsRepository.Received(1)
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
         await _offersRepository.DidNotReceiveWithAnyArgs()
             .GetByIdAsync<int>(default, default);
+        await _publisher.DidNotReceive()
+            .Publish(Arg.Any<OfferPurchasedEvent>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -93,18 +95,15 @@ public class InitializePurchaseCommandHandlerTests
 
         var result = await _handler.Handle(request, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeTrue();
-
-        var redirectResult = result.AsT1;
-        redirectResult.Url.ShouldBe("/payment/card/20");
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.RedirectUrl.ShouldBe("/payment/card/20");
 
         await _cartItemsRepository.Received(1)
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _offersRepository.Received(1).GetByIdAsync(20, CancellationToken.None);
-        await _cartItemsRepository.Received(2)
-            .UpdateAsync(Arg.Any<CartItem>(), CancellationToken.None);
+        await _publisher.Received(2)
+            .Publish(Arg.Any<OfferPurchasedEvent>(), CancellationToken.None);
     }
 
     [Fact]
@@ -119,7 +118,6 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeFalse();
 
         await _offersRepository.DidNotReceiveWithAnyArgs()
             .GetByIdAsync<int>(default, default);
@@ -141,7 +139,6 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeFalse();
 
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.DidNotReceiveWithAnyArgs()
@@ -179,7 +176,6 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeFalse();
 
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.Received(1)
@@ -216,16 +212,13 @@ public class InitializePurchaseCommandHandlerTests
 
         var result = await _handler.Handle(request, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeFalse();
-        result.IsRedirect.ShouldBeTrue();
-
-        var redirectResult = result.AsT1;
-        redirectResult.Url.ShouldBe("/payment/card/20");
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.RedirectUrl.ShouldBe("/payment/card/20");
 
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.Received(1)
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
-        await _cartItemsRepository.Received(1)
-            .UpdateAsync(Arg.Any<CartItem>(), CancellationToken.None);
+        await _publisher.Received(1)
+            .Publish(Arg.Any<OfferPurchasedEvent>(), CancellationToken.None);
     }
 }

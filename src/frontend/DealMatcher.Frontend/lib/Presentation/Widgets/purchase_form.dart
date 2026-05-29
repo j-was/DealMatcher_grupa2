@@ -5,6 +5,7 @@ import 'package:frontend/Models/payment_method.dart';
 import 'package:frontend/Models/purchase_request.dart';
 import 'package:frontend/Services/purchase_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final List<DeliveryMethod> mockDeliveryMethods = [
   DeliveryMethod(
@@ -133,11 +134,21 @@ class _PurchaseFormState extends State<PurchaseForm> {
 
     if (failed.isEmpty) {
       if (redirectUri != null) {
-        final route = redirectUri.hasQuery
-            ? '${redirectUri.path}?${redirectUri.query}'
-            : redirectUri.path;
+        final launched = await launchUrl(
+          redirectUri,
+          mode: LaunchMode.externalApplication,
+        );
 
-        context.go(route);
+        if (!mounted) return;
+
+        if (!launched) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Nie udało się otworzyć strony płatności.'),
+            ),
+          );
+          return;
+        }
       } else {
         context.go("/delivery");
       }

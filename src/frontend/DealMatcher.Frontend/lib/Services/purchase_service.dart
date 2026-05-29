@@ -68,27 +68,15 @@ class PurchaseService {
       body: jsonEncode(request.toJson()),
     );
 
-    if (response.statusCode == 303) {
-      final location = response.headers['location'];
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final redirectUrl = decoded['redirectUrl'] as String?;
 
-      if (location == null || location.trim().isEmpty) {
+      if (redirectUrl == null || redirectUrl.trim().isEmpty) {
         throw Exception('Brak adresu przekierowania do płatności.');
       }
 
-      return Uri.parse(location);
-    }
-
-    if (response.statusCode == 200) {
-      final finalUrl = response.request?.url;
-
-      if (finalUrl != null && finalUrl.path.startsWith('/payment/')) {
-        return finalUrl;
-      }
-
-      throw Exception(
-        'Brak adresu przekierowania do płatności. '
-        'Status: ${response.statusCode}, URL: $finalUrl',
-      );
+      return Uri.parse(redirectUrl);
     }
 
     if (response.statusCode == 400) {
@@ -109,6 +97,33 @@ class PurchaseService {
 
     throw Exception(
       'Nie udało się zainicjalizować zamówienia. Status: ${response.statusCode}',
+    );
+  }
+
+  Future<void> completePurchase() async {
+    final response = await http.delete(
+      _endpoint('/purchases/complete'),
+      headers: AuthService.instance.authHeaders(),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return;
+    }
+
+    if (response.statusCode == 401) {
+      throw Exception('Musisz być zalogowany, żeby dokończyć zakup.');
+    }
+
+    if (response.statusCode == 404) {
+      throw Exception('Nie znaleziono zakupu do zakończenia.');
+    }
+
+    if (response.statusCode == 409) {
+      throw Exception('Nie można zakończyć tego zakupu.');
+    }
+
+    throw Exception(
+      'Nie udało się zakończyć zakupu. Status: ${response.statusCode}',
     );
   }
 }

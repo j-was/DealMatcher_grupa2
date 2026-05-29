@@ -5,4 +5,4 @@ public sealed record InitializePurchaseCommand(
     int OfferId,
     string PaymentMethodId,
     int Quantity
-) : IRequest<CustomResult>;
+) : IRequest<Result<InitializePurchaseResponse>>;

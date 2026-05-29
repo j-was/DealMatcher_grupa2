@@ -149,4 +149,57 @@ public sealed class Offer :
         Properties = properties;
         UpdatedAt = DateTime.UtcNow;
     }
+    public void Update(
+    string? title = null,
+    string? description = null,
+    decimal? price = null,
+    List<string>? images = null,
+    List<string>? tags = null,
+    List<OfferProperty>? properties = null,
+    int? availability = null)
+    {
+        if (title is not null)
+        {
+            ValidateTitle(title);
+            Title = title.Trim();
+        }
+
+        if (description is not null)
+        {
+            ValidateDescription(description);
+            Description = description.Trim();
+        }
+
+        if (price is not null)
+        {
+            ValidatePrice(price.Value);
+            Price = price.Value;
+        }
+
+        if (images is not null)
+        {
+            ValidateImageUrls(images);
+            ImageUrls = images;
+        }
+
+        if (tags is not null)
+        {
+            ValidateTags(tags);
+            Tags = tags;
+        }
+
+        if (properties is not null)
+        {
+            ValidateProperties(properties);
+            Properties = properties;
+        }
+
+        if (availability is not null)
+        {
+            ValidateAvailability(availability.Value);
+            Availability = availability.Value;
+        }
+
+        ChangeStatus(OfferStatus.Draft);
+    }
 }

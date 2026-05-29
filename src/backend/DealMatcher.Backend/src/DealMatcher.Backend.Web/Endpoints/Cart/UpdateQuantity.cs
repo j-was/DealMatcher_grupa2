@@ -1,24 +1,24 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.UseCases.Features.Offer.UpdateStatus;
+using DealMatcher.Backend.UseCases.Features.Cart.UpdateQuantity;
 
-namespace DealMatcher.Backend.Web.Endpoints.Offers;
+namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
-public class UpdateStatus(IMediator mediator) : Endpoint<UpdateOfferStatusRequest>
+public class UpdateQuantity(IMediator mediator) : Endpoint<UpdateCartItemQuantityRequest>
 {
     public override void Configure()
     {
         Version(1);
-        Put("/offers/{OfferId:int}/status");
+        Patch("/cart/items/{CartItemId:int}");
         Summary(s =>
         {
-            s.Summary = "Update offer status";
-            s.Description = "Changes offer status";
+            s.Summary = "Update cart item quantity";
+            s.Description = "Changes the quantity of a specific cart item";
         });
     }
 
-    public override async Task HandleAsync(UpdateOfferStatusRequest req, CancellationToken ct)
+    public override async Task HandleAsync(UpdateCartItemQuantityRequest req, CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -29,7 +29,7 @@ public class UpdateStatus(IMediator mediator) : Endpoint<UpdateOfferStatusReques
             return;
         }
 
-        var request = new UpdateOfferStatusCommand(req.OfferId, userId, req.Status);
+        var request = new UpdateCartItemQuantityCommand(req.CartItemId, userId, req.Quantity);
         var result = await mediator.Send(request, ct);
         await result.SendResult(this, ct);
     }

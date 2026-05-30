@@ -91,6 +91,7 @@ public class CreateNewConversationCommandHandlerTests
     public async Task Handle_ShouldCreateConversation_WhenRequestIsValid()
     {
         var offer = CreateOfferEntity(sellerId: 7);
+        var createdConversation = CreateConversationEntity(10, 2, 7, "Hej");
 
         _offerRepository
             .GetByIdAsync(10, Arg.Any<CancellationToken>())
@@ -99,6 +100,10 @@ public class CreateNewConversationCommandHandlerTests
         _conversationRepository
             .FirstOrDefaultAsync(Arg.Any<ExistingConversationSpec>(), Arg.Any<CancellationToken>())
             .Returns((ConversationEntity?)null);
+
+        _conversationRepository
+            .FirstOrDefaultAsync(Arg.Any<ConversationByIdWithUsersSpec>(), Arg.Any<CancellationToken>())
+            .Returns(createdConversation);
 
         _mapper
             .Map<ConversationDTO>(Arg.Any<ConversationEntity>())

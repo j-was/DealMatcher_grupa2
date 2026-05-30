@@ -11,23 +11,23 @@ public sealed class ConversationConfig
 
         builder.ToTable($"{nameof(Conversation)}s");
 
-        builder.HasOne<Offer>()
+        builder.HasOne(c => c.Offer)
             .WithMany()
             .HasForeignKey(c => c.OfferId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasOne<User>()
+        builder.HasOne(c => c.Buyer)
             .WithMany()
             .HasForeignKey(c => c.BuyerId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(c => c.SellerId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired();
+        builder.HasOne(c => c.Seller)
+          .WithMany()
+          .HasForeignKey(c => c.SellerId)
+          .OnDelete(DeleteBehavior.Restrict)
+          .IsRequired();
 
         builder.Property(c => c.LastMessage)
             .IsRequired();

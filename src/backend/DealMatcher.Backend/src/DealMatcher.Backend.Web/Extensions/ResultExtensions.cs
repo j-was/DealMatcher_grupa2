@@ -19,6 +19,12 @@ public static class ResultExtensions
     {
         var response = endpoint.HttpContext.Response;
 
+        if (result.Status == ResultStatus.Created)
+        {
+            await response.SendAsync(result.Value, StatusCodes.Status201Created, cancellation: ct);
+            return;
+        }
+
         if (result.IsSuccess)
         {
             await response.SendAsync(result.Value, 200, cancellation: ct);

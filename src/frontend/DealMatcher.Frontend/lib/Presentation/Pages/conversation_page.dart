@@ -47,6 +47,8 @@ class _ConversationPageState extends State<ConversationPage> {
             offerId: current.offerId,
             buyerId: current.buyerId,
             sellerId: current.sellerId,
+            buyerName: current.buyerName,
+            sellerName: current.sellerName,
             lastMessage: message.content,
             lastMessageAt: message.createdAt,
             unreadCount: current.unreadCount,
@@ -106,8 +108,8 @@ class _ConversationPageState extends State<ConversationPage> {
   }
 
   Widget _messageWidget(Message message) {
-    bool isMine =
-        (_conversation == null) || message.senderId == _conversation!.buyerId;
+    final currentUserId = AuthService.instance.currentUser?.id;
+    bool isMine = currentUserId != null && message.senderId == currentUserId;
 
     return Align(
       alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -195,9 +197,20 @@ class _ConversationPageState extends State<ConversationPage> {
                           maxLines: 4,
                           decoration: const InputDecoration(
                             hintText: 'Napisz wiadomość...',
+                            hintStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
                             border: OutlineInputBorder(),
-                            fillColor: Colors.white54,
+                            filled: false,
                           ),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                       const SizedBox(width: 8),

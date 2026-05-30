@@ -31,6 +31,12 @@ public sealed class Delete(IMediator mediator) : EndpointWithoutRequest
 
         var result = await mediator.Send(command, ct);
 
+        if (result.IsSuccess)
+        {
+            await SendNoContentAsync(ct);
+            return;
+        }
+
         await result.SendResult(this, ct);
     }
 }

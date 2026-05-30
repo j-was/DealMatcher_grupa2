@@ -7,6 +7,7 @@ public sealed class CategoryProfile : Profile
     public CategoryProfile()
     {
         CreateMap<CategoryProperty, CategoryPropertyDTO>()
+            .ForCtorParam(nameof(CategoryPropertyDTO.Id), opt => opt.MapFrom(src => src.Id))
             .ForCtorParam(nameof(CategoryPropertyDTO.Name), opt => opt.MapFrom(src => src.Name))
             .ForCtorParam(nameof(CategoryPropertyDTO.Options), opt => opt.MapFrom(src => src.Options))
             .ForCtorParam(nameof(CategoryPropertyDTO.Type), opt => opt.MapFrom(src => src.Type.Value.ToUpper()));

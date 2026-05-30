@@ -15,9 +15,15 @@ public sealed class ConversationProfile : Profile
 
         CreateMap<ConversationEntity, ConversationDTO>()
             .ForCtorParam(nameof(ConversationDTO.Id), opt => opt.MapFrom(src => src.Id))
-            .ForCtorParam(nameof(ConversationDTO.OfferId), opt => opt.MapFrom(src => src.OfferId))
-            .ForCtorParam(nameof(ConversationDTO.BuyerId), opt => opt.MapFrom(src => src.BuyerId))
-            .ForCtorParam(nameof(ConversationDTO.SellerId), opt => opt.MapFrom(src => src.SellerId))
+            .ForCtorParam(nameof(ConversationDTO.Offer), opt => opt.MapFrom(src => src.Offer))
+            .ForCtorParam(
+                  nameof(ConversationDTO.Buyer),
+                  opt => opt.MapFrom(src => new ConversationUserDTO(src.Buyer.Id, src.Buyer.Name))
+              )
+              .ForCtorParam(
+                  nameof(ConversationDTO.Seller),
+                  opt => opt.MapFrom(src => new ConversationUserDTO(src.Seller.Id, src.Seller.Name))
+              )
             .ForCtorParam(nameof(ConversationDTO.LastMessage), opt => opt.MapFrom(src => src.LastMessage))
             .ForCtorParam(nameof(ConversationDTO.LastMessageAt), opt => opt.MapFrom(src => src.LastMessageAt))
             .ForCtorParam(nameof(ConversationDTO.UnreadCount), opt => opt.MapFrom(src => src.UnreadCount))
@@ -26,9 +32,15 @@ public sealed class ConversationProfile : Profile
 
         CreateMap<ConversationEntity, ConversationDetailsDTO>()
            .ForCtorParam(nameof(ConversationDetailsDTO.Id), opt => opt.MapFrom(src => src.Id))
-           .ForCtorParam(nameof(ConversationDetailsDTO.OfferId), opt => opt.MapFrom(src => src.OfferId))
-           .ForCtorParam(nameof(ConversationDetailsDTO.BuyerId), opt => opt.MapFrom(src => src.BuyerId))
-           .ForCtorParam(nameof(ConversationDetailsDTO.SellerId), opt => opt.MapFrom(src => src.SellerId))
+           .ForCtorParam(nameof(ConversationDetailsDTO.Offer), opt => opt.MapFrom(src => src.Offer))
+           .ForCtorParam(
+                 nameof(ConversationDetailsDTO.Buyer),
+                 opt => opt.MapFrom(src => new ConversationUserDTO(src.Buyer.Id, src.Buyer.Name))
+             )
+             .ForCtorParam(
+                 nameof(ConversationDetailsDTO.Seller),
+                 opt => opt.MapFrom(src => new ConversationUserDTO(src.Seller.Id, src.Seller.Name))
+             )
            .ForCtorParam(nameof(ConversationDetailsDTO.LastMessage), opt => opt.MapFrom(src => src.LastMessage))
            .ForCtorParam(nameof(ConversationDetailsDTO.LastMessageAt), opt => opt.MapFrom(src => src.LastMessageAt))
            .ForCtorParam(nameof(ConversationDetailsDTO.UnreadCount), opt => opt.MapFrom(src => src.UnreadCount))

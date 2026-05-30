@@ -33,6 +33,12 @@ public sealed class Delete(IMediator mediator) : EndpointWithoutRequest
         var cartItemId = Route<int>("cartItemId");
 
         var result = await mediator.Send(new DeleteCartItemCommand(userId, cartItemId), ct);
-        await result.SendResult(this, ct: ct);
+        if (result.IsSuccess)
+        {
+            await SendNoContentAsync(ct);
+            return;
+        }
+
+        await result.SendResult(this, ct);
     }
 }

@@ -301,7 +301,7 @@ public static class SeedData
                 title: "iPhone 13 Pro 256GB",
                 description: "Sprzedam iPhone 13 Pro w kolorze grafitowym. Bez śladów użytkowania. Komplet z pudełkiem i ładowarką.",
                 price: 2999.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/iphone13.jpg", 
+                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/iphone13.jpg",
                     "https://dealmatcherstorage.blob.core.windows.net/pictures/iphone-13-pro-2.jpg"],
                 sellerId: sellerIds[0],
                 tags: ["elektronika", "telefon", "apple", "smartfon"],

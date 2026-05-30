@@ -9,6 +9,7 @@ public class ConversationProfileTests
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<ConversationProfile>();
+            cfg.AddProfile<OfferProfile>();
         }, new SerilogLoggerFactory());
         _mapper = config.CreateMapper();
     }
@@ -19,6 +20,7 @@ public class ConversationProfileTests
         var configuration = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<ConversationProfile>();
+            cfg.AddProfile<OfferProfile>();
         }, new SerilogLoggerFactory());
 
         configuration.AssertConfigurationIsValid();
@@ -47,9 +49,6 @@ public class ConversationProfileTests
         var dto = _mapper.Map<ConversationDTO>(conversation);
 
         dto.Id.ShouldBe(100);
-        dto.OfferId.ShouldBe(1);
-        dto.BuyerId.ShouldBe(2);
-        dto.SellerId.ShouldBe(3);
         dto.LastMessage.ShouldBe("Initial message");
         dto.UnreadCount.ShouldBe(1);
     }
@@ -84,9 +83,6 @@ public class ConversationProfileTests
         var dto = _mapper.Map<ConversationDetailsDTO>(conversation);
 
         dto.Id.ShouldBe(100);
-        dto.OfferId.ShouldBe(1);
-        dto.BuyerId.ShouldBe(2);
-        dto.SellerId.ShouldBe(3);
         dto.LastMessage.ShouldBe("Initial message");
         dto.UnreadCount.ShouldBe(1);
     }
@@ -154,6 +150,31 @@ public class ConversationProfileTests
 
     private static ConversationEntity CreateConversationEntity(int offerId, int buyerId, int sellerId, string initialMessage)
     {
-        return new ConversationEntity(offerId, buyerId, sellerId, initialMessage);
+        var conversation = new ConversationEntity(offerId, buyerId, sellerId, initialMessage);
+
+        var offer = new OfferEntity(
+          "Test offer",
+          "Test description",
+          100m,
+          ["image.jpg"],
+          sellerId,
+          [],
+          1,
+          [],
+          1);
+
+        typeof(OfferEntity).GetProperty("Id")!.SetValue(offer, offerId);
+
+        var buyer = new UserEntity("buyer@test.pl", "Buyer");
+        typeof(UserEntity).GetProperty("Id")!.SetValue(buyer, buyerId);
+
+        var seller = new UserEntity("seller@test.pl", "Seller");
+        typeof(UserEntity).GetProperty("Id")!.SetValue(seller, sellerId);
+
+        typeof(ConversationEntity).GetProperty("Offer")!.SetValue(conversation, offer);
+        typeof(ConversationEntity).GetProperty("Buyer")!.SetValue(conversation, buyer);
+        typeof(ConversationEntity).GetProperty("Seller")!.SetValue(conversation, seller);
+
+        return conversation;
     }
 }

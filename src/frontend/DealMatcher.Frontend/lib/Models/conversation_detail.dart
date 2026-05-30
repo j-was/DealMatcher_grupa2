@@ -5,6 +5,8 @@ class ConversationDetail {
   final int _offerId;
   final int _buyerId;
   final int _sellerId;
+  final String _buyerName;
+  final String _sellerName;
   final String _lastMessage;
   final DateTime _lastMessageAt;
   final int _unreadCount;
@@ -16,6 +18,8 @@ class ConversationDetail {
   int get offerId => _offerId;
   int get buyerId => _buyerId;
   int get sellerId => _sellerId;
+  String get buyerName => _buyerName;
+  String get sellerName => _sellerName;
   String get lastMessage => _lastMessage;
   DateTime get lastMessageAt => _lastMessageAt;
   int get unreadCount => _unreadCount;
@@ -28,6 +32,8 @@ class ConversationDetail {
     required int offerId,
     required int buyerId,
     required int sellerId,
+    String buyerName = '',
+    String sellerName = '',
     required String lastMessage,
     required DateTime lastMessageAt,
     int unreadCount = 0,
@@ -38,6 +44,8 @@ class ConversationDetail {
        _offerId = offerId,
        _buyerId = buyerId,
        _sellerId = sellerId,
+       _buyerName = buyerName,
+       _sellerName = sellerName,
        _lastMessage = lastMessage,
        _lastMessageAt = lastMessageAt,
        _unreadCount = unreadCount,
@@ -47,24 +55,28 @@ class ConversationDetail {
 
   ConversationDetail.fromJson(Map<String, dynamic> json)
     : _id = json['id'] ?? 0,
-      _offerId = json['offerId'] ?? 0,
-      _buyerId = json['buyerId'] ?? 0,
-      _sellerId = json['sellerId'] ?? 0,
+      _offerId = json['offerId'] ?? json['offer']?['id'] ?? 0,
+      _buyerId = json['buyer']?['id'] ?? json['buyerId'] ?? 0,
+      _sellerId = json['seller']?['id'] ?? json['sellerId'] ?? 0,
+      _buyerName = json['buyer']?['name'] ?? '',
+      _sellerName = json['seller']?['name'] ?? '',
       _lastMessage = json['lastMessage'] ?? '',
       _lastMessageAt =
           DateTime.tryParse(json['lastMessageAt'] ?? '') ?? DateTime.now(),
       _unreadCount = json['unreadCount'] ?? 0,
       _status = json['status'] ?? 'CLOSED',
-      _createdAt = DateTime.tryParse(json['createdAt']) ?? DateTime.now(),
+      _createdAt =
+          DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+          DateTime.now(),
       _messages = (json['messages'] as List<dynamic>)
           .map((e) => Message.fromJson(e as Map<String, dynamic>))
           .toList();
 
   Map<String, dynamic> toJson() => {
     'id': _id,
-    'offerId': _offerId.toString(),
-    'buyerId': _buyerId.toString(),
-    'sellerId': _sellerId.toString(),
+    'offerId': _offerId,
+    'buyer': {'id': _buyerId, 'name': _buyerName},
+    'seller': {'id': _sellerId, 'name': _sellerName},
     'lastMessage': _lastMessage,
     'lastMessageAt': _lastMessageAt.toIso8601String(),
     'unreadCount': _unreadCount,

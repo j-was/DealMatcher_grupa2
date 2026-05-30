@@ -204,7 +204,7 @@ class _AdminOffersPageState extends State<AdminOffersPage> {
             initialValue: _selectedStatus,
             dropdownColor: const Color(0xFF2B2B2B),
             decoration: const InputDecoration(
-              labelText: 'Status użytkowników',
+              labelText: 'Status ofert',
               border: OutlineInputBorder(),
             ),
             items: _statuses

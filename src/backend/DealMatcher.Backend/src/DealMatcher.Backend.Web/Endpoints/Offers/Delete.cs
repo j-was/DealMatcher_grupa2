@@ -5,7 +5,7 @@ using DealMatcher.Backend.UseCases.Features.Offer.Delete;
 
 namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
-public class Delete(IMediator mediator) : Endpoint<DeleteOfferRequest>
+public class Delete(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -18,7 +18,7 @@ public class Delete(IMediator mediator) : Endpoint<DeleteOfferRequest>
         });
     }
 
-    public override async Task HandleAsync(DeleteOfferRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -29,8 +29,16 @@ public class Delete(IMediator mediator) : Endpoint<DeleteOfferRequest>
             return;
         }
 
-        var request = new DeleteOfferCommand(req.OfferId, userId);
+        var offerId = Route<int>("OfferId");
+
+        var request = new DeleteOfferCommand(offerId, userId);
         var result = await mediator.Send(request, ct);
+        if (result.IsSuccess)
+        {
+            await SendNoContentAsync(ct);
+            return;
+        }
+
         await result.SendResult(this, ct);
     }
 }

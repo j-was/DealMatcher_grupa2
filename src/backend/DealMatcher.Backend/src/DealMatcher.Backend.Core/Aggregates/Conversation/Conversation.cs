@@ -6,6 +6,9 @@ public class Conversation : DealMatcherEntityBase,
     public int OfferId { get; private set; }
     public int BuyerId { get; private set; }
     public int SellerId { get; private set; }
+    public Offer.Offer Offer { get; private set; } = null!;
+    public User.User Buyer { get; private set; } = null!;
+    public User.User Seller { get; private set; } = null!;
 
     public string LastMessage { get; private set; }
     public DateTime LastMessageAt { get; private set; }

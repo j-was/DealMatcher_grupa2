@@ -32,8 +32,8 @@ public class GetAllPropertiesByCategoryNameQueryHandlerTests
 
         var expectedDtos = new List<CategoryPropertyDTO>
         {
-            new("Stan", CategoryPropertyType.Select, ["Nowy"]),
-            new("Pamięć", CategoryPropertyType.Number, null)
+            new(1, "Stan", CategoryPropertyType.Select, ["Nowy"]),
+            new(2, "Pamięć", CategoryPropertyType.Number, null)
         };
 
         _categoriesRepository

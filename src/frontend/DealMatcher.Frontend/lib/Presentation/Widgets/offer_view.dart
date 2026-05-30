@@ -16,6 +16,7 @@ class OfferViewState extends State<OfferView> {
   bool ifExpanded = false;
   bool _conversationLoading = false;
   final ConversationService _conversationService = ConversationService();
+  int _imageIndex = 0;
 
   Future<void> _startConversation() async {
     final controller = TextEditingController();
@@ -107,17 +108,102 @@ class OfferViewState extends State<OfferView> {
                   SizedBox(
                     height: 220,
                     width: double.infinity,
-                    child: Image.network(
-                      widget.offer.images[0],
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey.shade300,
-                          child: const Center(
-                            child: Icon(Icons.broken_image_outlined),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black12,
+                            child: Center(
+                              child: Image.network(
+                                widget.offer.images[_imageIndex],
+                                fit: BoxFit.contain,
+                                width: double.infinity,
+                                height: double.infinity,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey.shade300,
+                                    child: const Center(
+                                      child: Icon(Icons.broken_image_outlined),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        );
-                      },
+                        ),
+
+                        if (widget.offer.images.length > 1) ...[
+                          Positioned(
+                            left: 8,
+                            top: 0,
+                            bottom: 0,
+                            child: Center(
+                              child: IconButton(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.black45,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: _imageIndex > 0
+                                    ? () {
+                                        setState(() {
+                                          _imageIndex--;
+                                        });
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.chevron_left),
+                              ),
+                            ),
+                          ),
+
+                          Positioned(
+                            right: 8,
+                            top: 0,
+                            bottom: 0,
+                            child: Center(
+                              child: IconButton(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.black45,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed:
+                                    _imageIndex < widget.offer.images.length - 1
+                                    ? () {
+                                        setState(() {
+                                          _imageIndex++;
+                                        });
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.chevron_right),
+                              ),
+                            ),
+                          ),
+
+                          Positioned(
+                            bottom: 8,
+                            left: 0,
+                            right: 0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                widget.offer.images.length,
+                                (index) => Container(
+                                  width: 8,
+                                  height: 8,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: index == _imageIndex
+                                        ? Colors.white
+                                        : Colors.white54,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 Expanded(

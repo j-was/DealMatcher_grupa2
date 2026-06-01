@@ -21,15 +21,10 @@ public class GetUserAdminQueryHandlerTests
         var query = new GetUserAdminQuery(2, 1);
         var adminUser = CreateAdminUser(1);
         var targetUser = CreateUser(2, "target@example.com");
-        var offers = new List<OfferEntity>
-        {
-            CreateOfferEntity(1, 2),
-            CreateOfferEntity(2, 2)
-        };
+        var offers = new List<OfferEntity> { CreateOfferEntity(1, 2), CreateOfferEntity(2, 2) };
         var activities = new List<ActivityRecord>
         {
-            new(2, 1, ActionType.Purchase, "127.0.0.1", []),
-            new(2, ActionType.Login, "127.0.0.1", [])
+            new(2, 1, ActionType.Purchase, "127.0.0.1", []), new(2, ActionType.Login, "127.0.0.1", [])
         };
 
         _usersRepository.GetByIdAsync(1, Arg.Any<CancellationToken>())

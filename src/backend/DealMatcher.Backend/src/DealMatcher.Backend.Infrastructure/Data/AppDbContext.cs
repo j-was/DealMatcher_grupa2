@@ -1,24 +1,21 @@
-// using DealMatcher.Backend.Core.ContributorAggregate;
-
 namespace DealMatcher.Backend.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options,
-  IDomainEventDispatcher? dispatcher) : DbContext(options)
+public class AppDbContext(
+    DbContextOptions<AppDbContext> options,
+    IDomainEventDispatcher? dispatcher) : DbContext(options)
 {
-    private readonly IDomainEventDispatcher? _dispatcher = dispatcher;
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         // ignore events if no dispatcher provided
-        if (_dispatcher == null) return result;
+        if (dispatcher == null) return result;
 
         // dispatch events only if save was successful
         var entitiesWithEvents = ChangeTracker.Entries<HasDomainEventsBase>()
@@ -26,11 +23,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options,
             .Where(e => e.DomainEvents.Count != 0)
             .ToArray();
 
-        await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
+        await dispatcher.DispatchAndClearEvents(entitiesWithEvents);
 
         return result;
     }
 
     public override int SaveChanges() =>
-          SaveChangesAsync().GetAwaiter().GetResult();
+        SaveChangesAsync().GetAwaiter().GetResult();
 }

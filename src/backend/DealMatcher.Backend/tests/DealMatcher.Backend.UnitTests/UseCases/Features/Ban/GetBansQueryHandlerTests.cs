@@ -1,4 +1,3 @@
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Ban;
 
 public class GetBansQueryHandlerTests
@@ -35,7 +34,7 @@ public class GetBansQueryHandlerTests
             .Returns(adminUser);
 
         _bansRepository.ListAsync(Arg.Any<CancellationToken>())
-           .Returns(bans);
+            .Returns(bans);
 
         _mapper.Map<BanDTO>(ban1)
             .Returns(CreateBanDTO(ban1));

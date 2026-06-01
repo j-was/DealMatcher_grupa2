@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Conversation;
-
 namespace DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
 
 public sealed class MessageConfig
@@ -27,7 +25,7 @@ public sealed class MessageConfig
             .IsRequired();
 
         builder.Property(m => m.Status)
-            .HasConversion<string>()
+            .HasConversion(s => s.Value, s => MessageStatus.FromValue(s))
             .IsRequired();
 
         builder.HasIndex(m => m.SenderId);

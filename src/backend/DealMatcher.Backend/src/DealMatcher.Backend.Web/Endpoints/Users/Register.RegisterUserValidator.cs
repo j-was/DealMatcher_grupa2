@@ -16,6 +16,7 @@ public sealed class RegisterUserValidator(IPasswordValidator passwordValidator) 
             .Must(ValidatePassword)
             .WithMessage(GetRequirements());
     }
+
     private bool ValidatePassword(string password)
     {
         return passwordValidator.ValidatePassword(password);
@@ -25,5 +26,4 @@ public sealed class RegisterUserValidator(IPasswordValidator passwordValidator) 
     {
         return passwordValidator.PasswordRequirements;
     }
-
 }

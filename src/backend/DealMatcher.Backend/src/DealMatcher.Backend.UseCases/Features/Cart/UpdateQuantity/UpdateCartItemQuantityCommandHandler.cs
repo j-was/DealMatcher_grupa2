@@ -1,9 +1,3 @@
-using Ardalis.Result;
-using Ardalis.SharedKernel;
-using AutoMapper;
-using DealMatcher.Backend.Core.Aggregates.Cart;
-using DealMatcher.Backend.Core.Aggregates.Cart.DTOs;
-
 namespace DealMatcher.Backend.UseCases.Features.Cart.UpdateQuantity;
 
 public sealed class UpdateCartItemQuantityCommandHandler(

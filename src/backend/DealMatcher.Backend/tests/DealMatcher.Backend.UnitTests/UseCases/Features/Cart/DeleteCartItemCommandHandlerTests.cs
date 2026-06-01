@@ -86,7 +86,8 @@ public class DeleteCartItemCommandHandlerTests
     private static void SetMemberValue(object target, string memberName, object value)
     {
         var type = target.GetType();
-        var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var property =
+            type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (property?.SetMethod is not null)
         {
             property.SetValue(target, value);

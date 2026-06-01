@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.UseCases.Features.Offer.Delete;
-
 namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class Delete(IMediator mediator) : EndpointWithoutRequest

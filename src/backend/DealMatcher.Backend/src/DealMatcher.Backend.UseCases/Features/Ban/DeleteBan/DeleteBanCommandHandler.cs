@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Ban.Specifications;
-
 namespace DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
 
 public sealed class DeleteBanCommandHandler(

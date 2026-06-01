@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
 
 public sealed class OfferProfile : Profile
@@ -14,10 +12,12 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Description), opt => opt.MapFrom(src => src.Description))
             .ForCtorParam(nameof(OfferDTO.Price), opt => opt.MapFrom(src => (double)src.Price))
             .ForCtorParam(nameof(OfferDTO.Images), opt => opt.MapFrom(src => src.ImageUrls))
-            .ForCtorParam(nameof(OfferDTO.Seller), opt => opt.MapFrom(src => new SellerDTO(src.SellerId, $"User{src.SellerId}")))
+            .ForCtorParam(nameof(OfferDTO.Seller),
+                opt => opt.MapFrom(src => new SellerDTO(src.SellerId, $"User{src.SellerId}")))
             .ForCtorParam(nameof(OfferDTO.Tags), opt => opt.MapFrom(src => src.Tags))
             .ForCtorParam(nameof(OfferDTO.Category), opt => opt.MapFrom(src => new CategoryDTO(src.CategoryId, "", "")))
-            .ForCtorParam(nameof(OfferDTO.Properties), opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.Name, p => p.Value)))
+            .ForCtorParam(nameof(OfferDTO.Properties),
+                opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.Name, p => p.Value)))
             .ForCtorParam(nameof(OfferDTO.Availability), opt => opt.MapFrom(src => src.Availability))
             .ForCtorParam(nameof(OfferDTO.Status), opt => opt.MapFrom(src => src.Status.Value.ToUpper()))
             .ForCtorParam(nameof(OfferDTO.CreatedAt), opt => opt.MapFrom(src => src.CreatedAt))

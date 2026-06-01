@@ -2,7 +2,7 @@ namespace DealMatcher.Backend.Infrastructure.Authentication;
 
 public partial class PasswordValidator : IPasswordValidator
 {
-    private const int MinLength = 8;
+    private const int MinLength = DataSchemaConstants.UserPasswordMinLength;
     private const int MaxLength = 128;
     private static string[] _weakPasswords = ["Password123!", "Admin123!", "Qwerty123!"];
 
@@ -74,6 +74,7 @@ public partial class PasswordValidator : IPasswordValidator
 
     [GeneratedRegex(@"[0-9]")]
     private static partial Regex DigitRegex();
+
     [GeneratedRegex(@"[!@#$%^&*(),.?""':{}|<>]")]
     private static partial Regex SpecialCharacterRegex();
 }

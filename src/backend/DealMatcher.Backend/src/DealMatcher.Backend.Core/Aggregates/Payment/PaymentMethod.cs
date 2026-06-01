@@ -1,9 +1,8 @@
 namespace DealMatcher.Backend.Core.Aggregates.Payment;
 
-
 public sealed class PaymentMethod :
-  DealMatcherEntityBase,
-  IAggregateRoot
+    DealMatcherEntityBase,
+    IAggregateRoot
 {
     public string StringId { get; private set; }
     public string Name { get; private set; }
@@ -23,7 +22,6 @@ public sealed class PaymentMethod :
         Name = name.Trim();
         Provider = provider.Trim();
         Icon = icon.Trim();
-
     }
 
 #pragma warning disable CS8618
@@ -37,7 +35,8 @@ public sealed class PaymentMethod :
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         if (name.Length <= 0 || name.Length > DataSchemaConstants.PaymentMethodNameMaxLength)
-            throw new ArgumentException($"Name cannot exceed {DataSchemaConstants.PaymentMethodNameMaxLength} characters.");
+            throw new ArgumentException(
+                $"Name cannot exceed {DataSchemaConstants.PaymentMethodNameMaxLength} characters.");
     }
 
     private static void ValidateProvider(string provider)
@@ -45,7 +44,8 @@ public sealed class PaymentMethod :
         ArgumentException.ThrowIfNullOrWhiteSpace(provider);
 
         if (provider.Length <= 0 || provider.Length > DataSchemaConstants.PaymentMethodProviderMaxLength)
-            throw new ArgumentException($"Surname cannot exceed {DataSchemaConstants.PaymentMethodProviderMaxLength} characters.");
+            throw new ArgumentException(
+                $"Surname cannot exceed {DataSchemaConstants.PaymentMethodProviderMaxLength} characters.");
     }
 
     private static void ValidateIcon(string icon)

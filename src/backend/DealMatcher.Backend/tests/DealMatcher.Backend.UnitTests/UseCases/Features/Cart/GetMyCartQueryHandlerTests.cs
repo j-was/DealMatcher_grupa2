@@ -35,8 +35,7 @@ public class GetMyCartQueryHandlerTests
     {
         var cartItems = new List<CartItemEntity>
         {
-            CreateCartItem(userId: 1, offerId: 10, quantity: 2),
-            CreateCartItem(userId: 1, offerId: 20, quantity: 1)
+            CreateCartItem(userId: 1, offerId: 10, quantity: 2), CreateCartItem(userId: 1, offerId: 20, quantity: 1)
         };
 
         var offer1 = CreateOfferEntity(10);
@@ -100,7 +99,8 @@ public class GetMyCartQueryHandlerTests
 
         var field = typeof(OfferEntity).GetField($"<{nameof(OfferEntity.Id)}>k__BackingField",
                         BindingFlags.Instance | BindingFlags.NonPublic)
-                    ?? typeof(OfferEntity).GetField(nameof(OfferEntity.Id), BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?? typeof(OfferEntity).GetField(nameof(OfferEntity.Id),
+                        BindingFlags.Instance | BindingFlags.NonPublic)
                     ?? throw new InvalidOperationException($"Nie udało się ustawić Id na OfferEntity.");
 
         field.SetValue(offer, id);

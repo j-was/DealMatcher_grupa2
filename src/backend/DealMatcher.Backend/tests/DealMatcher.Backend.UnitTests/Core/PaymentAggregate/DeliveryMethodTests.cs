@@ -54,7 +54,7 @@ public class DeliveryMethodTests
     public void Constructor_Should_Throw_When_Price_Is_Negative()
     {
         Should.Throw<ArgumentException>(() =>
-            new DeliveryMethod("ID", "Name", "Description", -1m, 3))
+                new DeliveryMethod("ID", "Name", "Description", -1m, 3))
             .Message.ShouldContain("Price cannot be negative");
     }
 
@@ -62,7 +62,7 @@ public class DeliveryMethodTests
     public void Constructor_Should_Throw_When_EstimatedDays_Is_Negative()
     {
         Should.Throw<ArgumentException>(() =>
-            new DeliveryMethod("ID", "Name", "Description", 10m, -1))
+                new DeliveryMethod("ID", "Name", "Description", 10m, -1))
             .Message.ShouldContain("Estimated days cannot be negative");
     }
 

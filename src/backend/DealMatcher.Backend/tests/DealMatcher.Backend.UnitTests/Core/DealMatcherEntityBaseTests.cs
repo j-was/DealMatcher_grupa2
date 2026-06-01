@@ -5,19 +5,18 @@ public class DealMatcherEntityBaseTests
     [Fact]
     public void DealMatcherEntityBase_WhenCreated_ShouldHaveCorrectCreatedAtDeletedAtAndIsDeletedSet()
     {
-
         var beforeCreationTime = DateTime.UtcNow;
         var entity = new DealMatcherEntityBase();
         var afterCreationTime = DateTime.UtcNow;
 
         entity.CreatedAt
-          .ShouldBeInRange(beforeCreationTime, afterCreationTime);
+            .ShouldBeInRange(beforeCreationTime, afterCreationTime);
 
         entity.DeletedAt
-          .ShouldBeNull();
+            .ShouldBeNull();
 
         entity.IsDeleted
-          .ShouldBeFalse();
+            .ShouldBeFalse();
     }
 
     [Fact]
@@ -32,10 +31,10 @@ public class DealMatcherEntityBaseTests
         var afterDeletionTime = DateTime.UtcNow;
 
         entity.DeletedAt
-          .ShouldNotBeNull()
-          .ShouldBeInRange(beforeDeletionTime, afterDeletionTime);
+            .ShouldNotBeNull()
+            .ShouldBeInRange(beforeDeletionTime, afterDeletionTime);
 
         entity.IsDeleted
-          .ShouldBeTrue();
+            .ShouldBeTrue();
     }
 }

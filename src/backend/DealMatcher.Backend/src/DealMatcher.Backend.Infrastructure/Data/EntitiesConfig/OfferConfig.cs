@@ -8,10 +8,10 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
         builder.ToTable($"{nameof(Offer)}s");
 
         builder.HasOne<User>()
-          .WithMany()
-          .HasForeignKey(o => o.SellerId)
-          .OnDelete(DeleteBehavior.Restrict)
-          .IsRequired();
+            .WithMany()
+            .HasForeignKey(o => o.SellerId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         builder.HasOne<Category>()
             .WithMany()
@@ -37,16 +37,16 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
             .IsRequired();
 
         builder.Property(o => o.Status)
-          .HasConversion(s => s.Value, s => OfferStatus.FromValue(s))
-          .IsRequired();
+            .HasConversion(s => s.Value, s => OfferStatus.FromValue(s))
+            .IsRequired();
 
         builder.PrimitiveCollection(o => o.Tags)
-          .ElementType(t => t.HasMaxLength(DataSchemaConstants.TagMaxLength))
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
+            .ElementType(t => t.HasMaxLength(DataSchemaConstants.TagMaxLength))
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.PrimitiveCollection(o => o.ImageUrls)
-          .ElementType(t => t.HasMaxLength(DataSchemaConstants.ImageUrlMaxLength))
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
+            .ElementType(t => t.HasMaxLength(DataSchemaConstants.ImageUrlMaxLength))
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.OwnsMany(o => o.Properties, prop =>
         {
@@ -58,7 +58,7 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
         });
 
         builder.Navigation(o => o.Properties)
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.HasIndex(o => o.SellerId);
         builder.HasIndex(o => o.CategoryId);

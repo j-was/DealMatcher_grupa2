@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
-
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class Delete(IMediator mediator) : EndpointWithoutRequest

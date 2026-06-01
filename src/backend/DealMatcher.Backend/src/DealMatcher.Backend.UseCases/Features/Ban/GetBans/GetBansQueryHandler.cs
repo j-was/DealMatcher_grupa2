@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-
 namespace DealMatcher.Backend.UseCases.Features.Ban.GetBans;
 
 public sealed class GetBansQueryHandler(

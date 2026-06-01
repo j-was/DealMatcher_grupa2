@@ -148,20 +148,21 @@ public class ConversationProfileTests
         dto.LastMessageAt.ShouldBe(beforeUpdate);
     }
 
-    private static ConversationEntity CreateConversationEntity(int offerId, int buyerId, int sellerId, string initialMessage)
+    private static ConversationEntity CreateConversationEntity(int offerId, int buyerId, int sellerId,
+        string initialMessage)
     {
         var conversation = new ConversationEntity(offerId, buyerId, sellerId, initialMessage);
 
         var offer = new OfferEntity(
-          "Test offer",
-          "Test description",
-          100m,
-          ["image.jpg"],
-          sellerId,
-          [],
-          1,
-          [],
-          1);
+            "Test offer",
+            "Test description",
+            100m,
+            ["image.jpg"],
+            sellerId,
+            [],
+            1,
+            [],
+            1);
 
         typeof(OfferEntity).GetProperty("Id")!.SetValue(offer, offerId);
 

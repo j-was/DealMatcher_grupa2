@@ -1,8 +1,3 @@
-using Ardalis.Result;
-using Ardalis.SharedKernel;
-using AutoMapper;
-using DealMatcher.Backend.Core.Aggregates.Offer;
-
 namespace DealMatcher.Backend.UseCases.Features.Offer.UpdateStatus;
 
 public sealed class UpdateOfferStatusCommandHandler(

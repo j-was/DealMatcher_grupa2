@@ -11,7 +11,7 @@ public class ConversationTests
         conversation.BuyerId.ShouldBe(2);
         conversation.SellerId.ShouldBe(3);
         conversation.LastMessage.ShouldBe("Hello, is this available?");
-        conversation.Status.ShouldBe(ConversationStatus.ACTIVE);
+        conversation.Status.ShouldBe(ConversationStatus.Active);
         conversation.UnreadCount.ShouldBe(1);
         conversation.Messages.Count.ShouldBe(1);
     }
@@ -64,7 +64,7 @@ public class ConversationTests
         conversation.CloseConversation();
 
         Should.Throw<InvalidOperationException>(() =>
-            conversation.AddMessage(3, "Can't send this"))
+                conversation.AddMessage(3, "Can't send this"))
             .Message.ShouldContain("Cannot add new message to closed conversation");
     }
 
@@ -74,7 +74,7 @@ public class ConversationTests
         var conversation = new Conversation(1, 2, 3, "Hello");
 
         Should.Throw<ArgumentException>(() =>
-            conversation.AddMessage(999, "Invalid sender"))
+                conversation.AddMessage(999, "Invalid sender"))
             .Message.ShouldContain("Sender must belong to conversation");
     }
 
@@ -107,7 +107,7 @@ public class ConversationTests
 
         conversation.CloseConversation();
 
-        conversation.Status.ShouldBe(ConversationStatus.CLOSED);
+        conversation.Status.ShouldBe(ConversationStatus.Closed);
     }
 
     [Fact]

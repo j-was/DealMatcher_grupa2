@@ -1,6 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-using DealMatcher.Backend.UseCases.Features.Ban.CreateBan;
-
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class Create(IMediator mediator) : Endpoint<CreateBanDTO>

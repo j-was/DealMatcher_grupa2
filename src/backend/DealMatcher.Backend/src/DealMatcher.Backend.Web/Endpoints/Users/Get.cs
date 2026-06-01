@@ -1,7 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.User.Get;
-
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
@@ -19,7 +15,8 @@ public class Get(IMediator mediator) : EndpointWithoutRequest<UserDTO>
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
+                              User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!int.TryParse(userIdFromClaim, out var userId))
         {

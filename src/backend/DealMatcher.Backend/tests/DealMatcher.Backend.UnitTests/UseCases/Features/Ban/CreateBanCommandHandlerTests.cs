@@ -52,10 +52,10 @@ public class CreateBanCommandHandlerTests
 
         await _bansRepository.Received(1)
             .AddAsync(Arg.Is<BanEntity>(ban =>
-                ban.UserId == createBanDTO.UserId &&
-                ban.Reason == createBanDTO.Reason &&
-                ban.IssuedBy == command.UserId &&
-                ban.ExpiresAt == createBanDTO.ExpiresAt),
+                    ban.UserId == createBanDTO.UserId &&
+                    ban.Reason == createBanDTO.Reason &&
+                    ban.IssuedBy == command.UserId &&
+                    ban.ExpiresAt == createBanDTO.ExpiresAt),
                 Arg.Any<CancellationToken>());
 
         _mapper.Received(1).Map<BanDTO>(Arg.Any<BanEntity>());

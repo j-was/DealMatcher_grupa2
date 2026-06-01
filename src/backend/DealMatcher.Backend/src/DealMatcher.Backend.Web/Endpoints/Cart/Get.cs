@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.Cart.DTOs;
-using DealMatcher.Backend.UseCases.Features.Cart.Get;
-
 namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
 public class Get(IMediator mediator) : EndpointWithoutRequest<List<CartItemDTO>>

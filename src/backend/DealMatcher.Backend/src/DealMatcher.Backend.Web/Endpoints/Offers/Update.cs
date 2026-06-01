@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.UseCases.Features.Offer.Update;
-
 namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class Update(IMediator mediator) : Endpoint<UpdateOfferRequest>

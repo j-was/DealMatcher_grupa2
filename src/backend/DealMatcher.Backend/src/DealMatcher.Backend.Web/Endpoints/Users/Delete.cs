@@ -1,7 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.User.Delete;
-
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public sealed class MeDelete(IMediator mediator) : EndpointWithoutRequest
@@ -20,7 +16,8 @@ public sealed class MeDelete(IMediator mediator) : EndpointWithoutRequest
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
+                              User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!int.TryParse(userIdFromClaim, out var userId))
         {

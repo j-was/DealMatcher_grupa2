@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Mapping;
 
 public class BanProfileTests

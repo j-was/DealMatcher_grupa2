@@ -7,11 +7,13 @@ public sealed class JwtTokenProvider(
     private const int TokenExpirationHours = 1;
 
     private readonly string _secretKey = configuration["Authentication:Jwt:SecretKey"]
-        ?? throw new InvalidOperationException("JWT SecretKey not configured");
+                                         ?? throw new InvalidOperationException("JWT SecretKey not configured");
+
     private readonly string _issuer = configuration["Authentication:Jwt:Issuer"]
-        ?? throw new InvalidOperationException("JWT Issuer not configured");
+                                      ?? throw new InvalidOperationException("JWT Issuer not configured");
+
     private readonly string _audience = configuration["Authentication:Jwt:Audience"]
-        ?? throw new InvalidOperationException("JWT Audience not configured");
+                                        ?? throw new InvalidOperationException("JWT Audience not configured");
 
     public string GenerateToken(User user)
     {
@@ -73,5 +75,4 @@ public sealed class JwtTokenProvider(
         logger.LogDebug("Successfully validated JWT token");
         return Task.FromResult(true);
     }
-
 }

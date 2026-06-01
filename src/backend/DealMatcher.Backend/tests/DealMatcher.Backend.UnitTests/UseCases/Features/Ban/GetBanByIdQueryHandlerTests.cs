@@ -34,9 +34,9 @@ public class GetBanByIdQueryHandlerTests
             .Returns(adminUser);
 
         _bansRepository.FirstOrDefaultAsync(
-               Arg.Any<ISpecification<BanEntity>>(),
-               Arg.Any<CancellationToken>())
-           .Returns(ban);
+                Arg.Any<ISpecification<BanEntity>>(),
+                Arg.Any<CancellationToken>())
+            .Returns(ban);
 
         _mapper.Map<BanDTO>(ban)
             .Returns(expectedDTO);

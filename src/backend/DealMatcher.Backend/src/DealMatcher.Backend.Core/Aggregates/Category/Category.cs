@@ -13,13 +13,16 @@ public sealed class Category :
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         if (name.Length < DataSchemaConstants.CategoryNameMinLength)
-            throw new ArgumentException($"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters.");
+            throw new ArgumentException(
+                $"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters.");
 
         if (name.Length > DataSchemaConstants.CategoryNameMaxLength)
-            throw new ArgumentException($"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters.");
+            throw new ArgumentException(
+                $"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters.");
 
         if (description?.Length > DataSchemaConstants.CategoryDescriptionMaxLength)
-            throw new ArgumentException($"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters.");
+            throw new ArgumentException(
+                $"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters.");
 
         Name = name.Trim();
         Description = description?.Trim() ?? string.Empty;
@@ -29,7 +32,10 @@ public sealed class Category :
     }
 
 #pragma warning disable CS8618
-    private Category() { /* EF */ }
+    private Category()
+    {
+        /* EF */
+    }
 #pragma warning restore CS8618
 
     private static void ValidateProperties(IEnumerable<CategoryProperty> properties)
@@ -47,18 +53,22 @@ public sealed class Category :
             throw new ArgumentException(
                 $"Duplicate property name in category: '{duplicate.Key}'.");
     }
+
     public void UpdateDetails(string name, string description)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         if (name.Length < DataSchemaConstants.CategoryNameMinLength)
-            throw new ArgumentException($"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters.");
+            throw new ArgumentException(
+                $"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters.");
 
         if (name.Length > DataSchemaConstants.CategoryNameMaxLength)
-            throw new ArgumentException($"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters.");
+            throw new ArgumentException(
+                $"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters.");
 
         if (description?.Length > DataSchemaConstants.CategoryDescriptionMaxLength)
-            throw new ArgumentException($"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters.");
+            throw new ArgumentException(
+                $"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters.");
 
         Name = name.Trim();
         Description = description?.Trim() ?? string.Empty;

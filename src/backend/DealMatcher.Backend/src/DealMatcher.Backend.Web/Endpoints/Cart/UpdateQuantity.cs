@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.User;
-using DealMatcher.Backend.UseCases.Features.Cart.UpdateQuantity;
-
 namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
 public class UpdateQuantity(IMediator mediator) : Endpoint<UpdateCartItemQuantityRequest>

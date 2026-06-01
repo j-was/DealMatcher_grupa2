@@ -1,7 +1,9 @@
 namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
 public class GetUserAdminQueryHandler(
-    IRepository<UserEntity> usersRepository, IRepository<OfferEntity> offersRepository, IRepository<ActivityRecord> activityRepository) : IRequestHandler<GetUserAdminQuery, Result<UserDetailsDTO>>
+    IRepository<UserEntity> usersRepository,
+    IRepository<OfferEntity> offersRepository,
+    IRepository<ActivityRecord> activityRepository) : IRequestHandler<GetUserAdminQuery, Result<UserDetailsDTO>>
 {
     public async Task<Result<UserDetailsDTO>> Handle(GetUserAdminQuery request, CancellationToken ct)
     {
@@ -34,6 +36,7 @@ public class GetUserAdminQueryHandler(
                 totalSales += records3.Where(a => a.Action == ActionType.Purchase).Count();
             }
         }
+
         var totalPurchases = 0;
         if (records.Count != 0)
         {
@@ -45,9 +48,9 @@ public class GetUserAdminQueryHandler(
             .FirstOrDefault()
             ?.CreatedAt;
 
-        var response = new UserDetailsDTO(user.Id, user.Email, user.Name, user.Surname, user.Status.Value.ToUpper(), user.CreatedAt, offers.Count, totalSales, totalPurchases, lastActivityAt ?? DateTime.UtcNow);
+        var response = new UserDetailsDTO(user.Id, user.Email, user.Name, user.Surname, user.Status.Value.ToUpper(),
+            user.CreatedAt, offers.Count, totalSales, totalPurchases, lastActivityAt ?? DateTime.UtcNow);
 
         return Result.Success(response);
     }
 }
-

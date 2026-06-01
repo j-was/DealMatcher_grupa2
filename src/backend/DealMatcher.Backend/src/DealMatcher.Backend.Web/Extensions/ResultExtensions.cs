@@ -34,36 +34,6 @@ public static class ResultExtensions
         await HandleErrors(result, response, ct);
     }
 
-    public static async Task SendResult(this CustomResult result, IEndpoint endpoint, CancellationToken ct = default)
-    {
-        if (result.IsRedirect)
-        {
-            var redirect = result.AsT1;
-            await redirect.SendResult(endpoint);
-            return;
-        }
-
-        var standardResult = result.AsT0;
-        await standardResult.SendResult(endpoint, ct);
-    }
-
-    public static async Task SendResult(this RedirectResult redirectResult, IEndpoint endpoint)
-    {
-        var response = endpoint.HttpContext.Response;
-
-        if (redirectResult.IsPermanent)
-        {
-            response.StatusCode = 301;
-        }
-        else
-        {
-            response.StatusCode = 303;
-        }
-
-        response.Headers.Location = redirectResult.Url;
-        await response.CompleteAsync();
-    }
-
     private static async Task HandleErrors<T>(Result<T> result, HttpResponse response, CancellationToken ct)
     {
         switch (result.Status)

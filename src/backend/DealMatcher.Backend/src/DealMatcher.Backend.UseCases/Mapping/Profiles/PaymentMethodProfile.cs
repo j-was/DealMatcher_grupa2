@@ -1,6 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Payment;
-using DealMatcher.Backend.Core.Aggregates.Payment.DTOs;
-
 namespace DealMatcher.Backend.UseCases.Mapping.Profiles;
 
 public sealed class PaymentMethodProfile : Profile

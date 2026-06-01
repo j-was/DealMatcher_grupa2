@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Category.Get;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Categories.Get;
 
 public class GetAllCategoriesQueryHandlerTests
@@ -18,17 +16,9 @@ public class GetAllCategoriesQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WithMappedCategories()
     {
-        var categories = new List<CategoryEntity>
-        {
-            new("Elektronika", "Opis"),
-            new("Sport", "Opis")
-        };
+        var categories = new List<CategoryEntity> { new("Elektronika", "Opis"), new("Sport", "Opis") };
 
-        var expectedDtos = new List<CategoryDTO>
-        {
-            new(1, "Elektronika", "Opis"),
-            new(2, "Sport", "Opis")
-        };
+        var expectedDtos = new List<CategoryDTO> { new(1, "Elektronika", "Opis"), new(2, "Sport", "Opis") };
 
         _categoriesRepository.ListAsync(Arg.Any<CancellationToken>())
             .Returns(categories);

@@ -1,4 +1,3 @@
-using DealMatcher.Backend.Infrastructure.Data;
 using DealMatcher.Backend.Infrastructure.Data.Interceptors;
 
 namespace DealMatcher.Backend.Infrastructure.Configs;

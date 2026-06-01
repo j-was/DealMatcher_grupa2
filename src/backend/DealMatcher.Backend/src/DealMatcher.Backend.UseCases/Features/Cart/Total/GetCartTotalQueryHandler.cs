@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
-using DealMatcher.Backend.UseCases.Features.Cart.DTOs;
 namespace DealMatcher.Backend.UseCases.Features.Cart.Total;
 
 public sealed class GetCartTotalQueryHandler(

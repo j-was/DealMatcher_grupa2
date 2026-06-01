@@ -2,7 +2,8 @@ using DealMatcher.Backend.UseCases.Features.Admin.DTOs;
 
 namespace DealMatcher.Backend.UseCases.Features.Admin.GetUsers;
 
-public sealed class GetUsersQueryHandler(IReadRepository<UserEntity> usersRepository, IMapper mapper) : IQueryHandler<GetUsersQuery, Result<AdminUsersDTO>>
+public sealed class GetUsersQueryHandler(IReadRepository<UserEntity> usersRepository, IMapper mapper)
+    : IQueryHandler<GetUsersQuery, Result<AdminUsersDTO>>
 {
     public async Task<Result<AdminUsersDTO>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
@@ -20,15 +21,18 @@ public sealed class GetUsersQueryHandler(IReadRepository<UserEntity> usersReposi
 
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
-            users = [.. users.Where(user => string.Equals(
-                user.Status.Value, request.Status, StringComparison.OrdinalIgnoreCase
-            ))];
+            users =
+            [
+                .. users.Where(user => string.Equals(
+                    user.Status.Value, request.Status, StringComparison.OrdinalIgnoreCase
+                ))
+            ];
         }
 
         var total = users.Count;
 
-        var pagedUsers = users.OrderBy(user => user.Id).Skip((page - 1) * limit)
-        .Take(limit).ToList();
+        var pagedUsers = users.OrderBy(u => u.Id).Skip((page - 1) * limit)
+            .Take(limit).ToList();
 
         var items = new List<UserDTO>();
 

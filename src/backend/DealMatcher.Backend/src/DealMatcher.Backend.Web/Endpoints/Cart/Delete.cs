@@ -1,7 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.Cart.Delete;
-
 namespace DealMatcher.Backend.Web.Endpoints.Cart;
 
 public sealed class Delete(IMediator mediator) : EndpointWithoutRequest

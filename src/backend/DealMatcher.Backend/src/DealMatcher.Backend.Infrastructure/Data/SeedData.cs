@@ -1,12 +1,11 @@
-
-
 using DealMatcher.Backend.Core.Aggregates.Payment;
 
 namespace DealMatcher.Backend.Infrastructure.Data;
 
 public static class SeedData
 {
-    private const string DefaultImageUrl = "https://dealmatcherstorage.blob.core.windows.net/pictures/ab67616d0000b2735575dc147c4b0fb4ae041c90.jpg";
+    private const string DefaultImageUrl =
+        "https://dealmatcherstorage.blob.core.windows.net/pictures/ab67616d0000b2735575dc147c4b0fb4ae041c90.jpg";
 
     public static async Task InitializeAsync(AppDbContext dbContext)
     {
@@ -14,6 +13,7 @@ public static class SeedData
         {
             await SeedCategoriesAndCategoryProperties(dbContext);
         }
+
         if (!dbContext.Set<User>().Any())
         {
             await SeedUsers(dbContext);
@@ -38,26 +38,26 @@ public static class SeedData
     public static async Task SeedPaymentMethods(AppDbContext dbContext)
     {
         var paymentMethods = new List<PaymentMethod>
-    {
-        new(
-            "blik",
-            "BLIK",
-            "Polski Standard Płatności",
-            DefaultImageUrl
-        ),
-        new(
-            "card",
-            "Karta płatnicza",
-            "Visa / Mastercard / American Express",
-            DefaultImageUrl
-        ),
-        new(
-            "transfer",
-            "Przelew bankowy",
-            "Szybki przelew online",
-            DefaultImageUrl
-        ),
-    };
+        {
+            new(
+                "blik",
+                "BLIK",
+                "Polski Standard Płatności",
+                DefaultImageUrl
+            ),
+            new(
+                "card",
+                "Karta płatnicza",
+                "Visa / Mastercard / American Express",
+                DefaultImageUrl
+            ),
+            new(
+                "transfer",
+                "Przelew bankowy",
+                "Szybki przelew online",
+                DefaultImageUrl
+            ),
+        };
 
         await dbContext.Set<PaymentMethod>().AddRangeAsync(paymentMethods);
         await dbContext.SaveChangesAsync();
@@ -66,22 +66,22 @@ public static class SeedData
     public static async Task SeedDeliveryMethods(AppDbContext dbContext)
     {
         var deliveryMethods = new List<DeliveryMethod>
-    {
-        new(
-            "parcel_locker",
-            "Paczkomat",
-            "Dostawa do paczkomatu InPost",
-            12.99m,
-            2
-        ),
-        new(
-            "courier",
-            "Kurier",
-            "Dostawa kurierem pod wskazany adres",
-            19.99m,
-            1
-        ),
-    };
+        {
+            new(
+                "parcel_locker",
+                "Paczkomat",
+                "Dostawa do paczkomatu InPost",
+                12.99m,
+                2
+            ),
+            new(
+                "courier",
+                "Kurier",
+                "Dostawa kurierem pod wskazany adres",
+                19.99m,
+                1
+            ),
+        };
 
         await dbContext.Set<DeliveryMethod>().AddRangeAsync(deliveryMethods);
         await dbContext.SaveChangesAsync();
@@ -96,7 +96,6 @@ public static class SeedData
                 "Inne produkty",
                 []
             ),
-
             new(
                 "Elektronika",
                 "Urządzenia elektroniczne i akcesoria",
@@ -118,7 +117,6 @@ public static class SeedData
                     ]),
                 ]
             ),
-
             new(
                 "Sport",
                 "Sprzęt i akcesoria sportowe",
@@ -135,7 +133,6 @@ public static class SeedData
                     new("Rok produkcji", CategoryPropertyType.Number, null),
                 ]
             ),
-
             new(
                 "Meble",
                 "Meble do domu i biura",
@@ -157,7 +154,6 @@ public static class SeedData
                     ]),
                 ]
             ),
-
             new(
                 "Odzież",
                 "Odzież damska, męska i dziecięca",
@@ -179,7 +175,6 @@ public static class SeedData
                     ]),
                 ]
             ),
-
             new(
                 "Książki",
                 "Książki, podręczniki i komiksy",
@@ -195,7 +190,6 @@ public static class SeedData
                     ]),
                 ]
             ),
-
             new(
                 "Motoryzacja",
                 "Samochody, motocykle i części",
@@ -212,7 +206,6 @@ public static class SeedData
                     ]),
                 ]
             ),
-
             new(
                 "Nieruchomości",
                 "Mieszkania, domy, działki",
@@ -284,25 +277,26 @@ public static class SeedData
             .Select(u => u.Id)
             .ToList();
 
-        // Create a dictionary for category lookup by name
         var categories = await dbContext.Set<Category>()
             .ToDictionaryAsync(c => c.Name, c => c.Id);
 
         var offers = new List<Offer>();
 
-        // Helper function to safely get category ID
         int GetCategoryId(string categoryName) =>
             categories.TryGetValue(categoryName, out var id) ? id : categories["Inna"];
 
-        // Elektronika offers
         offers.AddRange(
         [
             new Offer(
                 title: "iPhone 13 Pro 256GB",
-                description: "Sprzedam iPhone 13 Pro w kolorze grafitowym. Bez śladów użytkowania. Komplet z pudełkiem i ładowarką.",
+                description:
+                "Sprzedam iPhone 13 Pro w kolorze grafitowym. Bez śladów użytkowania. Komplet z pudełkiem i ładowarką.",
                 price: 2999.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/iphone13.jpg",
-                    "https://dealmatcherstorage.blob.core.windows.net/pictures/iphone-13-pro-2.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/iphone13.jpg",
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/iphone-13-pro-2.jpg"
+                ],
                 sellerId: sellerIds[0],
                 tags: ["elektronika", "telefon", "apple", "smartfon"],
                 categoryId: GetCategoryId("Elektronika"),
@@ -316,7 +310,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Laptop Dell XPS 15",
-                description: "Sprzedam laptopa Dell XPS 15 z procesorem Intel i7, 16GB RAM, dysk SSD 512GB. Używany do pracy biurowej, stan bardzo dobry.",
+                description:
+                "Sprzedam laptopa Dell XPS 15 z procesorem Intel i7, 16GB RAM, dysk SSD 512GB. Używany do pracy biurowej, stan bardzo dobry.",
                 price: 4500.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/dell_laptop.jpg"],
                 sellerId: sellerIds[2],
@@ -332,7 +327,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Samsung Galaxy S22 Ultra",
-                description: "Sprzedam Samsung Galaxy S22 Ultra 512GB. Telefon w idealnym stanie, używany 3 miesiące. Gwarancja do końca roku.",
+                description:
+                "Sprzedam Samsung Galaxy S22 Ultra 512GB. Telefon w idealnym stanie, używany 3 miesiące. Gwarancja do końca roku.",
                 price: 3499.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/samsung-galaxy-s22-ultra.jpg"],
                 sellerId: sellerIds[3],
@@ -348,10 +344,14 @@ public static class SeedData
             ),
             new Offer(
                 title: "Słuchawki Sony WH-1000XM4",
-                description: "Słuchawki Sony z redukcją szumów. Używane przez rok, w bardzo dobrym stanie. W komplecie etui i kabel.",
+                description:
+                "Słuchawki Sony z redukcją szumów. Używane przez rok, w bardzo dobrym stanie. W komplecie etui i kabel.",
                 price: 699.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/sluchawki-sony-wh-1000xm4.jpg",
-                    "https://dealmatcherstorage.blob.core.windows.net/pictures/s%C5%82uchawki-sony-2.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/sluchawki-sony-wh-1000xm4.jpg",
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/s%C5%82uchawki-sony-2.jpg"
+                ],
                 sellerId: sellerIds[5],
                 tags: ["elektronika", "słuchawki", "sony", "audio"],
                 categoryId: GetCategoryId("Elektronika"),
@@ -364,7 +364,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Tablet iPad Air 5 generacji",
-                description: "iPad Air 5 z procesorem M1, 64GB WiFi. Stan idealny, używany okazjonalnie. Szkło hartowane od nowości.",
+                description:
+                "iPad Air 5 z procesorem M1, 64GB WiFi. Stan idealny, używany okazjonalnie. Szkło hartowane od nowości.",
                 price: 2199.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/i-apple-ipad-air.webp"],
                 sellerId: sellerIds[7],
@@ -380,12 +381,12 @@ public static class SeedData
             ),
         ]);
 
-        // Sport offers
         offers.AddRange(
         [
             new Offer(
                 title: "Rower górski Trek Marlin 5",
-                description: "Rower górski Trek Marlin 5, rocznik 2022. Przejechane około 500km, regularnie serwisowany.",
+                description:
+                "Rower górski Trek Marlin 5, rocznik 2022. Przejechane około 500km, regularnie serwisowany.",
                 price: 1800.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/trek-Marlin5.webp"],
                 sellerId: sellerIds[0],
@@ -403,7 +404,8 @@ public static class SeedData
                 title: "Hantle regulowane 2x15kg",
                 description: "Komplet hantli regulowanych 2x15kg z uchwytami. Stan bardzo dobry, używane w domu.",
                 price: 249.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/i-hantle-regulowane-2x15kg.webp"],
+                imageUrls:
+                ["https://dealmatcherstorage.blob.core.windows.net/pictures/i-hantle-regulowane-2x15kg.webp"],
                 sellerId: sellerIds[1],
                 tags: ["sport", "siłownia", "hantle", "fitness"],
                 categoryId: GetCategoryId("Sport"),
@@ -416,9 +418,13 @@ public static class SeedData
             ),
             new Offer(
                 title: "Narty Atomic Redster X5",
-                description: "Narty Atomic Redster X5 z wiązaniami. Długość 170cm. Używane 2 sezony, regularnie serwisowane.",
+                description:
+                "Narty Atomic Redster X5 z wiązaniami. Długość 170cm. Używane 2 sezony, regularnie serwisowane.",
                 price: 899.00m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/narty-zjazdowe-atomic-redster-x5.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/narty-zjazdowe-atomic-redster-x5.jpg"
+                ],
                 sellerId: sellerIds[4],
                 tags: ["sport", "narty", "zima", "atomic"],
                 categoryId: GetCategoryId("Sport"),
@@ -431,12 +437,12 @@ public static class SeedData
             ),
         ]);
 
-        // Meble offers
         offers.AddRange(
         [
             new Offer(
                 title: "Sofa narożna szara",
-                description: "Sofa narożna w kolorze szarym, wymiary 250x180cm. Zakupiona rok temu, używana sporadycznie.",
+                description:
+                "Sofa narożna w kolorze szarym, wymiary 250x180cm. Zakupiona rok temu, używana sporadycznie.",
                 price: 1200.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/sofa-szara.jpg"],
                 sellerId: sellerIds[1],
@@ -452,9 +458,13 @@ public static class SeedData
             ),
             new Offer(
                 title: "Biurko regulowane elektrycznie",
-                description: "Biurko z regulacją wysokości, blat 160x80cm, kolor biały. Silnik elektryczny, pamięć 3 pozycji.",
+                description:
+                "Biurko z regulacją wysokości, blat 160x80cm, kolor biały. Silnik elektryczny, pamięć 3 pozycji.",
                 price: 899.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/Biurko-z-elektryczna-regulacja.webp"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/Biurko-z-elektryczna-regulacja.webp"
+                ],
                 sellerId: sellerIds[6],
                 tags: ["meble", "biurko", "home office", "regulowane"],
                 categoryId: GetCategoryId("Meble"),
@@ -468,7 +478,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Szafa przesuwna 3-drzwiowa",
-                description: "Szafa przesuwna z lustrem, kolor biały. Wymiary 200x220x60cm. Do demontażu i odbioru własnego.",
+                description:
+                "Szafa przesuwna z lustrem, kolor biały. Wymiary 200x220x60cm. Do demontażu i odbioru własnego.",
                 price: 750.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/Szafa-Przesuwna-3-drzwiowa.jpg"],
                 sellerId: sellerIds[2],
@@ -484,7 +495,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Stół rozkładany dębowy",
-                description: "Stół z litego drewna dębowego, rozkładany do 240cm. Stan bardzo dobry, delikatne ślady użytkowania.",
+                description:
+                "Stół z litego drewna dębowego, rozkładany do 240cm. Stan bardzo dobry, delikatne ślady użytkowania.",
                 price: 1100.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/st%C3%B3%C5%82.webp"],
                 sellerId: sellerIds[8],
@@ -500,12 +512,12 @@ public static class SeedData
             ),
         ]);
 
-        // Odzież offers
         offers.AddRange(
         [
             new Offer(
                 title: "Kurtka zimowa Nike rozmiar L",
-                description: "Sprzedam kurtkę zimową Nike w rozmiarze L. Kolor czarny, noszona jeden sezon. Ciepła i lekka, idealna na zimę.",
+                description:
+                "Sprzedam kurtkę zimową Nike w rozmiarze L. Kolor czarny, noszona jeden sezon. Ciepła i lekka, idealna na zimę.",
                 price: 249.99m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/kurtka-nike.jpg"],
                 sellerId: sellerIds[1],
@@ -555,7 +567,10 @@ public static class SeedData
                 title: "Buty sportowe Adidas Ultraboost rozmiar 42",
                 description: "Buty Adidas Ultraboost, kolor czarny. Używane przez 2 miesiące, w bardzo dobrym stanie.",
                 price: 199.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/Buty-Sportowe-do-Biegania-Adidas-UltraBoost-22.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/Buty-Sportowe-do-Biegania-Adidas-UltraBoost-22.jpg"
+                ],
                 sellerId: sellerIds[9],
                 tags: ["odzież", "buty", "adidas", "sportowe"],
                 categoryId: GetCategoryId("Odzież"),
@@ -569,14 +584,16 @@ public static class SeedData
             ),
         ]);
 
-        // Książki offers
         offers.AddRange(
         [
             new Offer(
                 title: "Czysty kod - Robert C. Martin",
                 description: "Książka w stanie idealnym, czytana raz. Wydanie polskie.",
                 price: 49.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/Czysty-kod-Podrecznik-dobrego-programisty-Martin.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/Czysty-kod-Podrecznik-dobrego-programisty-Martin.jpg"
+                ],
                 sellerId: sellerIds[2],
                 tags: ["książki", "programowanie", "informatyka"],
                 categoryId: GetCategoryId("Książki"),
@@ -591,7 +608,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Wiedźmin - zestaw 8 książek",
-                description: "Kompletna seria Wiedźmin Andrzeja Sapkowskiego. Stan bardzo dobry, niektóre tomy nieczytane.",
+                description:
+                "Kompletna seria Wiedźmin Andrzeja Sapkowskiego. Stan bardzo dobry, niektóre tomy nieczytane.",
                 price: 199.99m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/pakiet-wiedzmin-tom-1-8.jpg"],
                 sellerId: sellerIds[4],
@@ -609,7 +627,10 @@ public static class SeedData
                 title: "Harry Potter - kolekcja ilustrowana",
                 description: "Pierwsze 4 tomy Harry'ego Pottera w wydaniu ilustrowanym. Stan idealny, nieczytane.",
                 price: 299.00m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/Kolekcja-Harry-Potter-Tom-1-7-J-K-Rowling.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/Kolekcja-Harry-Potter-Tom-1-7-J-K-Rowling.jpg"
+                ],
                 sellerId: sellerIds[7],
                 tags: ["książki", "harry potter", "fantasy", "kolekcja"],
                 categoryId: GetCategoryId("Książki"),
@@ -623,7 +644,6 @@ public static class SeedData
             ),
         ]);
 
-        // Motoryzacja offers
         offers.AddRange(
         [
             new Offer(
@@ -645,9 +665,13 @@ public static class SeedData
             ),
             new Offer(
                 title: "Fotelik samochodowy dla dziecka 9-36kg",
-                description: "Fotelik samochodowy marki Britax Römer. Używany 2 lata, stan bardzo dobry. Posiada certyfikat bezpieczeństwa.",
+                description:
+                "Fotelik samochodowy marki Britax Römer. Używany 2 lata, stan bardzo dobry. Posiada certyfikat bezpieczeństwa.",
                 price: 249.00m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/fotelik-samochodowy-9-36-kg-ma_5466.webp"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/fotelik-samochodowy-9-36-kg-ma_5466.webp"
+                ],
                 sellerId: sellerIds[3],
                 tags: ["motoryzacja", "fotelik", "dziecko"],
                 categoryId: GetCategoryId("Motoryzacja"),
@@ -662,9 +686,13 @@ public static class SeedData
             ),
             new Offer(
                 title: "Uchwyt na rowery na hak holowniczy",
-                description: "Uchwyt na 3 rowery, marka Thule. Używany 3 razy, stan idealny. W komplecie klucze i instrukcja.",
+                description:
+                "Uchwyt na 3 rowery, marka Thule. Używany 3 razy, stan idealny. W komplecie klucze i instrukcja.",
                 price: 349.99m,
-                imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/uchwyt-rowerowy-na-hak-holowniczy-aguri-jet-2-silver-na-2-rowery.jpg"],
+                imageUrls:
+                [
+                    "https://dealmatcherstorage.blob.core.windows.net/pictures/uchwyt-rowerowy-na-hak-holowniczy-aguri-jet-2-silver-na-2-rowery.jpg"
+                ],
                 sellerId: sellerIds[6],
                 tags: ["motoryzacja", "rower", "bagażnik", "thule"],
                 categoryId: GetCategoryId("Motoryzacja"),
@@ -679,12 +707,12 @@ public static class SeedData
             ),
         ]);
 
-        // Nieruchomości offers
         offers.AddRange(
         [
             new Offer(
                 title: "Mieszkanie 3-pokojowe Kraków",
-                description: "Przestronne mieszkanie 65m2 w Krakowie. 3 pokoje, kuchnia, łazienka. Balkon, piwnica, miejsce parkingowe.",
+                description:
+                "Przestronne mieszkanie 65m2 w Krakowie. 3 pokoje, kuchnia, łazienka. Balkon, piwnica, miejsce parkingowe.",
                 price: 589000.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/mieszkanie-krakow.webp"],
                 sellerId: sellerIds[1],
@@ -701,7 +729,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Mieszkanie 2-pokojowe do wynajęcia Warszawa",
-                description: "Mieszkanie 45m2 w centrum Warszawy. 2 pokoje, kuchnia, łazienka. Umeblowane, gotowe do zamieszkania.",
+                description:
+                "Mieszkanie 45m2 w centrum Warszawy. 2 pokoje, kuchnia, łazienka. Umeblowane, gotowe do zamieszkania.",
                 price: 3200.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/mieszkanie-warszawa.webp"],
                 sellerId: sellerIds[5],
@@ -718,7 +747,8 @@ public static class SeedData
             ),
             new Offer(
                 title: "Działka budowlana 800m2 pod Warszawą",
-                description: "Działka budowlana 800m2 w miejscowości 20km od Warszawy. Media na granicy działki, piękna okolica.",
+                description:
+                "Działka budowlana 800m2 w miejscowości 20km od Warszawy. Media na granicy działki, piękna okolica.",
                 price: 199000.00m,
                 imageUrls: ["https://dealmatcherstorage.blob.core.windows.net/pictures/dzia%C5%82ka-warszawa.webp"],
                 sellerId: sellerIds[8],

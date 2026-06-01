@@ -1,7 +1,3 @@
-using Ardalis.Result;
-using DealMatcher.Backend.Core.Aggregates.Category.Specifications;
-using DealMatcher.Backend.UseCases.Features.Category.Properties.Get;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Categories.Properties.Get;
 
 public class GetAllPropertiesByCategoryNameQueryHandlerTests

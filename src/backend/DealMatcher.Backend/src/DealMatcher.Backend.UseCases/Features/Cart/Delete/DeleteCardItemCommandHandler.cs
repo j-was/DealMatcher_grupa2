@@ -1,6 +1,3 @@
-using Ardalis.SharedKernel;
-using DealMatcher.Backend.Core.Aggregates.Cart;
-
 namespace DealMatcher.Backend.UseCases.Features.Cart.Delete;
 
 public sealed class DeleteCartItemHandler(

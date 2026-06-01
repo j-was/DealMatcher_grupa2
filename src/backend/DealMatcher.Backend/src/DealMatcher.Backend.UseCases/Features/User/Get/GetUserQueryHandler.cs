@@ -1,7 +1,8 @@
 namespace DealMatcher.Backend.UseCases.Features.User.Get;
 
 public class GetUserQueryHandler(
-    IRepository<UserEntity> usersRepository, IMapper mapper) : IRequestHandler<GetUserQuery, Result<UserDTO>>
+    IRepository<UserEntity> usersRepository,
+    IMapper mapper) : IRequestHandler<GetUserQuery, Result<UserDTO>>
 {
     public async Task<Result<UserDTO>> Handle(GetUserQuery request, CancellationToken ct)
     {

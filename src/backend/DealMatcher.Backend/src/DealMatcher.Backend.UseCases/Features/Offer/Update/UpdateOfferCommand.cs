@@ -1,5 +1,3 @@
-using Ardalis.Result;
-
 namespace DealMatcher.Backend.UseCases.Features.Offer.Update;
 
 public sealed record UpdateOfferCommand(

@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Category;
-
 namespace DealMatcher.Backend.UseCases.Features.Category.Get;
 
 public sealed class GetAllCategoriesHandler(

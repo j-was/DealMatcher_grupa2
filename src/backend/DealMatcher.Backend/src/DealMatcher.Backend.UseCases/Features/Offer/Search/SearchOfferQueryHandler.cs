@@ -1,7 +1,7 @@
 namespace DealMatcher.Backend.UseCases.Features.Offer.Search;
 
 public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersRepository, IMapper mapper)
-: IQueryHandler<SearchOfferQuery, Result<List<OfferDTO>>>
+    : IQueryHandler<SearchOfferQuery, Result<List<OfferDTO>>>
 {
     public async Task<Result<List<OfferDTO>>> Handle(SearchOfferQuery request, CancellationToken cancellationToken)
     {
@@ -20,10 +20,11 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
     private static bool ValidOffer(OfferEntity offer, SearchOfferQuery request)
     {
         return ValidCategory(offer, request)
-        && ValidPrice(offer, request)
-        && ValidSearchPhrase(offer, request)
-        && ValidTags(offer, request)
-        && ValidProperties(offer, request);
+               && ValidPrice(offer, request)
+               && ValidSearchPhrase(offer, request)
+               && ValidTags(offer, request)
+               && ValidProperties(offer, request)
+               && offer.Status == OfferStatus.Active;
     }
 
     private static bool ValidCategory(OfferEntity offer, SearchOfferQuery request)
@@ -31,7 +32,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
 
     private static bool ValidPrice(OfferEntity offer, SearchOfferQuery request)
         => (request.MinPrice is null || offer.Price >= (decimal)request.MinPrice)
-            && (request.MaxPrice is null || offer.Price <= (decimal)request.MaxPrice);
+           && (request.MaxPrice is null || offer.Price <= (decimal)request.MaxPrice);
 
     private static bool ValidSearchPhrase(OfferEntity offer, SearchOfferQuery request)
     {
@@ -43,7 +44,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
         var phrase = request.SearchPhrase.Trim();
 
         return offer.Title.Contains(phrase, StringComparison.OrdinalIgnoreCase) ||
-            offer.Description.Contains(phrase, StringComparison.OrdinalIgnoreCase);
+               offer.Description.Contains(phrase, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool ValidTags(OfferEntity offer, SearchOfferQuery request)
@@ -53,7 +54,8 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
             return true;
         }
 
-        var offerTags = offer.Tags.Select(tag => tag.Trim()).Where(t => !string.IsNullOrWhiteSpace(t)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var offerTags = offer.Tags.Select(tag => tag.Trim()).Where(t => !string.IsNullOrWhiteSpace(t))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         return request.Tags.Any(tag => offerTags.Contains(tag.Trim()));
     }
@@ -69,11 +71,12 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
             {
                 return offerVal >= min && offerVal <= max;
             }
+
             return false;
         }
 
         return requestedValues.Any(v =>
-        string.Equals(v?.Trim(), offerProperty?.Trim(), StringComparison.OrdinalIgnoreCase));
+            string.Equals(v?.Trim(), offerProperty?.Trim(), StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool ValidProperties(OfferEntity offer, SearchOfferQuery request)
@@ -95,9 +98,9 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
             if (reqValues is null || reqValues.Count == 0)
                 continue;
 
-            var offerProperty = offer.Properties.FirstOrDefault(
-                pr => pr.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase)
-            );
+            var offerProperty =
+                offer.Properties.FirstOrDefault(pr => pr.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase)
+                );
 
             if (offerProperty is null)
             {

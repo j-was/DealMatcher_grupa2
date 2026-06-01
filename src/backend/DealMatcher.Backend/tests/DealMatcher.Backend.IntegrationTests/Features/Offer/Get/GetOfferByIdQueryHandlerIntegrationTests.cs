@@ -1,6 +1,6 @@
+using DealMatcher.Backend.Core.Aggregates.Category;
 using MediatR;
 using Microsoft.Extensions.Logging.Abstractions;
-
 namespace DealMatcher.Backend.IntegrationTests.Features.Offer.Get;
 
 public class GetOfferByIdQueryHandlerTests : IDisposable
@@ -37,7 +37,7 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
     public async Task Handle_ShouldReturnSuccess_WithMappedOffer_WhenOfferExists()
     {
         var seller = new User("seller@mail.com", "John", "Doe");
-        var category = new Category("Electronics", "Electronic devices");
+        var category = new CategoryEntity("Electronics", "Electronic devices");
 
         _context.AddRange(seller, category);
         await _context.SaveChangesAsync();

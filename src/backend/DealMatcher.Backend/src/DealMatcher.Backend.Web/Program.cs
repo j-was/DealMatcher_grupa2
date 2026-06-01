@@ -13,41 +13,38 @@ public sealed class Program
         var builder = WebApplication.CreateBuilder(args);
 
         var logger = Log.Logger = new LoggerConfiguration()
-          .Enrich.FromLogContext()
-          .WriteTo.Console()
-          .CreateLogger();
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateLogger();
 
         logger.Information("Starting web host");
 
         builder.AddLoggerConfigs();
 
         var appLogger = new SerilogLoggerFactory(logger)
-          .CreateLogger<Program>();
+            .CreateLogger<Program>();
         try
         {
             builder.Services.AddServiceConfigs(appLogger, builder);
             builder.Services.AddSignalR();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                var jwtSection = builder.Configuration.GetSection("Authentication:Jwt");
-
-                options.TokenValidationParameters = new TokenValidationParameters
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtSection["SecretKey"]!)),
+                    var jwtSection = builder.Configuration.GetSection("Authentication:Jwt");
 
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtSection["Issuer"],
-
-                    ValidateAudience = true,
-                    ValidAudience = jwtSection["Audience"],
-
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5)
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtSection["SecretKey"]!)),
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSection["Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = jwtSection["Audience"],
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5)
+                    };
+                });
             builder.Services.AddAuthorization();
             builder.Services.AddFastEndpoints()
                 .SwaggerDocument(o =>
@@ -60,19 +57,34 @@ public sealed class Program
                     o.ShortSchemaNames = true;
                     o.MaxEndpointVersion = 1;
                 })
-              .AddCommandMiddleware(c =>
-              {
-                  c.Register(typeof(CommandLogger<,>));
-              });
+                .AddCommandMiddleware(c =>
+                {
+                    c.Register(typeof(CommandLogger<,>));
+                });
 
             var frontendOrigin = builder.Configuration.GetValue<string>("FrontendOrigin")
                                  ?? "http://localhost:4200";
 
+            var additionalFrontends = builder.Configuration.GetValue<string>("AdditionalFrontends") ?? "";
+            var additionalOrigins = string.IsNullOrWhiteSpace(additionalFrontends)
+                ? Array.Empty<string>()
+                : [.. additionalFrontends.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim())];
+
+            var allOrigins = new[] { frontendOrigin }.Concat(additionalOrigins).ToArray();
+
             builder.Services.AddCors(options =>
             {
+                // options.AddPolicy("AllowFrontend", policy =>
+                // {
+                //     policy.WithOrigins(frontendOrigin)
+                //         .AllowAnyHeader()
+                //         .AllowAnyMethod()
+                //         .AllowCredentials()
+                //         .WithExposedHeaders("Content-Disposition", "Location");
+                // });
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    policy.WithOrigins(frontendOrigin)
+                    policy.WithOrigins(allOrigins)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()

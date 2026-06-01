@@ -1,14 +1,9 @@
-using System.Text.Json;
-using Ardalis.Result;
-using Ardalis.SharedKernel;
-using AutoMapper;
-using DealMatcher.Backend.Core.Aggregates.Offer;
-
 namespace DealMatcher.Backend.UseCases.Features.Offer.Update;
 
 public sealed class UpdateOfferCommandHandler(
     IRepository<OfferEntity> offersRepository,
-    IMapper mapper
+    IMapper mapper,
+    IPublisher publisher
 ) : IRequestHandler<UpdateOfferCommand, Result<object>>
 {
     public async Task<Result<object>> Handle(UpdateOfferCommand request, CancellationToken cancellationToken)
@@ -37,17 +32,17 @@ public sealed class UpdateOfferCommandHandler(
         }
 
         var properties = request.Properties?
-        .Select(p =>
-        {
-            var value = p.Value is JsonElement json
-                ? (json.ValueKind == JsonValueKind.String
-                    ? json.GetString() ?? string.Empty
-                    : json.GetRawText())
-                : JsonSerializer.Serialize(p.Value);
+            .Select(p =>
+            {
+                var value = p.Value is JsonElement json
+                    ? (json.ValueKind == JsonValueKind.String
+                        ? json.GetString() ?? string.Empty
+                        : json.GetRawText())
+                    : JsonSerializer.Serialize(p.Value);
 
-            return new OfferProperty(p.Key, value);
-        })
-        .ToList();
+                return new OfferProperty(p.Key, value);
+            })
+            .ToList();
 
         offer.Update(
             title: request.Title,
@@ -60,6 +55,11 @@ public sealed class UpdateOfferCommandHandler(
 
         await offersRepository.UpdateAsync(offer, cancellationToken);
         await offersRepository.SaveChangesAsync(cancellationToken);
+
+        await publisher.Publish(
+            new OfferUpdatedEvent(request.UserId, offer.Id, offer.Title, offer.Description, offer.Price,
+                offer.Availability),
+            cancellationToken);
 
         var dto = mapper.Map<OfferDTO>(offer);
         return Result.Success(dto);

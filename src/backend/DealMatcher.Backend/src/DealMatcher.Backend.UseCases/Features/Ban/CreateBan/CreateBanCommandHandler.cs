@@ -1,9 +1,9 @@
-using DealMatcher.Backend.Core.Aggregates.Ban.DTOs;
-
 namespace DealMatcher.Backend.UseCases.Features.Ban.CreateBan;
 
-public sealed class CreateBanCommandHandler(IRepository<BanEntity> bansRepository,
-IReadRepository<UserEntity> usersRepository, IMapper mapper) : ICommandHandler<CreateBanCommand, Result<BanDTO>>
+public sealed class CreateBanCommandHandler(
+    IRepository<BanEntity> bansRepository,
+    IReadRepository<UserEntity> usersRepository,
+    IMapper mapper) : ICommandHandler<CreateBanCommand, Result<BanDTO>>
 {
     public async Task<Result<BanDTO>> Handle(CreateBanCommand request, CancellationToken cancellationToken)
     {

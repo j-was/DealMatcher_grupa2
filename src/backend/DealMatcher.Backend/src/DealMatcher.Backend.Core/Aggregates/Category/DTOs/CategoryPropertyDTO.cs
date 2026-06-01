@@ -5,4 +5,4 @@ public sealed record CategoryPropertyDTO(
     string Name,
     string Type,
     List<string>? Options
-    );
+);

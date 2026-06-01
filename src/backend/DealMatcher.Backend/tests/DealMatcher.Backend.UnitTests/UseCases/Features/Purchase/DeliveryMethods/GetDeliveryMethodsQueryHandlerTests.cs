@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Purchase.DeliveryMethods;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Purchase.DeliveryMethods;
 
 public class GetDeliveryMethodsQueryHandlerTests
@@ -20,14 +18,12 @@ public class GetDeliveryMethodsQueryHandlerTests
     {
         var methods = new List<DeliveryMethod>
         {
-            new("dhl", "DHL", "Kurier", 19.99m, 2),
-            new("pickup", "Odbiór", "Punkt odbioru", 0m, 1),
+            new("dhl", "DHL", "Kurier", 19.99m, 2), new("pickup", "Odbiór", "Punkt odbioru", 0m, 1),
         };
 
         var expectedDtos = new List<DeliveryMethodDTO>
         {
-            new("dhl", "DHL", "Kurier", 19.99, 2),
-            new("pickup", "Odbiór", "Punkt odbioru", 0, 1),
+            new("dhl", "DHL", "Kurier", 19.99, 2), new("pickup", "Odbiór", "Punkt odbioru", 0, 1),
         };
 
         _methodsRepository.ListAsync(CancellationToken.None).Returns(methods);

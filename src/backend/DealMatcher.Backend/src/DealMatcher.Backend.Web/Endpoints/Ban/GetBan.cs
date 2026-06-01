@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Ban.GetBanById;
-
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class GetBan(IMediator mediator) : EndpointWithoutRequest

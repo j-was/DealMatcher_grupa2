@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Payment;
-
 namespace DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
 
 public sealed class DeliveryMethodConfig : DealMatcherEntityBaseConfig<DeliveryMethod>

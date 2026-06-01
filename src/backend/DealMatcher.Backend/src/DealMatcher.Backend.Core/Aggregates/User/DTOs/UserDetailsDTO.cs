@@ -11,4 +11,4 @@ public sealed record UserDetailsDTO(
     int TotalSales,
     int TotalPurchases,
     DateTime LastActive
-    );
+);

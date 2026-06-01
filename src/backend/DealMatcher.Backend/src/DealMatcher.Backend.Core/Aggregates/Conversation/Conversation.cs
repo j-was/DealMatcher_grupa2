@@ -4,8 +4,8 @@ public class Conversation : DealMatcherEntityBase,
     IAggregateRoot
 {
     public int OfferId { get; private set; }
-    public int BuyerId { get; private set; }
-    public int SellerId { get; private set; }
+    public int BuyerId { get; }
+    public int SellerId { get; }
     public Offer.Offer Offer { get; private set; } = null!;
     public User.User Buyer { get; private set; } = null!;
     public User.User Seller { get; private set; } = null!;
@@ -14,7 +14,7 @@ public class Conversation : DealMatcherEntityBase,
     public DateTime LastMessageAt { get; private set; }
     public int UnreadCount { get; private set; }
     public ConversationStatus Status { get; private set; }
-    public List<Message> Messages { get; private set; } = [];
+    public List<Message> Messages { get; } = [];
 
     public Conversation(
         int offerId,
@@ -34,7 +34,7 @@ public class Conversation : DealMatcherEntityBase,
         LastMessage = initialMessage;
         LastMessageAt = DateTime.UtcNow;
 
-        Status = ConversationStatus.ACTIVE;
+        Status = ConversationStatus.Active;
 
         Messages = [];
         AddMessage(buyerId, initialMessage);
@@ -49,7 +49,7 @@ public class Conversation : DealMatcherEntityBase,
 
     public Message AddMessage(int senderId, string content)
     {
-        if (Status == ConversationStatus.CLOSED)
+        if (Status == ConversationStatus.Closed)
         {
             throw new InvalidOperationException("Cannot add new message to closed conversation");
         }
@@ -79,6 +79,6 @@ public class Conversation : DealMatcherEntityBase,
 
     public void CloseConversation()
     {
-        Status = ConversationStatus.CLOSED;
+        Status = ConversationStatus.Closed;
     }
 }

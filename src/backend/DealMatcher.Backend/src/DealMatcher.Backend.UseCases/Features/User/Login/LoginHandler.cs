@@ -1,7 +1,10 @@
 namespace DealMatcher.Backend.UseCases.Features.User.Login;
 
 public class LoginHandler(
-    IRepository<UserEntity> usersRepository, IPasswordHashService passwordHashService, IMapper mapper, ITokenProvider tokenService,
+    IRepository<UserEntity> usersRepository,
+    IPasswordHashService passwordHashService,
+    IMapper mapper,
+    ITokenProvider tokenService,
     IPublisher publisher) : IRequestHandler<LoginCommand, Result<LoginDTO>>
 {
     public async Task<Result<LoginDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)

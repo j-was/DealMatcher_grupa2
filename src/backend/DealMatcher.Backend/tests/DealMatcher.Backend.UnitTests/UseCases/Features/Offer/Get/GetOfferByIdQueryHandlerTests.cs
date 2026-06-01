@@ -16,7 +16,8 @@ public class GetOfferByIdQueryHandlerTests
         _categoriesRepository = Substitute.For<IReadRepository<CategoryEntity>>();
         _mapper = Substitute.For<IMapper>();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper, _publisher);
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,
+            _publisher);
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public class GetOfferByIdQueryHandlerTests
             categoryId: 5,
             properties:
             [
-                new( "Color", "Red"),
+                new("Color", "Red"),
                 new("Size", "Large")
             ],
             availability: 15);
@@ -51,11 +52,7 @@ public class GetOfferByIdQueryHandlerTests
             Seller: new SellerDTO(10, "John Doe"),
             Tags: ["tag1", "tag2"],
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),
-            Properties: new Dictionary<string, string>
-            {
-                { "Color", "Red" },
-                { "Size", "Large" }
-            },
+            Properties: new Dictionary<string, string> { { "Color", "Red" }, { "Size", "Large" } },
             Availability: 15,
             Status: "DRAFT",
             CreatedAt: offer.CreatedAt,

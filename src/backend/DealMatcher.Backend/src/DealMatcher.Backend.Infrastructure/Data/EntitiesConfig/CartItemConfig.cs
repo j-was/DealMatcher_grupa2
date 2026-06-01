@@ -26,7 +26,5 @@ public sealed class CartItemConfig : DealMatcherEntityBaseConfig<CartItem>
             .IsRequired();
 
         builder.HasIndex(c => c.UserId);
-
-
     }
 }

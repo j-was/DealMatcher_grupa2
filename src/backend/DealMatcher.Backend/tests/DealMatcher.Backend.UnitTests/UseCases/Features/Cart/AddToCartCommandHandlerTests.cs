@@ -47,10 +47,7 @@ public class AddToCartCommandHandlerTests
     public async Task Handle_ShouldReturnConflict_WhenItemAlreadyInCart()
     {
         var offer = CreateOfferEntity(10);
-        var existingCartItems = new List<CartItemEntity>
-        {
-            CreateCartItem(1, 10, 2)
-        };
+        var existingCartItems = new List<CartItemEntity> { CreateCartItem(1, 10, 2) };
 
         _offersRepository
             .GetByIdAsync(10, Arg.Any<CancellationToken>())
@@ -136,7 +133,8 @@ public class AddToCartCommandHandlerTests
     private static void SetMemberValue(object target, string memberName, object value)
     {
         var type = target.GetType();
-        var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var property =
+            type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (property?.SetMethod is not null)
         {
             property.SetValue(target, value);
@@ -144,7 +142,7 @@ public class AddToCartCommandHandlerTests
         }
 
         var field = type.GetField($"<{memberName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
+                    ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
         field!.SetValue(target, value);
     }
 }

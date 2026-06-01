@@ -16,11 +16,7 @@ public class GetMyOffersQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WithMappedOffers_WhenOffersFound()
     {
-        var offers = new List<OfferEntity>
-        {
-            CreateOfferEntity(),
-            CreateOfferEntity()
-        };
+        var offers = new List<OfferEntity> { CreateOfferEntity(), CreateOfferEntity() };
 
         var expectedDtos = new List<OfferDTO>
         {

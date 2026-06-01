@@ -36,5 +36,4 @@ public sealed class CartItem : DealMatcherEntityBase, IAggregateRoot
     }
 #pragma warning restore CS8618
 
-
 }

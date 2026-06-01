@@ -30,8 +30,9 @@ public class CategoryTests
         var shortName = new string('a', DataSchemaConstants.CategoryNameMinLength - 1);
 
         Should.Throw<ArgumentException>(() =>
-            new Category(shortName, "Description", TestProperties))
-            .Message.ShouldContain($"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters");
+                new Category(shortName, "Description", TestProperties))
+            .Message.ShouldContain(
+                $"Category name must be at least {DataSchemaConstants.CategoryNameMinLength} characters");
     }
 
     [Fact]
@@ -40,8 +41,9 @@ public class CategoryTests
         var longName = new string('a', DataSchemaConstants.CategoryNameMaxLength + 1);
 
         Should.Throw<ArgumentException>(() =>
-            new Category(longName, "Description", TestProperties))
-            .Message.ShouldContain($"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters");
+                new Category(longName, "Description", TestProperties))
+            .Message.ShouldContain(
+                $"Category name cannot exceed {DataSchemaConstants.CategoryNameMaxLength} characters");
     }
 
     [Fact]
@@ -50,8 +52,9 @@ public class CategoryTests
         var longDescription = new string('a', DataSchemaConstants.CategoryDescriptionMaxLength + 1);
 
         Should.Throw<ArgumentException>(() =>
-            new Category("Valid Name", longDescription, TestProperties))
-            .Message.ShouldContain($"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters");
+                new Category("Valid Name", longDescription, TestProperties))
+            .Message.ShouldContain(
+                $"Category description cannot exceed {DataSchemaConstants.CategoryDescriptionMaxLength} characters");
     }
 
     [Fact]
@@ -88,7 +91,7 @@ public class CategoryTests
         };
 
         Should.Throw<ArgumentException>(() =>
-            new Category("Electronics", "Description", duplicateProperties))
+                new Category("Electronics", "Description", duplicateProperties))
             .Message.ShouldContain("Duplicate property name in category: 'Color'");
     }
 

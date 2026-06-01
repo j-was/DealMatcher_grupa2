@@ -16,4 +16,3 @@ public sealed class GetDeliveryMethodsQueryHandler(
         return Result.Success(methodDTOs);
     }
 }
-

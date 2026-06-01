@@ -6,9 +6,6 @@ public class DealMatcherEntityBase : EntityBase
     public DateTime? DeletedAt { get; private set; } = null;
     public bool IsDeleted { get; private set; } = false;
 
-
-
-
     public void Delete()
     {
         IsDeleted = true;

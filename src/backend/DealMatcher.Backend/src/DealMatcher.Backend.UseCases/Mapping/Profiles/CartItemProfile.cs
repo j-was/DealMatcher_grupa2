@@ -11,6 +11,5 @@ public sealed class CartItemProfile : Profile
             .ForCtorParam(nameof(CartItemDTO.Quantity), opt => opt.MapFrom(src => src.Item.Quantity))
             .ForCtorParam(nameof(CartItemDTO.AddedAt), opt => opt.MapFrom(src => src.Item.AddedAt))
             .ForCtorParam(nameof(CartItemDTO.Offer), opt => opt.MapFrom(src => src.Offer));
-
     }
 }

@@ -1,9 +1,8 @@
 namespace DealMatcher.Backend.Core.Aggregates.User;
 
-
 public sealed class User :
-  DealMatcherEntityBase,
-  IAggregateRoot
+    DealMatcherEntityBase,
+    IAggregateRoot
 {
     public string Name { get; private set; }
     public string Email { get; private set; }
@@ -57,15 +56,13 @@ public sealed class User :
         if (string.IsNullOrWhiteSpace(surname)) return;
 
         if (surname.Length > DataSchemaConstants.UserSurnameMaxLength)
-            throw new ArgumentException($"Surname cannot exceed {DataSchemaConstants.UserSurnameMaxLength} characters.");
+            throw new ArgumentException(
+                $"Surname cannot exceed {DataSchemaConstants.UserSurnameMaxLength} characters.");
     }
 
     public void SetNewHash(string passwordHash)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
-
-        // if (passwordHash.Length != DataSchemaConstants.UserPasswordHashLength)
-        //     throw new ArgumentException($"Password hash must be exactly {DataSchemaConstants.UserPasswordHashLength} characters.");
 
         PasswordHash = passwordHash;
     }

@@ -66,13 +66,7 @@
     <Compile Update="Endpoints\Offers\Create.CreateOfferRequest.cs">
       <DependentUpon>Create.cs</DependentUpon>
     </Compile>
-    <Compile Update="Endpoints\Offers\SearchOffersRequestValidator.cs">
-      <DependentUpon>Search.cs</DependentUpon>
-    </Compile>
     <Compile Update="Endpoints\Offers\Update.UpdateOfferRequest.cs">
-      <DependentUpon>Update.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Endpoints\Offers\Update.UpdateOfferValidator.cs">
       <DependentUpon>Update.cs</DependentUpon>
     </Compile>
     <Compile Update="Endpoints\Purchases\Initialize.InitializePurchaseRequest.cs">
@@ -92,6 +86,21 @@
     </Compile>
     <Compile Update="Endpoints\Admin\GetUserRequest.cs">
       <DependentUpon>GetUser.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Ban\Delete.Request.cs">
+      <DependentUpon>Delete.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Cart\Add.AddToCartRequest.cs">
+      <DependentUpon>Add.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Cart\UpdateQuantity.UpdateCartItemQuantityRequest.cs">
+      <DependentUpon>UpdateQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Offers\Delete.DeleteOfferRequest.cs">
+      <DependentUpon>Delete.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Endpoints\Offers\UpdateStatus.UpdateOfferStatusRequest.cs">
+      <DependentUpon>UpdateStatus.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

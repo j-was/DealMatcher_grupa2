@@ -1,6 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Conversation.Get;
-
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Conversation.Get;
 
 public class GetConversationQueryHandlerTests

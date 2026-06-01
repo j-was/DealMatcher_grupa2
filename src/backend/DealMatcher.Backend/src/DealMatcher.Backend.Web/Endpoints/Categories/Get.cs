@@ -1,6 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Category.DTOs;
-using DealMatcher.Backend.UseCases.Features.Category.Get;
-
 namespace DealMatcher.Backend.Web.Endpoints.Categories;
 
 public class Get(IMediator mediator) : EndpointWithoutRequest<List<CategoryDTO>>

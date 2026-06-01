@@ -75,7 +75,8 @@ public class UpdateUserHandlerTests
         var cts = new CancellationTokenSource();
 
         _usersRepository.GetByIdAsync(1, cts.Token).Returns(user);
-        _mapper.Map<UserDTO>(user).Returns(new UserDTO(1, "test@example.com", "NewName", "NewSurname", "ACTIVE", DateTime.UtcNow));
+        _mapper.Map<UserDTO>(user)
+            .Returns(new UserDTO(1, "test@example.com", "NewName", "NewSurname", "ACTIVE", DateTime.UtcNow));
 
         await _handler.Handle(command, cts.Token);
 

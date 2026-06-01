@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.User.Get;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.User.Get;
 
 public class GetUserQueryHandlerTests

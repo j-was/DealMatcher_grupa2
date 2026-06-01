@@ -1,6 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Conversation.SendMessage;
-
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Conversation.SendMessage;
 
 public class SendMessageInConversationCommandHandlerTests
@@ -51,7 +48,8 @@ public class SendMessageInConversationCommandHandlerTests
             .Map<MessageDTO>(Arg.Any<Message>())
             .Returns(default(MessageDTO));
 
-        var result = await _handler.Handle(new SendMessageInConversationCommand(44, 2, "Nowa wiadomość"), CancellationToken.None);
+        var result = await _handler.Handle(new SendMessageInConversationCommand(44, 2, "Nowa wiadomość"),
+            CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
         result.Status.ShouldBe(ResultStatus.Created);

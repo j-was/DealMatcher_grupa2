@@ -1,8 +1,8 @@
 namespace DealMatcher.Backend.Core.Aggregates.Payment;
 
 public sealed class DeliveryMethod :
-  DealMatcherEntityBase,
-  IAggregateRoot
+    DealMatcherEntityBase,
+    IAggregateRoot
 {
     public string StringId { get; private set; }
     public string Name { get; private set; }
@@ -38,7 +38,8 @@ public sealed class DeliveryMethod :
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         if (name.Length <= 0 || name.Length > DataSchemaConstants.DeliveryMethodNameMaxLength)
-            throw new ArgumentException($"Name cannot exceed {DataSchemaConstants.DeliveryMethodNameMaxLength} characters.");
+            throw new ArgumentException(
+                $"Name cannot exceed {DataSchemaConstants.DeliveryMethodNameMaxLength} characters.");
     }
 
     private static void ValidateDescription(string description)
@@ -46,7 +47,8 @@ public sealed class DeliveryMethod :
         ArgumentException.ThrowIfNullOrWhiteSpace(description);
 
         if (description.Length <= 0 || description.Length > DataSchemaConstants.DeliveryMethodDescriptionMaxLength)
-            throw new ArgumentException($"Description cannot exceed {DataSchemaConstants.DeliveryMethodDescriptionMaxLength} characters.");
+            throw new ArgumentException(
+                $"Description cannot exceed {DataSchemaConstants.DeliveryMethodDescriptionMaxLength} characters.");
     }
 
     private static void ValidatePrice(decimal price)

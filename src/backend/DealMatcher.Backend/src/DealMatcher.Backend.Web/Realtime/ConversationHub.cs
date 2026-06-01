@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.SignalR;
-
 namespace DealMatcher.Backend.Web.Realtime;
 
 public sealed class ConversationHub : Hub

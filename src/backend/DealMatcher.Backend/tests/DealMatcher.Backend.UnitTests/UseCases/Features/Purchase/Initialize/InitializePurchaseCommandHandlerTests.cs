@@ -1,9 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Cart;
-using DealMatcher.Backend.Core.Aggregates.Cart.Specifications;
-using DealMatcher.Backend.Core.Aggregates.Offer;
-using DealMatcher.Backend.Core.Events;
-using DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Purchase.Initialize;
 
 public class InitializePurchaseCommandHandlerTests
@@ -21,7 +15,7 @@ public class InitializePurchaseCommandHandlerTests
         _configuration = Substitute.For<IConfiguration>();
         _configuration["FrontendOrigin"].Returns("");
         _publisher = Substitute.For<IPublisher>();
-        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration, _publisher);
+        _handler = new InitializePurchaseCommandHandler(_cartItemsRepository, _offersRepository, _configuration);
     }
 
     [Fact]
@@ -58,11 +52,7 @@ public class InitializePurchaseCommandHandlerTests
             PaymentMethodId: "card",
             Quantity: 1);
 
-        var cartItems = new List<CartItem>
-        {
-            new(1, 10, 1),
-            new(1, 20, 2),
-        };
+        var cartItems = new List<CartItem> { new(1, 10, 1), new(1, 20, 2), };
 
         var firstOffer = new OfferEntity(
             title: "First offer",
@@ -102,8 +92,6 @@ public class InitializePurchaseCommandHandlerTests
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _offersRepository.Received(1).GetByIdAsync(20, CancellationToken.None);
-        await _publisher.Received(2)
-            .Publish(Arg.Any<OfferPurchasedEvent>(), CancellationToken.None);
     }
 
     [Fact]
@@ -218,7 +206,5 @@ public class InitializePurchaseCommandHandlerTests
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.Received(1)
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
-        await _publisher.Received(1)
-            .Publish(Arg.Any<OfferPurchasedEvent>(), CancellationToken.None);
     }
 }

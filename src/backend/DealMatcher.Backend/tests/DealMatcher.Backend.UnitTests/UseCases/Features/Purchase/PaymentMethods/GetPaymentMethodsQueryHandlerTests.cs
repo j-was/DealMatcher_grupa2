@@ -1,5 +1,3 @@
-global using DealMatcher.Backend.UseCases.Features.Purchase.PaymentMethods;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Purchase.PaymentMethods;
 
 public class GetPaymentMethodsQueryHandlerTests

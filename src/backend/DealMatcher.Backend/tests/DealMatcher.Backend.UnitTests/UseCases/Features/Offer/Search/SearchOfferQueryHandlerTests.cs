@@ -57,11 +57,7 @@ public class SearchOfferQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldFilter_ByCategory()
     {
-        var offers = new List<OfferEntity>
-        {
-            CreateOfferEntity(categoryId: 1),
-            CreateOfferEntity(categoryId: 2)
-        };
+        var offers = new List<OfferEntity> { CreateOfferEntity(categoryId: 1), CreateOfferEntity(categoryId: 2) };
 
         var expectedDto = new OfferDTO(1, "Title", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
             new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow);
@@ -82,15 +78,15 @@ public class SearchOfferQueryHandlerTests
     {
         var offers = new List<OfferEntity>
         {
-            CreateOfferEntity(price: 50m),
-            CreateOfferEntity(price: 100m),
-            CreateOfferEntity(price: 150m)
+            CreateOfferEntity(price: 50m), CreateOfferEntity(price: 100m), CreateOfferEntity(price: 150m)
         };
 
         _offersRepository.ListAsync(Arg.Any<CancellationToken>()).Returns(offers);
-        _mapper.Map<List<OfferDTO>>(Arg.Is<List<OfferEntity>>(o => o.Count == 1)).Returns([new OfferDTO(
-            1, "Title", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
-            new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow)]);
+        _mapper.Map<List<OfferDTO>>(Arg.Is<List<OfferEntity>>(o => o.Count == 1)).Returns([
+            new OfferDTO(
+                1, "Title", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
+                new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow)
+        ]);
 
         var query = new SearchOfferQuery(null, 75, 125, null, null, null, 10);
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -112,7 +108,6 @@ public class SearchOfferQueryHandlerTests
 
         _offersRepository.ListAsync(Arg.Any<CancellationToken>()).Returns(offers);
         _mapper.Map<List<OfferDTO>>(Arg.Is<List<OfferEntity>>(o => o.Count == 2)).Returns([
-
             new OfferDTO(1, "iPhone 12", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
                 new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow),
             new OfferDTO(2, "Samsung TV", "iPhone accessory", 100, [], new SellerDTO(1, "Seller"), [],
@@ -162,9 +157,11 @@ public class SearchOfferQueryHandlerTests
 
         _offersRepository.ListAsync(Arg.Any<CancellationToken>()).Returns(offers);
         _mapper.Map<List<OfferDTO>>(Arg.Is<List<OfferEntity>>(o => o.Count == 5)).Returns(
-            [.. Enumerable.Range(1, 5).Select(i => new OfferDTO(
-                i, $"Offer {i}", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
-                new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow))]
+            [
+                .. Enumerable.Range(1, 5).Select(i => new OfferDTO(
+                    i, $"Offer {i}", "Desc", 100, [], new SellerDTO(1, "Seller"), [],
+                    new CategoryDTO(1, "Cat", ""), [], 10, "DRAFT", DateTime.UtcNow, DateTime.UtcNow))
+            ]
         );
 
         var query = new SearchOfferQuery(null, null, null, null, null, null, 5);

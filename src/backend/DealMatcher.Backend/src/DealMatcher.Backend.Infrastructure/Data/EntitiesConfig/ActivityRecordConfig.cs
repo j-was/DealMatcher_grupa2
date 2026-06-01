@@ -8,10 +8,10 @@ public class ActivityRecordConfig : DealMatcherEntityBaseConfig<ActivityRecord>
         builder.ToTable($"{nameof(ActivityRecord)}s");
 
         builder.HasOne<User>()
-          .WithMany()
-          .HasForeignKey(a => a.UserId)
-          .OnDelete(DeleteBehavior.Restrict)
-          .IsRequired();
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         builder.HasOne<Offer>()
             .WithMany()
@@ -19,8 +19,8 @@ public class ActivityRecordConfig : DealMatcherEntityBaseConfig<ActivityRecord>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(a => a.Action)
-          .HasConversion(t => t.Value, t => ActionType.FromValue(t))
-          .IsRequired();
+            .HasConversion(t => t.Value, t => ActionType.FromValue(t))
+            .IsRequired();
 
         builder.OwnsMany(a => a.Details, d =>
         {
@@ -32,7 +32,7 @@ public class ActivityRecordConfig : DealMatcherEntityBaseConfig<ActivityRecord>
         });
 
         builder.Navigation(a => a.Details)
-          .UsePropertyAccessMode(PropertyAccessMode.Property);
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.HasIndex(a => a.UserId);
         builder.HasIndex(a => a.OfferId);

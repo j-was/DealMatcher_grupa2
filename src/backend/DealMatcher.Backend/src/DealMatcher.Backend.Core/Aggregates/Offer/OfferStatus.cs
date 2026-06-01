@@ -1,9 +1,9 @@
 namespace DealMatcher.Backend.Core.Aggregates.Offer;
 
 public abstract class OfferStatus(
-  string name,
-  string value) :
-  SmartEnum<OfferStatus, string>(name, value)
+    string name,
+    string value) :
+    SmartEnum<OfferStatus, string>(name, value)
 {
     public static readonly OfferStatus Draft = new DraftOfferStatus();
     public static readonly OfferStatus Active = new ActiveOfferStatus();
@@ -12,27 +12,27 @@ public abstract class OfferStatus(
     public static readonly OfferStatus Deleted = new DeletedOfferStatus();
 
     private sealed class DeletedOfferStatus() :
-      OfferStatus(nameof(DeletedOfferStatus), nameof(Deleted))
+        OfferStatus(nameof(DeletedOfferStatus), nameof(Deleted))
     {
     }
 
     private sealed class SoldOfferStatus() :
-      OfferStatus(nameof(SoldOfferStatus), nameof(Sold))
+        OfferStatus(nameof(SoldOfferStatus), nameof(Sold))
     {
     }
 
     private sealed class DraftOfferStatus() :
-      OfferStatus(nameof(DraftOfferStatus), nameof(Draft))
+        OfferStatus(nameof(DraftOfferStatus), nameof(Draft))
     {
     }
 
     private sealed class ActiveOfferStatus() :
-      OfferStatus(nameof(ActiveOfferStatus), nameof(Active))
+        OfferStatus(nameof(ActiveOfferStatus), nameof(Active))
     {
     }
 
     private sealed class PromotedOfferStatus() :
-      OfferStatus(nameof(PromotedOfferStatus), nameof(Promoted))
+        OfferStatus(nameof(PromotedOfferStatus), nameof(Promoted))
     {
     }
 }

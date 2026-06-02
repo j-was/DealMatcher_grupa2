@@ -999,6 +999,8 @@ paths:
                     type: integer
                   pages:
                     type: integer
+        400:
+          description: Invalid request
         401:
           description: Unauthorized
         403:
@@ -1029,7 +1031,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [ACTIVE, INACTIVE, BANNED]
+            enum: [ADMIN, ACTIVE, INACTIVE, BANNED]
       responses:
         200:
           description: Users retrieved successfully

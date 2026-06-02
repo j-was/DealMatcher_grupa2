@@ -5,11 +5,13 @@ import 'package:frontend/Services/purchase_service.dart';
 class PaymentPage extends StatefulWidget {
   final String paymentMethodId;
   final double price;
+  final int userId;
 
   const PaymentPage({
     super.key,
     required this.paymentMethodId,
     required this.price,
+    required this.userId,
   });
 
   @override
@@ -164,7 +166,9 @@ class _PaymentPageState extends State<PaymentPage> {
                         });
 
                         try {
-                          await PurchaseService.instance.completePurchase();
+                          await PurchaseService.instance.completePurchase(
+                            widget.userId,
+                          );
 
                           if (!context.mounted) {
                             return;

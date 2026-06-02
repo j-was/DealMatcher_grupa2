@@ -6,7 +6,6 @@ import 'package:frontend/Models/offer.dart';
 import 'package:frontend/Services/category_service.dart';
 import 'package:frontend/Services/offer_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 class OfferEditForm extends StatefulWidget {
   final int offerId;
@@ -21,7 +20,6 @@ class _OfferEditFormState extends State<OfferEditForm> {
   final OfferService _offerService = OfferService();
   final CategoryService _categoryService = CategoryService();
   final _formKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
 
   bool _isLoading = true;
   String? _loadError;
@@ -37,9 +35,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
 
   // Existing images from API (URLs the user can remove)
   List<String> _existingImageUrls = [];
-  // Newly picked local images
-  final List<XFile> _newImages = [];
-  final List<Uint8List> _newImagesBytes = [];
+  final List<String> _imagesToRemove = [];
 
   List<Category> _categories = [];
   Category? _selectedCategory;
@@ -172,36 +168,14 @@ class _OfferEditFormState extends State<OfferEditForm> {
     super.dispose();
   }
 
-  int get _totalImages => _existingImageUrls.length + _newImages.length;
-
-  Future<void> _pickImages() async {
-    try {
-      final List<XFile> picked = await _picker.pickMultiImage();
-      if (picked.isEmpty) return;
-
-      final remaining = 5 - _totalImages;
-      if (remaining <= 0) return;
-
-      for (final img in picked.take(remaining)) {
-        final bytes = await img.readAsBytes();
-        setState(() {
-          _newImages.add(img);
-          _newImagesBytes.add(bytes);
-        });
-      }
-    } catch (e) {
-      debugPrint('Błąd podczas wybierania zdjęć: $e');
-    }
-  }
+  int get _totalImages => _existingImageUrls.length;
 
   void _removeExistingImage(int index) {
-    setState(() => _existingImageUrls.removeAt(index));
-  }
+    if (_existingImageUrls.length <= 1) return;
 
-  void _removeNewImage(int index) {
     setState(() {
-      _newImages.removeAt(index);
-      _newImagesBytes.removeAt(index);
+      _imagesToRemove.add(_existingImageUrls[index]);
+      _existingImageUrls.removeAt(index);
     });
   }
 
@@ -369,10 +343,10 @@ class _OfferEditFormState extends State<OfferEditForm> {
         'tags': tags,
         'properties': properties,
         // Existing images to keep are sent as part of the JSON payload
-        'images': _existingImageUrls,
+        'images': _imagesToRemove,
       };
 
-      await _offerService.updateOffer(widget.offerId, data, _newImages);
+      await _offerService.updateOffer(widget.offerId, data);
 
       if (!mounted) return;
       context.go('/my-offers');
@@ -696,57 +670,11 @@ class _OfferEditFormState extends State<OfferEditForm> {
                             ),
                           ),
                         ),
-                        onRemove: () => _removeExistingImage(i),
+                        onRemove: () => _existingImageUrls.length > 1
+                            ? () => _removeExistingImage(i)
+                            : null,
                       );
                     }),
-
-                    // New local images (byte previews)
-                    ...List.generate(_newImagesBytes.length, (i) {
-                      return _ImageThumb(
-                        child: Image.memory(
-                          _newImagesBytes[i],
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                        ),
-                        onRemove: () => _removeNewImage(i),
-                      );
-                    }),
-
-                    // Add button
-                    if (_totalImages < 5)
-                      GestureDetector(
-                        onTap: _pickImages,
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.06),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.12),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_photo_alternate_outlined,
-                                color: Colors.white.withValues(alpha: 0.4),
-                                size: 24,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '$_totalImages/5',
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.35),
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ],

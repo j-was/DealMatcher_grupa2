@@ -62,14 +62,20 @@ class Offer {
     : _id = json['id'] ?? 0,
       _title = json['title'] ?? '',
       _description = json['description'] ?? '',
-      _price = (json['price'] ?? 0).toDouble(),
-      _images = (json['images'] as List<dynamic>)
+      _price = (json['price'] as num? ?? 0).toDouble(),
+      _images = (json['images'] as List<dynamic>? ?? [])
           .map((e) => e.toString())
           .toList(),
-      _seller = Seller.fromJson(json['seller']),
-      _category = Category.fromJson(json['category']),
-      _tags = (json['tags'] as List<dynamic>).map((e) => e.toString()).toList(),
-      _properties = (json['properties'] as Map<String, dynamic>).entries
+      _seller = json['seller'] != null
+          ? Seller.fromJson(json['seller'])
+          : Seller.fromJson({}),
+      _category = json['category'] != null
+          ? Category.fromJson(json['category'])
+          : Category.fromJson({}),
+      _tags = (json['tags'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      _properties = (json['properties'] as Map<String, dynamic>? ?? {}).entries
           .map((e) => (e.key, e.value.toString()))
           .toList(),
       _availability = json['availability'] ?? 0,

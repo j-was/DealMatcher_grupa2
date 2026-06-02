@@ -100,9 +100,9 @@ class PurchaseService {
     );
   }
 
-  Future<void> completePurchase() async {
+  Future<void> completePurchase(int userId) async {
     final response = await http.delete(
-      _endpoint('/purchases/complete'),
+      _endpoint('/purchases/complete/$userId'),
       headers: AuthService.instance.authHeaders(),
     );
 

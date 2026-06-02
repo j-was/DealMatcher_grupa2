@@ -5,7 +5,7 @@ on:
         branches: [release]
         paths:
             - "src/frontend/**"
-            - ".github/workflows/cd-frontend.yml"
+            - ".github/workflows/cd-frontend-alien.yml"
     workflow_dispatch:
 
 jobs:

@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Category.Specifications;
-
 namespace DealMatcher.Backend.UseCases.Features.Category.Properties.Get;
 
 public sealed class GetAllPropertiesByCategoryNameQueryHandler(

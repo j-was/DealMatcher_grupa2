@@ -10,7 +10,7 @@ public class MessageTests
         message.ConversationId.ShouldBe(1);
         message.SenderId.ShouldBe(2);
         message.Content.ShouldBe("Hello!");
-        message.Status.ShouldBe(MessageStatus.SENT);
+        message.Status.ShouldBe(MessageStatus.Sent);
     }
 
     [Theory]
@@ -29,7 +29,7 @@ public class MessageTests
 
         message.MarkAsDelivered();
 
-        message.Status.ShouldBe(MessageStatus.DELIVERED);
+        message.Status.ShouldBe(MessageStatus.Delivered);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class MessageTests
 
         message.MarkAsDelivered();
 
-        message.Status.ShouldBe(MessageStatus.READ);
+        message.Status.ShouldBe(MessageStatus.Read);
     }
 
     [Fact]
@@ -50,6 +50,6 @@ public class MessageTests
 
         message.MarkAsRead();
 
-        message.Status.ShouldBe(MessageStatus.READ);
+        message.Status.ShouldBe(MessageStatus.Read);
     }
 }

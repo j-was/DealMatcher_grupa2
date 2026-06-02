@@ -22,8 +22,7 @@ public class GetOfferActivityQueryHandlerTests
         var adminUser = CreateAdminUser(1);
         var records = new List<ActivityRecord>
         {
-            new(1, 1, ActionType.View, "127.0.0.1", []),
-            new(2, 1, ActionType.Purchase, "127.0.0.1", [])
+            new(1, 1, ActionType.View, "127.0.0.1", []), new(2, 1, ActionType.Purchase, "127.0.0.1", [])
         };
         var expectedDtos = new List<ActivityRecordDTO>
         {
@@ -104,10 +103,7 @@ public class GetOfferActivityQueryHandlerTests
         var query = new GetOfferActivityQuery(1, 1);
         var cts = new CancellationTokenSource();
         var adminUser = CreateAdminUser(1);
-        var records = new List<ActivityRecord>
-        {
-            new(1, 1, ActionType.View, "127.0.0.1", [])
-        };
+        var records = new List<ActivityRecord> { new(1, 1, ActionType.View, "127.0.0.1", []) };
 
         _usersRepository.GetByIdAsync(1, cts.Token)
             .Returns(adminUser);

@@ -18,7 +18,7 @@ public class Message : DealMatcherEntityBase,
         ConversationId = conversationId;
         SenderId = senderId;
         Content = content;
-        Status = MessageStatus.SENT;
+        Status = MessageStatus.Sent;
     }
 
 #pragma warning disable CS8618
@@ -30,13 +30,14 @@ public class Message : DealMatcherEntityBase,
 
     public void MarkAsDelivered()
     {
-        if (Status == MessageStatus.SENT)
+        if (Status == MessageStatus.Sent)
         {
-            Status = MessageStatus.DELIVERED;
+            Status = MessageStatus.Delivered;
         }
     }
+
     public void MarkAsRead()
     {
-        Status = MessageStatus.READ;
+        Status = MessageStatus.Read;
     }
 }

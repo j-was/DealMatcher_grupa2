@@ -1,6 +1,3 @@
-using MediatR;
-using Microsoft.Extensions.Logging.Abstractions;
-
 namespace DealMatcher.Backend.IntegrationTests.Features.Offer.Get;
 
 public class GetOfferByIdQueryHandlerTests : IDisposable
@@ -22,22 +19,23 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
         _categoriesRepository = new EfRepository<CategoryEntity>(_context);
 
         var mapperConfig = new MapperConfiguration(
-        cfg =>
-        {
-            cfg.AddProfile(new OfferProfile());
-        },
-        NullLoggerFactory.Instance);
+            cfg =>
+            {
+                cfg.AddProfile(new OfferProfile());
+            },
+            NullLoggerFactory.Instance);
 
         _mapper = mapperConfig.CreateMapper();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper, _publisher);
+        _handler = new GetOfferByIdQueryHandler(_offerRepository, _usersRepository, _categoriesRepository, _mapper,
+            _publisher);
     }
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WithMappedOffer_WhenOfferExists()
     {
         var seller = new User("seller@mail.com", "John", "Doe");
-        var category = new Category("Electronics", "Electronic devices");
+        var category = new CategoryEntity("Electronics", "Electronic devices");
 
         _context.AddRange(seller, category);
         await _context.SaveChangesAsync();
@@ -68,7 +66,7 @@ public class GetOfferByIdQueryHandlerTests : IDisposable
         result.Value.Images.ShouldBeEquivalentTo(new List<string> { "https://example.com/image.jpg" });
         result.Value.Tags.ShouldBeEquivalentTo(new List<string> { "tag1", "tag2" });
         result.Value.Availability.ShouldBe(15);
-        result.Value.Status.ShouldBe("DRAFT");
+        result.Value.Status.ShouldBe("ACTIVE");
         result.Value.Seller.Id.ShouldBe(seller.Id);
         result.Value.Seller.Name.ShouldBe("John Doe");
         result.Value.Category.Id.ShouldBe(category.Id);

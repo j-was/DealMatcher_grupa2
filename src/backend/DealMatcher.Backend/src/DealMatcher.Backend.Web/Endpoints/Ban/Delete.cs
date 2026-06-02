@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Ban.DeleteBan;
-
 namespace DealMatcher.Backend.Web.Endpoints.Ban;
 
 public sealed class Delete(IMediator mediator) : EndpointWithoutRequest
@@ -30,6 +28,12 @@ public sealed class Delete(IMediator mediator) : EndpointWithoutRequest
         var command = new DeleteBanCommand(adminId, banId);
 
         var result = await mediator.Send(command, ct);
+
+        if (result.IsSuccess)
+        {
+            await SendNoContentAsync(ct);
+            return;
+        }
 
         await result.SendResult(this, ct);
     }

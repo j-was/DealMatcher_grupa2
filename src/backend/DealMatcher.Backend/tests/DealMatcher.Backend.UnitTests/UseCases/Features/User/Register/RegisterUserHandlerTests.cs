@@ -44,14 +44,15 @@ public class RegisterUserHandlerTests
         result.IsSuccess.ShouldBeTrue();
         result.Value.ShouldBe(expectedUserDto);
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHasher.Received(1).HashPassword(password);
         await _usersRepository.Received(1).AddAsync(Arg.Is<UserEntity>(u =>
-            u.Email == email &&
-            u.Name == name &&
-            u.Surname == surname &&
-            u.Status == UserStatus.Active &&
-            u.PasswordHash == hashedPassword),
+                u.Email == email &&
+                u.Name == name &&
+                u.Surname == surname &&
+                u.Status == UserStatus.Active &&
+                u.PasswordHash == hashedPassword),
             Arg.Any<CancellationToken>());
         await _usersRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
         _mapper.Received(1).Map<UserDTO>(Arg.Any<UserEntity>());
@@ -73,7 +74,8 @@ public class RegisterUserHandlerTests
         result.IsSuccess.ShouldBeFalse();
         result.Value.ShouldBeNull();
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHasher.DidNotReceive().HashPassword(Arg.Any<string>());
         await _usersRepository.DidNotReceive().AddAsync(Arg.Any<UserEntity>(), Arg.Any<CancellationToken>());
         await _usersRepository.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
@@ -132,7 +134,6 @@ public class RegisterUserHandlerTests
     [Fact]
     public async Task Handle_ShouldPassCancellationToken()
     {
-
         var command = new RegisterUserCommand("test@example.com", "Test", "User", "password");
         var cts = new CancellationTokenSource();
 

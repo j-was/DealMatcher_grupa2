@@ -51,19 +51,20 @@ public class CategoryPropertyTests
         var longName = new string('a', DataSchemaConstants.PropertyNameMaxLength + 1);
 
         Should.Throw<ArgumentException>(() =>
-            new CategoryProperty(longName, CategoryPropertyType.Text, null))
-            .Message.ShouldContain($"Property name cannot exceed {DataSchemaConstants.PropertyNameMaxLength} characters");
+                new CategoryProperty(longName, CategoryPropertyType.Text, null))
+            .Message.ShouldContain(
+                $"Property name cannot exceed {DataSchemaConstants.PropertyNameMaxLength} characters");
     }
 
     [Fact]
     public void Constructor_Should_Throw_When_Select_Type_Has_No_Options()
     {
         Should.Throw<ArgumentException>(() =>
-            new CategoryProperty("Color", CategoryPropertyType.Select, null))
+                new CategoryProperty("Color", CategoryPropertyType.Select, null))
             .Message.ShouldContain("Options must be provided for SELECT type properties");
 
         Should.Throw<ArgumentException>(() =>
-            new CategoryProperty("Color", CategoryPropertyType.Select, []))
+                new CategoryProperty("Color", CategoryPropertyType.Select, []))
             .Message.ShouldContain("Options must be provided for SELECT type properties");
     }
 
@@ -75,7 +76,7 @@ public class CategoryPropertyTests
             .ToList();
 
         Should.Throw<ArgumentException>(() =>
-            new CategoryProperty("Color", CategoryPropertyType.Select, tooManyOptions))
+                new CategoryProperty("Color", CategoryPropertyType.Select, tooManyOptions))
             .Message.ShouldContain($"Property cannot have more than {DataSchemaConstants.MaxPropertyOptions} options");
     }
 
@@ -86,8 +87,9 @@ public class CategoryPropertyTests
         var options = new List<string> { "Red", longOption };
 
         Should.Throw<ArgumentException>(() =>
-            new CategoryProperty("Color", CategoryPropertyType.Select, options))
-            .Message.ShouldContain($"Option values cannot exceed {DataSchemaConstants.PropertyOptionMaxLength} characters");
+                new CategoryProperty("Color", CategoryPropertyType.Select, options))
+            .Message.ShouldContain(
+                $"Option values cannot exceed {DataSchemaConstants.PropertyOptionMaxLength} characters");
     }
 
     [Fact]
@@ -101,6 +103,7 @@ public class CategoryPropertyTests
         {
             return;
         }
+
         property.Options.ShouldContain("Red");
         property.Options.ShouldContain("Blue");
         property.Options.ShouldContain("Green");

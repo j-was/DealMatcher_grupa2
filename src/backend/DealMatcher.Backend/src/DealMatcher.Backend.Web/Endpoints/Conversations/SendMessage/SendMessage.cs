@@ -1,12 +1,6 @@
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
-using DealMatcher.Backend.UseCases.Features.Conversation.SendMessage;
-using DealMatcher.Backend.Web.Realtime;
-using Microsoft.AspNetCore.SignalR;
-
 namespace DealMatcher.Backend.Web.Endpoints.Conversations.SendMessage;
 
-public class SendMessage(IMediator mediator, IHubContext<ConversationHub> hubContext)
+public class SendMessage(IMediator mediator, IHubContext<ConversationHub> hubContext, ILogger<SendMessage> logger)
     : Endpoint<SendMessageRequest, MessageDTO>
 {
     public override void Configure()
@@ -36,9 +30,16 @@ public class SendMessage(IMediator mediator, IHubContext<ConversationHub> hubCon
 
         if (result.IsSuccess)
         {
-            await hubContext.Clients
-                .Group($"conversation:{conversationId}")
-                .SendAsync("message.created", result.Value, ct);
+            try
+            {
+                await hubContext.Clients
+                    .Group($"conversation:{conversationId}")
+                    .SendAsync("message.created", result.Value, ct);
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning(e, "Failed to broadcast message");
+            }
 
             await SendAsync(result.Value, StatusCodes.Status201Created, ct);
             return;

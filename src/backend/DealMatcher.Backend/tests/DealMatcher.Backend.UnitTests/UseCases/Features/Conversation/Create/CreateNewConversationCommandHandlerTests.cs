@@ -1,8 +1,3 @@
-using System.Reflection;
-using System.Runtime.Serialization;
-using DealMatcher.Backend.UseCases.Features.Conversation.Create;
-
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Conversation.Create;
 
 public class CreateNewConversationCommandHandlerTests
@@ -91,6 +86,7 @@ public class CreateNewConversationCommandHandlerTests
     public async Task Handle_ShouldCreateConversation_WhenRequestIsValid()
     {
         var offer = CreateOfferEntity(sellerId: 7);
+        var createdConversation = CreateConversationEntity(10, 2, 7, "Hej");
 
         _offerRepository
             .GetByIdAsync(10, Arg.Any<CancellationToken>())
@@ -99,6 +95,10 @@ public class CreateNewConversationCommandHandlerTests
         _conversationRepository
             .FirstOrDefaultAsync(Arg.Any<ExistingConversationSpec>(), Arg.Any<CancellationToken>())
             .Returns((ConversationEntity?)null);
+
+        _conversationRepository
+            .FirstOrDefaultAsync(Arg.Any<ConversationByIdWithUsersSpec>(), Arg.Any<CancellationToken>())
+            .Returns(createdConversation);
 
         _mapper
             .Map<ConversationDTO>(Arg.Any<ConversationEntity>())
@@ -121,7 +121,7 @@ public class CreateNewConversationCommandHandlerTests
     private static OfferEntity CreateOfferEntity(int sellerId)
     {
         var offer = Activator.CreateInstance(typeof(OfferEntity), nonPublic: true) as OfferEntity
-            ?? throw new InvalidOperationException("Nie udało się utworzyć OfferEntity.");
+                    ?? throw new InvalidOperationException("Nie udało się utworzyć OfferEntity.");
 
         var type = typeof(OfferEntity);
         var property = type.GetProperty(nameof(OfferEntity.SellerId),
@@ -134,7 +134,8 @@ public class CreateNewConversationCommandHandlerTests
         }
 
         var field = type.GetField($"<{nameof(OfferEntity.SellerId)}>k__BackingField",
-            BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException("Nie udało się ustawić SellerId.");
+                        BindingFlags.Instance | BindingFlags.NonPublic) ??
+                    throw new InvalidOperationException("Nie udało się ustawić SellerId.");
         field.SetValue(offer, sellerId);
         return offer;
     }
@@ -153,7 +154,8 @@ public class CreateNewConversationCommandHandlerTests
     {
         var type = target.GetType();
 
-        var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var property =
+            type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (property is not null)
         {
             var setter = property.GetSetMethod(nonPublic: true);
@@ -165,7 +167,7 @@ public class CreateNewConversationCommandHandlerTests
         }
 
         var field = type.GetField($"<{memberName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
+                    ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
 
         field.ShouldNotBeNull($"Nie udało się ustawić pola ani właściwości '{memberName}' na typie {type.Name}.");
         field!.SetValue(target, value);

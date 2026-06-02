@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Offer.Create;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Offer.Create;
 
 public class CreateNewOfferCommandHandlerTests
@@ -18,7 +16,8 @@ public class CreateNewOfferCommandHandlerTests
         _mapper = Substitute.For<IMapper>();
         _imageService = Substitute.For<IImageService>();
         _publisher = Substitute.For<IPublisher>();
-        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper, _publisher);
+        _handler = new CreateNewOfferCommandHandler(_offerRepository, _categoriesRepository, _imageService, _mapper,
+            _publisher);
     }
 
     [Fact]
@@ -30,10 +29,7 @@ public class CreateNewOfferCommandHandlerTests
             [],
             ["Test tag"],
             5,
-            new Dictionary<string, string>
-            {
-                ["Test Property"] = "Test Value"
-            },
+            new Dictionary<string, string> { ["Test Property"] = "Test Value" },
             2, 1);
 
         var category = new CategoryEntity("Electronics", "Electronic devices");
@@ -47,10 +43,7 @@ public class CreateNewOfferCommandHandlerTests
             Seller: new SellerDTO(1, "John"),
             Tags: ["Test tag"],
             Category: new CategoryDTO(5, "Electronics", "Electronic devices"),
-            Properties: new Dictionary<string, string>
-            {
-                ["Test Property"] = "Test Value"
-            },
+            Properties: new Dictionary<string, string> { ["Test Property"] = "Test Value" },
             Availability: 2,
             Status: "DRAFT",
             CreatedAt: DateTime.UtcNow,

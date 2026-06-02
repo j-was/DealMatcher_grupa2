@@ -20,11 +20,7 @@ public class GetUsersQueryHandlerTests
     {
         var query = new GetUsersQuery(1, 10, null, 1);
         var adminUser = CreateAdminUser(1);
-        var users = new List<UserEntity>
-        {
-            CreateUser(1, "user1@example.com"),
-            CreateUser(2, "user2@example.com")
-        };
+        var users = new List<UserEntity> { CreateUser(1, "user1@example.com"), CreateUser(2, "user2@example.com") };
 
         _usersRepository.GetByIdAsync(1, Arg.Any<CancellationToken>())
             .Returns(adminUser);
@@ -125,10 +121,7 @@ public class GetUsersQueryHandlerTests
         var query = new GetUsersQuery(1, 10, null, 1);
         var cts = new CancellationTokenSource();
         var adminUser = CreateAdminUser(1);
-        var users = new List<UserEntity>
-        {
-            CreateUser(1, "user1@example.com")
-        };
+        var users = new List<UserEntity> { CreateUser(1, "user1@example.com") };
 
         _usersRepository.GetByIdAsync(1, cts.Token)
             .Returns(adminUser);

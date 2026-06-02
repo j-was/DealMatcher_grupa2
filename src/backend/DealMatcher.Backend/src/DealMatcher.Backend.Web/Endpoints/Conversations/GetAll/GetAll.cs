@@ -1,7 +1,3 @@
-using System.Security.Claims;
-using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
-using DealMatcher.Backend.UseCases.Features.Conversation.GetAll;
-
 namespace DealMatcher.Backend.Web.Endpoints.Conversations.GetAll;
 
 public class GetAll(IMediator mediator) : EndpointWithoutRequest<List<ConversationDTO>>

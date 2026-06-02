@@ -1,15 +1,9 @@
-using System.Security.Claims;
-using System.Text.Json;
-using DealMatcher.Backend.UseCases.Features.Offer.Create;
-
 namespace DealMatcher.Backend.Web.Endpoints.Offers;
 
 public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
 {
-    private static readonly JsonSerializerOptions _jsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
+    private static readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
+
     public override void Configure()
     {
         AllowFileUploads();

@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.User.Login;
-
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public class Login(

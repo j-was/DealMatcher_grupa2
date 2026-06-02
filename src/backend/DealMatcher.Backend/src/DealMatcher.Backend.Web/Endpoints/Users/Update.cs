@@ -1,7 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using DealMatcher.Backend.UseCases.Features.User.Update;
-
 namespace DealMatcher.Backend.Web.Endpoints.Users;
 
 public sealed class MeUpdate(IMediator mediator) : Endpoint<MeUpdateRequest, UserDTO>
@@ -20,7 +16,8 @@ public sealed class MeUpdate(IMediator mediator) : Endpoint<MeUpdateRequest, Use
 
     public override async Task HandleAsync(MeUpdateRequest req, CancellationToken ct)
     {
-        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdFromClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
+                              User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!int.TryParse(userIdFromClaim, out var userId))
         {

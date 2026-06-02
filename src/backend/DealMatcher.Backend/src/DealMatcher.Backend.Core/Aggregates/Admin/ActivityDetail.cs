@@ -2,8 +2,8 @@ namespace DealMatcher.Backend.Core.Aggregates.Admin;
 
 public sealed record ActivityDetail
 {
-    public string Name { get; set; }
-    public string Value { get; set; }
+    public string Name { get; }
+    public string Value { get; }
 
     public ActivityDetail(string name, string value)
     {
@@ -14,5 +14,3 @@ public sealed record ActivityDetail
         Value = value.Trim();
     }
 }
-
-

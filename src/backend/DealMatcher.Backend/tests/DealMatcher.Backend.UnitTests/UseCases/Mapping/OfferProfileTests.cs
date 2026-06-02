@@ -61,7 +61,7 @@ public class OfferProfileTests
 
         var dto = _mapper.Map<OfferDTO>(offerEntity);
 
-        dto.Status.ShouldBe(OfferStatus.Draft.Value.ToUpper());
+        dto.Status.ShouldBe(OfferStatus.Active.Value.ToUpper());
     }
 
     [Fact]
@@ -111,10 +111,7 @@ public class OfferProfileTests
     {
         var offerEntity = CreateOfferEntity();
 
-        var expectedDictionary = new Dictionary<string, string>
-        {
-            { "Color", "Red" }
-        };
+        var expectedDictionary = new Dictionary<string, string> { { "Color", "Red" } };
 
         var dto = _mapper.Map<OfferDTO>(offerEntity);
 
@@ -174,7 +171,7 @@ public class OfferProfileTests
 
         var dto = _mapper.Map<OfferDTO>(offerInfo);
 
-        dto.Status.ShouldBe("DRAFT");
+        dto.Status.ShouldBe("ACTIVE");
     }
 
     [Fact]
@@ -212,10 +209,7 @@ public class OfferProfileTests
         var offerEntity = CreateOfferEntity();
         var offerInfo = new OfferProfile.OfferInfo(offerEntity, CreateSellerEntity(), CreateCategoryEntity());
 
-        var expectedDictionary = new Dictionary<string, string>
-        {
-            { "Color", "Red" }
-        };
+        var expectedDictionary = new Dictionary<string, string> { { "Color", "Red" } };
 
         var dto = _mapper.Map<OfferDTO>(offerInfo);
 

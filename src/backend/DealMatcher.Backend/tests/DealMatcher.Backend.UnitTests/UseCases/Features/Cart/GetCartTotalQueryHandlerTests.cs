@@ -32,8 +32,7 @@ public class GetCartTotalQueryHandlerTests
     {
         var cartItems = new List<CartItemEntity>
         {
-            CreateCartItem(userId: 1, offerId: 10, quantity: 2),
-            CreateCartItem(userId: 1, offerId: 20, quantity: 1)
+            CreateCartItem(userId: 1, offerId: 10, quantity: 2), CreateCartItem(userId: 1, offerId: 20, quantity: 1)
         };
 
         var offer1 = CreateOfferEntity(10, price: 49.99m);
@@ -59,10 +58,7 @@ public class GetCartTotalQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldSkipMissingOffers()
     {
-        var cartItems = new List<CartItemEntity>
-        {
-            CreateCartItem(userId: 1, offerId: 10, quantity: 2)
-        };
+        var cartItems = new List<CartItemEntity> { CreateCartItem(userId: 1, offerId: 10, quantity: 2) };
 
         _cartItemsRepository
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), Arg.Any<CancellationToken>())
@@ -108,7 +104,8 @@ public class GetCartTotalQueryHandlerTests
     private static void SetMemberValue(object target, string memberName, object value)
     {
         var type = target.GetType();
-        var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var property =
+            type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (property?.SetMethod is not null)
         {
             property.SetValue(target, value);
@@ -116,7 +113,7 @@ public class GetCartTotalQueryHandlerTests
         }
 
         var field = type.GetField($"<{memberName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
+                    ?? type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
         field!.SetValue(target, value);
     }
 }

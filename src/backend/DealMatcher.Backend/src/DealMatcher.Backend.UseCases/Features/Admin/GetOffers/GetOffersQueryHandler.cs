@@ -2,8 +2,11 @@ using DealMatcher.Backend.UseCases.Features.Admin.DTOs;
 
 namespace DealMatcher.Backend.UseCases.Features.Admin.GetOffers;
 
-public sealed class GetOffersQueryHandler(IReadRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository,
-    IReadRepository<UserEntity> usersRepository, IMapper mapper) : IQueryHandler<GetOffersQuery, Result<AdminOffersDTO>>
+public sealed class GetOffersQueryHandler(
+    IReadRepository<OfferEntity> offersRepository,
+    IReadRepository<CategoryEntity> categoriesRepository,
+    IReadRepository<UserEntity> usersRepository,
+    IMapper mapper) : IQueryHandler<GetOffersQuery, Result<AdminOffersDTO>>
 {
     public async Task<Result<AdminOffersDTO>> Handle(GetOffersQuery request, CancellationToken cancellationToken)
     {
@@ -21,15 +24,18 @@ public sealed class GetOffersQueryHandler(IReadRepository<OfferEntity> offersRep
 
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
-            offers = [.. offers.Where(offer => string.Equals(
-                offer.Status.Value.ToUpper(), request.Status, StringComparison.OrdinalIgnoreCase
-            ))];
+            offers =
+            [
+                .. offers.Where(offer => string.Equals(
+                    offer.Status.Value.ToUpper(), request.Status, StringComparison.OrdinalIgnoreCase
+                ))
+            ];
         }
 
         var total = offers.Count;
 
         var pagedOffers = offers.OrderBy(offer => offer.Id).Skip((page - 1) * limit)
-        .Take(limit).ToList();
+            .Take(limit).ToList();
 
         var items = new List<OfferDTO>();
 

@@ -1,5 +1,3 @@
-using DealMatcher.Backend.UseCases.Features.Conversation.GetAll;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Conversation.GetAll;
 
 public class GetAllConversationsQueryHandlerTests
@@ -21,8 +19,7 @@ public class GetAllConversationsQueryHandlerTests
         var token = CancellationToken.None;
         var conversations = new List<ConversationEntity>
         {
-            CreateConversationEntity(11, 2, 3, "Cześć"),
-            CreateConversationEntity(12, 2, 4, "Drugie")
+            CreateConversationEntity(11, 2, 3, "Cześć"), CreateConversationEntity(12, 2, 4, "Drugie")
         };
 
         _conversationRepository

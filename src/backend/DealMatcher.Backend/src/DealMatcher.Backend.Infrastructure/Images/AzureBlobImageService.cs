@@ -1,6 +1,3 @@
-using MailKit.Net.Imap;
-using Microsoft.AspNetCore.Http;
-
 namespace DealMatcher.Backend.Infrastructure.Images;
 
 public class AzureBlobImageService : IImageService
@@ -28,21 +25,20 @@ public class AzureBlobImageService : IImageService
         {
             return string.Empty;
         }
+
         try
         {
             var sanitizedFileName = SanitizeFileName(image.FileName);
             var uniqueFileName = $"{Guid.NewGuid()}_{sanitizedFileName}";
             var blobPath = uniqueFileName;
             var blobClient = _containerClient.GetBlobClient(blobPath);
-            var blobHttpHeaders = new BlobHttpHeaders
-            {
-                ContentType = image.ContentType
-            };
+            var blobHttpHeaders = new BlobHttpHeaders { ContentType = image.ContentType };
             using var stream = image.OpenReadStream();
             await blobClient.UploadAsync(stream, blobHttpHeaders, cancellationToken: cancellationToken);
 
             var blobUrl = blobClient.Uri.ToString();
-            _logger.LogInformation("Image uploaded successfully: {blobUrl} (Size: {size} bytes)", blobUrl, image.Length);
+            _logger.LogInformation("Image uploaded successfully: {blobUrl} (Size: {size} bytes)", blobUrl,
+                image.Length);
 
             return blobUrl;
         }
@@ -53,7 +49,8 @@ public class AzureBlobImageService : IImageService
         }
     }
 
-    public async Task<List<string>> UploadMultipleImagesAsync(List<IFormFile> images, CancellationToken cancellationToken = default)
+    public async Task<List<string>> UploadMultipleImagesAsync(List<IFormFile> images,
+        CancellationToken cancellationToken = default)
     {
         var res = new List<string>();
         foreach (var image in images)
@@ -61,6 +58,7 @@ public class AzureBlobImageService : IImageService
             var url = await UploadImageAsync(image, cancellationToken);
             res.Add(url);
         }
+
         return res;
     }
 
@@ -70,10 +68,12 @@ public class AzureBlobImageService : IImageService
         {
             return false;
         }
+
         if (img.Length > _maxFileSize)
         {
             return false;
         }
+
         var fileExtension = Path.GetExtension(img.FileName).ToLowerInvariant();
         if (!_allowedExtensions.Contains(fileExtension))
         {
@@ -84,6 +84,7 @@ public class AzureBlobImageService : IImageService
         {
             return false;
         }
+
         return true;
     }
 

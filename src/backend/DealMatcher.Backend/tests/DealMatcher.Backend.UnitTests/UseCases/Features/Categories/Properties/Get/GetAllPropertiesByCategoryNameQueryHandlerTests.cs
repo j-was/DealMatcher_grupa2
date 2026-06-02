@@ -1,7 +1,3 @@
-using Ardalis.Result;
-using DealMatcher.Backend.Core.Aggregates.Category.Specifications;
-using DealMatcher.Backend.UseCases.Features.Category.Properties.Get;
-
 namespace DealMatcher.Backend.UnitTests.UseCases.Features.Categories.Properties.Get;
 
 public class GetAllPropertiesByCategoryNameQueryHandlerTests
@@ -32,8 +28,8 @@ public class GetAllPropertiesByCategoryNameQueryHandlerTests
 
         var expectedDtos = new List<CategoryPropertyDTO>
         {
-            new("Stan", CategoryPropertyType.Select, ["Nowy"]),
-            new("Pamięć", CategoryPropertyType.Number, null)
+            new(1, "Stan", CategoryPropertyType.Select, ["Nowy"]),
+            new(2, "Pamięć", CategoryPropertyType.Number, null)
         };
 
         _categoriesRepository

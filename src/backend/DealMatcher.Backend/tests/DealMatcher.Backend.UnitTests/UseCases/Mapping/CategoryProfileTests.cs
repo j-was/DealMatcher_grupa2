@@ -68,9 +68,7 @@ public class CategoryProfileTests
     {
         var types = new[]
         {
-            CategoryPropertyType.Text,
-            CategoryPropertyType.Number,
-            CategoryPropertyType.Boolean,
+            CategoryPropertyType.Text, CategoryPropertyType.Number, CategoryPropertyType.Boolean,
             CategoryPropertyType.Select
         };
         var expectedTypes = new[] { "TEXT", "NUMBER", "BOOLEAN", "SELECT" };

@@ -15,11 +15,10 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
     INotificationHandler<UserLoggedInEvent>,
     INotificationHandler<UserStatusChangeEvent>
 {
-    private readonly IActivityLogger _activityLogger = activityLogger;
 
     public Task Handle(OfferCreatedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.Create,
             notification.OfferId,
@@ -34,7 +33,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(OfferUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.Update,
             notification.OfferId,
@@ -49,7 +48,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(OfferDeletedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.Delete,
             notification.OfferId,
@@ -59,7 +58,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(OfferViewedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.View,
             notification.OfferId,
@@ -69,7 +68,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(OfferPurchasedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.Purchase,
             notification.OfferId,
@@ -83,7 +82,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(OfferStatusChangedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogOfferActivityAsync(
+        return activityLogger.LogOfferActivityAsync(
             notification.UserId,
             ActionType.Status_Change,
             notification.OfferId,
@@ -96,7 +95,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogUserActivityAsync(
+        return activityLogger.LogUserActivityAsync(
             notification.UserId,
             ActionType.Create,
             [
@@ -108,7 +107,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(UserUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogUserActivityAsync(
+        return activityLogger.LogUserActivityAsync(
             notification.UserId,
             ActionType.Update,
             [
@@ -120,7 +119,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogUserActivityAsync(
+        return activityLogger.LogUserActivityAsync(
             notification.UserId,
             ActionType.Delete,
             [],
@@ -129,7 +128,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(UserLoggedInEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogUserActivityAsync(
+        return activityLogger.LogUserActivityAsync(
             notification.UserId,
             ActionType.Login,
             [],
@@ -138,7 +137,7 @@ public sealed class ActivityEventsHandler(IActivityLogger activityLogger) :
 
     public Task Handle(UserStatusChangeEvent notification, CancellationToken cancellationToken)
     {
-        return _activityLogger.LogUserActivityAsync(
+        return activityLogger.LogUserActivityAsync(
             notification.UserId,
             ActionType.Status_Change,
             [

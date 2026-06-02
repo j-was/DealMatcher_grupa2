@@ -4,9 +4,6 @@ public sealed class ActivityLogger(
     AppDbContext dbContext,
     IHttpContextAccessor httpContextAccessor) : IActivityLogger
 {
-    private readonly AppDbContext _dbContext = dbContext;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-
     public async Task LogUserActivityAsync(
         int userId,
         ActionType action,
@@ -16,8 +13,8 @@ public sealed class ActivityLogger(
     {
         var activityRecord = new ActivityRecord(userId, action, ipAddress ?? GetIpAddress(), details ?? []);
 
-        await _dbContext.Set<ActivityRecord>().AddRangeAsync(activityRecord);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Set<ActivityRecord>().AddRangeAsync(activityRecord);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task LogOfferActivityAsync(
@@ -30,13 +27,13 @@ public sealed class ActivityLogger(
     {
         var activityRecord = new ActivityRecord(userId, offerId, action, ipAddress ?? GetIpAddress(), details ?? []);
 
-        await _dbContext.Set<ActivityRecord>().AddRangeAsync(activityRecord);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Set<ActivityRecord>().AddRangeAsync(activityRecord);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private string GetIpAddress()
     {
-        return _httpContextAccessor.HttpContext?
+        return httpContextAccessor.HttpContext?
             .Connection?
             .RemoteIpAddress?
             .ToString() ?? "unknown";

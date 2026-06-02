@@ -1,8 +1,7 @@
-using DealMatcher.Backend.UseCases.Features.Purchase.Initialize;
-
 namespace DealMatcher.Backend.Web.Endpoints.Purchases;
 
-public class Initialize(IMediator mediator) : Endpoint<InitializePurchaseRequest>
+public class Initialize(IMediator mediator)
+    : Endpoint<InitializePurchaseRequest, InitializePurchaseResponse>
 {
     public override void Configure()
     {

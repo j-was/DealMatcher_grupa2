@@ -55,7 +55,8 @@ public class LoginHandlerTests
         result.Value.AccessToken.ShouldBe(expectedToken);
         result.Value.User.ShouldBe(expectedUserDto);
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHashService.Received(1).AuthorizePassword(passwordHash, password);
         _tokenProvider.Received(1).GenerateToken(user);
         _mapper.Received(1).Map<UserDTO>(user);
@@ -74,7 +75,8 @@ public class LoginHandlerTests
         result.IsSuccess.ShouldBeFalse();
         result.Value.ShouldBeNull();
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHashService.DidNotReceive().AuthorizePassword(Arg.Any<string>(), Arg.Any<string>());
         _tokenProvider.DidNotReceive().GenerateToken(Arg.Any<UserEntity>());
         _mapper.DidNotReceive().Map<UserDTO>(Arg.Any<UserEntity>());
@@ -102,7 +104,8 @@ public class LoginHandlerTests
         result.IsSuccess.ShouldBeFalse();
         result.Value.ShouldBeNull();
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHashService.DidNotReceive().AuthorizePassword(Arg.Any<string>(), Arg.Any<string>());
         _tokenProvider.DidNotReceive().GenerateToken(Arg.Any<UserEntity>());
         _mapper.DidNotReceive().Map<UserDTO>(Arg.Any<UserEntity>());
@@ -129,7 +132,8 @@ public class LoginHandlerTests
         result.IsSuccess.ShouldBeFalse();
         result.Value.ShouldBeNull();
 
-        await _usersRepository.Received(1).FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
+        await _usersRepository.Received(1)
+            .FirstOrDefaultAsync(Arg.Any<UserByEmailSpec>(), Arg.Any<CancellationToken>());
         _passwordHashService.Received(1).AuthorizePassword(passwordHash, password);
         _tokenProvider.DidNotReceive().GenerateToken(Arg.Any<UserEntity>());
         _mapper.DidNotReceive().Map<UserDTO>(Arg.Any<UserEntity>());

@@ -27,12 +27,21 @@ public sealed class CreateNewConversationCommandHandler(IRepository<Conversation
             return Result.Conflict("Conversation for this offer already exists");
         }
 
-        var newConversation = new ConversationEntity(request.OfferId, request.BuyerId, offer!.SellerId, request.Message);
+        var newConversation = new ConversationEntity(request.OfferId, request.BuyerId, offer.SellerId, request.Message);
 
         await conversationRepository.AddAsync(newConversation, cancellationToken);
         await conversationRepository.SaveChangesAsync(cancellationToken);
 
-        var dto = mapper.Map<ConversationDTO>(newConversation);
+        var createdConversation = await conversationRepository.FirstOrDefaultAsync(
+              new ConversationByIdWithUsersSpec(newConversation.Id),
+              cancellationToken);
+
+        if (createdConversation is null)
+        {
+            return Result.NotFound("Conversation not found after creation");
+        }
+
+        var dto = mapper.Map<ConversationDTO>(createdConversation);
 
         return Result.Created(dto);
     }

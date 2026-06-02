@@ -12,13 +12,12 @@ public class DealMatcherEntityBaseConfig<T> : IEntityTypeConfiguration<T> where 
         builder.HasQueryFilter(e => !e.IsDeleted);
 
         builder.Property(e => e.CreatedAt)
-          .IsRequired();
+            .IsRequired();
 
-        builder.Property(e => e.DeletedAt).
-          IsRequired(false);
+        builder.Property(e => e.DeletedAt).IsRequired(false);
 
         builder.Property(e => e.IsDeleted)
-          .HasDefaultValue(false)
-          .IsRequired();
+            .HasDefaultValue(false)
+            .IsRequired();
     }
 }

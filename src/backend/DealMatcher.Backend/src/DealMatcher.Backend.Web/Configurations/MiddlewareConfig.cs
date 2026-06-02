@@ -11,11 +11,11 @@ public static class MiddlewareConfig
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseShowAllServicesMiddleware(); // see https://github.com/ardalis/AspNetCoreStartupServices
+            app.UseShowAllServicesMiddleware();
         }
         else
         {
-            app.UseDefaultExceptionHandler(); // from FastEndpoints
+            app.UseDefaultExceptionHandler();
             app.UseHsts();
         }
 
@@ -40,7 +40,6 @@ public static class MiddlewareConfig
         {
             var context = services.GetRequiredService<AppDbContext>();
             await context.Database.MigrateAsync();
-            //await context.Database.EnsureCreatedAsync();
             await SeedData.InitializeAsync(context);
         }
         catch (Exception ex)

@@ -626,23 +626,29 @@ namespace DealMatcher.Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Conversation.Conversation", b =>
                 {
-                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DealMatcher.Backend.Core.Aggregates.Offer.Offer", null)
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.Offer.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", null)
+                    b.HasOne("DealMatcher.Backend.Core.Aggregates.User.User", "Seller")
                         .WithMany()
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("DealMatcher.Backend.Core.Aggregates.Conversation.Message", b =>

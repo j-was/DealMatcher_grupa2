@@ -27,11 +27,7 @@ public class ActivityRecordProfileTests
     [Fact]
     public void Map_ActivityRecordToActivityRecordDTO_MapsBasicPropertiesCorrectly()
     {
-        var details = new List<ActivityDetail>
-        {
-            new("Browser", "Chrome"),
-            new("OS", "Windows")
-        };
+        var details = new List<ActivityDetail> { new("Browser", "Chrome"), new("OS", "Windows") };
         var record = new ActivityRecord(1, 5, ActionType.Purchase, "192.168.1.1", details);
         typeof(ActivityRecord).GetProperty("Id")!.SetValue(record, 100);
 
@@ -58,11 +54,7 @@ public class ActivityRecordProfileTests
     [Fact]
     public void Map_ActivityRecordToActivityRecordDTO_MapsDetailsToDictionary()
     {
-        var details = new List<ActivityDetail>
-        {
-            new("Price", "99.99"),
-            new("Quantity", "2")
-        };
+        var details = new List<ActivityDetail> { new("Price", "99.99"), new("Quantity", "2") };
         var record = new ActivityRecord(1, 5, ActionType.Purchase, "10.0.0.1", details);
 
         var dto = _mapper.Map<ActivityRecordDTO>(record);
@@ -86,8 +78,11 @@ public class ActivityRecordProfileTests
     [Fact]
     public void Map_ActivityRecordToActivityRecordDTO_MapsAllActionTypesToUpperCase()
     {
-        var actions = new[] { ActionType.Create, ActionType.Update, ActionType.Delete,
-            ActionType.Status_Change, ActionType.Login, ActionType.Logout };
+        var actions = new[]
+        {
+            ActionType.Create, ActionType.Update, ActionType.Delete, ActionType.Status_Change, ActionType.Login,
+            ActionType.Logout
+        };
         var expected = new[] { "CREATE", "UPDATE", "DELETE", "STATUS_CHANGE", "LOGIN", "LOGOUT" };
 
         for (var i = 0; i < actions.Length; i++)

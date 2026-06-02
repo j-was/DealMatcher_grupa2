@@ -48,11 +48,21 @@ class AddOfferFormState extends State<AddOfferForm> {
       final remaining = 5 - _images.length;
       final selected = picked.take(remaining);
 
+      final selectedImages = <XFile>[];
+      final selectedImagesBytes = <Uint8List>[];
+
       for (final img in selected) {
         final bytes = await img.readAsBytes();
-        _imagesBytes.add(bytes);
-        _images.add(img);
+        selectedImages.add(img);
+        selectedImagesBytes.add(bytes);
       }
+
+      if (selectedImages.isEmpty) return;
+
+      setState(() {
+        _images.addAll(selectedImages);
+        _imagesBytes.addAll(selectedImagesBytes);
+      });
     } catch (e) {
       debugPrint("Błąd podczas wybierania zdjęć: $e");
     }
@@ -300,11 +310,12 @@ class AddOfferFormState extends State<AddOfferForm> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ..._imagesBytes.map(
-                      (img) => Stack(
+                    ...List.generate(
+                      _imagesBytes.length,
+                      (index) => Stack(
                         children: [
                           Image.memory(
-                            img,
+                            _imagesBytes[index],
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
@@ -315,7 +326,8 @@ class AddOfferFormState extends State<AddOfferForm> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _imagesBytes.remove(img);
+                                  _imagesBytes.removeAt(index);
+                                  _images.removeAt(index);
                                 });
                               },
                               child: const Icon(Icons.close, color: Colors.red),

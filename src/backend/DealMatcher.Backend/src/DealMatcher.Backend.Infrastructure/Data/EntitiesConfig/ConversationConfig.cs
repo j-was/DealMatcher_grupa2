@@ -1,5 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Conversation;
-
 namespace DealMatcher.Backend.Infrastructure.Data.EntitiesConfig;
 
 public sealed class ConversationConfig
@@ -11,19 +9,19 @@ public sealed class ConversationConfig
 
         builder.ToTable($"{nameof(Conversation)}s");
 
-        builder.HasOne<Offer>()
+        builder.HasOne(c => c.Offer)
             .WithMany()
             .HasForeignKey(c => c.OfferId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasOne<User>()
+        builder.HasOne(c => c.Buyer)
             .WithMany()
             .HasForeignKey(c => c.BuyerId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasOne<User>()
+        builder.HasOne(c => c.Seller)
             .WithMany()
             .HasForeignKey(c => c.SellerId)
             .OnDelete(DeleteBehavior.Restrict)
@@ -39,7 +37,7 @@ public sealed class ConversationConfig
             .IsRequired();
 
         builder.Property(c => c.Status)
-            .HasConversion<string>()
+            .HasConversion(s => s.Value, s => ConversationStatus.FromValue(s))
             .IsRequired();
 
         builder.HasMany(c => c.Messages)
@@ -50,11 +48,6 @@ public sealed class ConversationConfig
         builder.HasIndex(c => c.BuyerId);
         builder.HasIndex(c => c.SellerId);
 
-        builder.HasIndex(c => new
-        {
-            c.OfferId,
-            c.BuyerId,
-            c.SellerId
-        }).IsUnique();
+        builder.HasIndex(c => new { c.OfferId, c.BuyerId, c.SellerId }).IsUnique();
     }
 }

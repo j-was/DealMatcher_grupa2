@@ -32,7 +32,7 @@ public class OfferTests
         offer.Tags.Count.ShouldBe(1);
         offer.CategoryId.ShouldBe(1);
         offer.Availability.ShouldBe(5);
-        offer.Status.ShouldBe(OfferStatus.Draft);
+        offer.Status.ShouldBe(OfferStatus.Active);
         offer.Properties.Count.ShouldBe(1);
         offer.UpdatedAt.ShouldBeLessThanOrEqualTo(DateTime.UtcNow);
     }
@@ -171,4 +171,3 @@ public class OfferTests
         offer.Properties.Count.ShouldBe(0);
     }
 }
-

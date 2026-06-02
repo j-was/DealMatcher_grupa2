@@ -1,9 +1,12 @@
 namespace DealMatcher.Backend.UseCases.Features.Admin.GetActivity;
 
-public class GetUserActivityQueryHandler(IReadRepository<UserEntity> usersRepository, IReadRepository<ActivityRecord> activityRepository, IMapper mapper) : IQueryHandler<GetUserActivityQuery, Result<List<ActivityRecordDTO>>>
+public class GetUserActivityQueryHandler(
+    IReadRepository<UserEntity> usersRepository,
+    IReadRepository<ActivityRecord> activityRepository,
+    IMapper mapper) : IQueryHandler<GetUserActivityQuery, Result<List<ActivityRecordDTO>>>
 {
-
-    public async Task<Result<List<ActivityRecordDTO>>> Handle(GetUserActivityQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<ActivityRecordDTO>>> Handle(GetUserActivityQuery request,
+        CancellationToken cancellationToken)
     {
         var user = await usersRepository.GetByIdAsync(request.RequestingUserId, cancellationToken);
 

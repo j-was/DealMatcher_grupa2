@@ -32,7 +32,7 @@ public sealed class InitializePurchaseCommandHandler(
 
             var frontendOrigin = configuration["FrontendOrigin"]?.TrimEnd('/');
 
-            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{total}";
+            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{total}/{request.UserId}";
 
             return Result.Success(new InitializePurchaseResponse(url));
         }
@@ -61,7 +61,7 @@ public sealed class InitializePurchaseCommandHandler(
 
             var price = offer.Price * request.Quantity;
 
-            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{price}";
+            var url = $"{frontendOrigin}/payment/{request.PaymentMethodId}/{price}/{request.UserId}";
 
             return Result.Success(new InitializePurchaseResponse(url));
         }

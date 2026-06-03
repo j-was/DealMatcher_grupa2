@@ -5,8 +5,9 @@ public class Complete(IMediator mediator)
 {
     public override void Configure()
     {
+        AllowAnonymous();
         Version(1);
-        Delete("/purchases/complete");
+        Delete("/purchases/complete/{UserId:int}");
         Summary(s =>
         {
             s.Summary = "Completes purchase";
@@ -16,12 +17,11 @@ public class Complete(IMediator mediator)
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var userIdRaw = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
-                        ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = Route<int>("UserId");
 
-        if (!int.TryParse(userIdRaw, out var userId))
+        if (userId <= 0)
         {
-            await SendUnauthorizedAsync(ct);
+            await SendErrorsAsync(400, ct);
             return;
         }
 

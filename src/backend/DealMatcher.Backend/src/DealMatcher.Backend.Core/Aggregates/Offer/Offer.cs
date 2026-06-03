@@ -173,8 +173,19 @@ public sealed class Offer :
 
         if (images is not null)
         {
-            ValidateImageUrls(images);
-            ImageUrls = images;
+            var unknownImages = images
+               .Where(url => !ImageUrls.Contains(url))
+               .ToList();
+
+            if (unknownImages.Count > 0)
+                throw new ArgumentException("Some images are not assigned to this offer.");
+
+            var updatedImages = ImageUrls
+                .Where(url => !images.Contains(url))
+                .ToList();
+
+            ValidateImageUrls(updatedImages);
+            ImageUrls = updatedImages;
         }
 
         if (tags is not null)

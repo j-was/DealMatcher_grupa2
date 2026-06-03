@@ -117,12 +117,17 @@ final router = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'payment/:paymentMethodId/:price',
+          path: 'payment/:paymentMethodId/:price/:userId',
           builder: (context, state) {
             final paymentMethodId = state.pathParameters['paymentMethodId'];
             final price = double.parse(state.pathParameters['price']!);
+            final userId = int.parse(state.pathParameters['userId']!);
 
-            return PaymentPage(paymentMethodId: paymentMethodId!, price: price);
+            return PaymentPage(
+              paymentMethodId: paymentMethodId!,
+              price: price,
+              userId: userId,
+            );
           },
         ),
         GoRoute(

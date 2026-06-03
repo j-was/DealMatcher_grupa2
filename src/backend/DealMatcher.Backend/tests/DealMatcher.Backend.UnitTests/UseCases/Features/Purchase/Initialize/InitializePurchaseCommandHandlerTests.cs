@@ -86,7 +86,7 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.RedirectUrl.ShouldBe("/payment/card/20");
+        result.Value.RedirectUrl.ShouldBe("/payment/card/20/1");
 
         await _cartItemsRepository.Received(1)
             .ListAsync(Arg.Any<CartItemsByUserIdSpec>(), CancellationToken.None);
@@ -201,7 +201,7 @@ public class InitializePurchaseCommandHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.RedirectUrl.ShouldBe("/payment/card/20");
+        result.Value.RedirectUrl.ShouldBe("/payment/card/20/1");
 
         await _offersRepository.Received(1).GetByIdAsync(10, CancellationToken.None);
         await _cartItemsRepository.Received(1)

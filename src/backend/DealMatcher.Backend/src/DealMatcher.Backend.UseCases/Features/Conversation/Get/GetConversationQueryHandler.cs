@@ -27,6 +27,8 @@ public sealed class GetConversationQueryHandler(IRepository<ConversationEntity> 
             }
         }
 
+        await conversationRepository.UpdateAsync(conversationDetails, cancellationToken);
+
         var dto = mapper.Map<ConversationDetailsDTO>(conversationDetails);
 
         return Result.Success(dto);

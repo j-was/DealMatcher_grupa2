@@ -26,7 +26,7 @@ class UserService {
   }
 
   Future<User> registerUser(UserRegisterData urd) async {
-    final uri = Uri.parse('$baseUrl/v1/users/register');
+    final uri = Uri.parse('$baseUrl/users/register');
 
     final response = await http.post(
       uri,
@@ -49,7 +49,7 @@ class UserService {
   }
 
   Future<LoginResponse> loginUser(UserLoginData uld) async {
-    final uri = Uri.parse('$baseUrl/v1/users/login');
+    final uri = Uri.parse('$baseUrl/users/login');
 
     final response = await http.post(
       uri,
@@ -81,7 +81,7 @@ class UserService {
   }
 
   Future<User> getCurrentUser() async {
-    final uri = Uri.parse('$baseUrl/v1/users/me');
+    final uri = Uri.parse('$baseUrl/users/me');
     final response = await http.get(
       uri,
       headers: _jsonHeaders(authorized: true),
@@ -105,7 +105,7 @@ class UserService {
   }
 
   Future<User> updateCurrentUser(UserUpdateData data) async {
-    final uri = Uri.parse('$baseUrl/v1/users/me');
+    final uri = Uri.parse('$baseUrl/users/me');
     final response = await http.put(
       uri,
       headers: _jsonHeaders(authorized: true),
@@ -134,7 +134,7 @@ class UserService {
   }
 
   Future<void> deleteCurrentUser() async {
-    final uri = Uri.parse('$baseUrl/v1/users/me');
+    final uri = Uri.parse('$baseUrl/users/me');
     final response = await http.delete(
       uri,
       headers: _jsonHeaders(authorized: true),

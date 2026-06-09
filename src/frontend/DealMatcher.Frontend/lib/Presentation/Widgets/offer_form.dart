@@ -94,17 +94,18 @@ class AddOfferFormState extends State<AddOfferForm> {
         categoryProperties = properties;
 
         for (final property in properties) {
+          final key = property.id.toString();
           switch (property.type) {
             case "BOOLEAN":
-              _propertyValues[property.name] = false;
+              _propertyValues[key] = false;
               break;
             case "SELECT":
-              _propertyValues[property.name] = property.options.isNotEmpty
+              _propertyValues[key] = property.options.isNotEmpty
                   ? property.options.first
                   : null;
               break;
             default:
-              _propertyValues[property.name] = '';
+              _propertyValues[key] = '';
               break;
           }
         }
@@ -115,16 +116,17 @@ class AddOfferFormState extends State<AddOfferForm> {
   }
 
   Widget buildPropertyField(CategoryProperty property) {
+    final key = property.id.toString();
     switch (property.type) {
       case "TEXT":
         return SeparatedWidget(
           widget: TextFormField(
-            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            initialValue: (_propertyValues[key] ?? '').toString(),
             decoration: InputDecoration(labelText: property.name),
             style: const TextStyle(color: Colors.white54),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (value) {
-              _propertyValues[property.name] = value;
+              _propertyValues[key] = value;
             },
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
@@ -137,12 +139,12 @@ class AddOfferFormState extends State<AddOfferForm> {
       case "NUMBER":
         return SeparatedWidget(
           widget: TextFormField(
-            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            initialValue: (_propertyValues[key] ?? '').toString(),
             decoration: InputDecoration(labelText: property.name),
             style: const TextStyle(color: Colors.white54),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (value) {
-              _propertyValues[property.name] = value;
+              _propertyValues[key] = value;
             },
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
@@ -162,10 +164,10 @@ class AddOfferFormState extends State<AddOfferForm> {
               property.name,
               style: const TextStyle(color: Colors.white54),
             ),
-            value: (_propertyValues[property.name] as bool?) ?? false,
+            value: (_propertyValues[key] as bool?) ?? false,
             onChanged: (value) {
               setState(() {
-                _propertyValues[property.name] = value;
+                _propertyValues[key] = value;
               });
             },
           ),
@@ -173,7 +175,7 @@ class AddOfferFormState extends State<AddOfferForm> {
       case "SELECT":
         return SeparatedWidget(
           widget: DropdownButtonFormField<String>(
-            initialValue: _propertyValues[property.name] as String?,
+            initialValue: _propertyValues[key] as String?,
             decoration: InputDecoration(labelText: property.name),
             dropdownColor: const Color.fromARGB(255, 64, 63, 63),
             style: const TextStyle(color: Colors.white54),
@@ -187,7 +189,7 @@ class AddOfferFormState extends State<AddOfferForm> {
                 .toList(),
             onChanged: (value) {
               setState(() {
-                _propertyValues[property.name] = value;
+                _propertyValues[key] = value;
               });
             },
             validator: (value) {
@@ -477,9 +479,9 @@ class AddOfferFormState extends State<AddOfferForm> {
                   try {
                     final tags = _tagsControllers.map((c) => c.text).toList();
                     final properties = <String, String>{
-                      for (var property in categoryProperties)
-                        property.name: _propertyValues[property.name]
-                            .toString(),
+                      for (final property in categoryProperties)
+                        property.id.toString():
+                            _propertyValues[property.id.toString()].toString(),
                     };
 
                     final offer = OfferCreate(

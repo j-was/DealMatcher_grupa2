@@ -8,7 +8,7 @@ class PaymentService {
   static const String baseUrl = String.fromEnvironment('API_URL');
 
   Future<List<PaymentMethod>> getMethods() async {
-    final uri = Uri.parse('$baseUrl/v1/purchases/payment-methods');
+    final uri = Uri.parse('$baseUrl/purchases/payment-methods');
 
     final response = await http.get(
       uri,
@@ -28,7 +28,7 @@ class PaymentService {
   }
 
   Future<String> initialize(PurchaseRequest req) async {
-    final uri = Uri.parse('$baseUrl/v1/purchases/initialize');
+    final uri = Uri.parse('$baseUrl/purchases/initialize');
     final client = http.Client();
 
     try {

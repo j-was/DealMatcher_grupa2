@@ -7,7 +7,7 @@ class DeliveryService {
   static const String baseUrl = String.fromEnvironment('API_URL');
 
   Future<List<DeliveryMethod>> getMethods() async {
-    final uri = Uri.parse('$baseUrl/v1/purchases/delivery-methods');
+    final uri = Uri.parse('$baseUrl/purchases/delivery-methods');
 
     final response = await http.get(
       uri,

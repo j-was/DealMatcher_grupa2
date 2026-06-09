@@ -28,7 +28,7 @@ class ConversationService {
     required String initialMessage,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/v1/conversations'),
+      Uri.parse('$baseUrl/conversations'),
       headers: _jsonHeaders(authorized: true),
       body: jsonEncode({'offerId': offerId, 'initialMessage': initialMessage}),
     );
@@ -46,7 +46,7 @@ class ConversationService {
 
   Future<List<Conversation>> getMyConversations() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/v1/conversations'),
+      Uri.parse('$baseUrl/conversations'),
       headers: _jsonHeaders(authorized: true),
     );
 
@@ -63,7 +63,7 @@ class ConversationService {
 
   Future<ConversationDetail> getConversationDetail(int conversationId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/v1/conversations/$conversationId'),
+      Uri.parse('$baseUrl/conversations/$conversationId'),
       headers: _jsonHeaders(authorized: true),
     );
 
@@ -79,7 +79,7 @@ class ConversationService {
     String message,
   ) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/v1/conversations/$conversationId/messages'),
+      Uri.parse('$baseUrl/conversations/$conversationId/messages'),
       headers: _jsonHeaders(authorized: true),
       body: jsonEncode({'content': message}),
     );

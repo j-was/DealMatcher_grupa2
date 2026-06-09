@@ -10,7 +10,7 @@ class OfferService {
   static const String baseUrl = String.fromEnvironment('API_URL');
 
   Future<Offer> getOffer(int offerId) async {
-    final uri = Uri.parse('$baseUrl/v1/offers/$offerId');
+    final uri = Uri.parse('$baseUrl/offers/$offerId');
 
     final request = await http.get(
       uri,
@@ -31,7 +31,7 @@ class OfferService {
   Future<List<Offer>> searchOffers(
     Map<String, dynamic> jsonSearchParams,
   ) async {
-    final uri = Uri.parse('$baseUrl/v1/offers/search');
+    final uri = Uri.parse('$baseUrl/offers/search');
 
     final response = await http.post(
       uri,
@@ -60,7 +60,7 @@ class OfferService {
     Map<String, dynamic> jsonOffer,
     List<XFile> images,
   ) async {
-    final uri = Uri.parse('$baseUrl/v1/offers');
+    final uri = Uri.parse('$baseUrl/offers');
 
     final request = http.MultipartRequest('POST', uri);
 
@@ -123,7 +123,7 @@ class OfferService {
   }
 
   Future<List<Offer>> getMyOffers() async {
-    final uri = Uri.parse('$baseUrl/v1/users/me/offers');
+    final uri = Uri.parse('$baseUrl/users/me/offers');
 
     final response = await http.get(
       uri,
@@ -153,7 +153,7 @@ class OfferService {
   }
 
   Future<Offer> updateOffer(int offerId, Map<String, dynamic> jsonOffer) async {
-    final uri = Uri.parse('$baseUrl/v1/offers/$offerId');
+    final uri = Uri.parse('$baseUrl/offers/$offerId');
 
     final response = await http.patch(
       uri,
@@ -185,7 +185,7 @@ class OfferService {
   }
 
   Future<void> deleteOffer(int offerId) async {
-    final uri = Uri.parse('$baseUrl/v1/offers/$offerId');
+    final uri = Uri.parse('$baseUrl/offers/$offerId');
 
     final response = await http.delete(
       uri,

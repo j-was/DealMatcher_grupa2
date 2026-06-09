@@ -1,3 +1,4 @@
+using DealMatcher.Backend.Core.Aggregates.Conversation;
 using DealMatcher.Backend.Core.Aggregates.Conversation.DTOs;
 using DealMatcher.Backend.Core.Aggregates.Conversation.Specifications;
 
@@ -14,6 +15,16 @@ public sealed class GetConversationQueryHandler(IRepository<ConversationEntity> 
         if (conversationDetails is null)
         {
             return Result.NotFound("Conversation details not found");
+        }
+
+        conversationDetails.MarkAsRead();
+
+        foreach (var msg in conversationDetails.Messages)
+        {
+            if (msg.Status != MessageStatus.Read)
+            {
+                msg.MarkAsRead();
+            }
         }
 
         var dto = mapper.Map<ConversationDetailsDTO>(conversationDetails);

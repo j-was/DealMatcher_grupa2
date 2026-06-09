@@ -8,7 +8,7 @@ class CategoryService {
   static const String baseUrl = String.fromEnvironment('API_URL');
 
   Future<List<Category>> getCategories() async {
-    final uri = Uri.parse('$baseUrl/v1/categories');
+    final uri = Uri.parse('$baseUrl/categories');
 
     final response = await http.get(
       uri,
@@ -30,7 +30,7 @@ class CategoryService {
   Future<List<CategoryProperty>> getCategoryProperties(
     String categoryName,
   ) async {
-    final uri = Uri.parse('$baseUrl/v1/categories/$categoryName/properties');
+    final uri = Uri.parse('$baseUrl/categories/$categoryName/properties');
 
     final response = await http.get(
       uri,

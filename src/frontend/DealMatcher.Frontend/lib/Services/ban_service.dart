@@ -12,7 +12,7 @@ class BanService {
   Map<String, String> _headers() => AuthService.instance.authHeaders();
 
   Uri _buildUri(String path, [Map<String, String>? queryParameters]) {
-    return Uri.parse('$baseUrl/v1$path').replace(
+    return Uri.parse('$baseUrl$path').replace(
       queryParameters: queryParameters?.isEmpty ?? true
           ? null
           : queryParameters,

@@ -17,6 +17,8 @@ public sealed class GetConversationQueryHandler(IRepository<ConversationEntity> 
             return Result.NotFound("Conversation details not found");
         }
 
+        conversationDetails.MarkAsRead();
+
         foreach (var msg in conversationDetails.Messages)
         {
             if (msg.Status != MessageStatus.Read)

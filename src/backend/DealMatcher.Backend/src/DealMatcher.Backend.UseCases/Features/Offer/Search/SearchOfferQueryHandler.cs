@@ -99,7 +99,7 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
                 continue;
 
             var offerProperty =
-                offer.Properties.FirstOrDefault(pr => pr.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase)
+                offer.Properties.FirstOrDefault(pr => pr.PropertyId.Equals(propertyName, StringComparison.OrdinalIgnoreCase)
                 );
 
             if (offerProperty is null)

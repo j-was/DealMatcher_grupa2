@@ -1,6 +1,3 @@
-using DealMatcher.Backend.Core.Aggregates.Offer;
-using DealMatcher.Backend.Core.Events;
-
 namespace DealMatcher.Backend.UseCases.Features.Offer.Create;
 
 public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offersRepository, IReadRepository<CategoryEntity> categoriesRepository, IImageService imageService, IMapper mapper, IPublisher publisher)
@@ -17,7 +14,7 @@ public sealed class CreateNewOfferCommandHandler(IRepository<OfferEntity> offers
 
         var properties = request.Properties
             .Select(p => new OfferProperty(
-                name: p.Key,
+                propertyId: p.Key,
                 value: p.Value
             ))
             .ToList();

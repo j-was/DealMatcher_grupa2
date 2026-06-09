@@ -2,19 +2,19 @@ namespace DealMatcher.Backend.Core.Aggregates.Offer;
 
 public sealed record OfferProperty
 {
-    public string Name { get; }
+    public string PropertyId { get; }
     public string Value { get; }
 
-    public OfferProperty(string name, string value)
+    public OfferProperty(string propertyId, string value)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(propertyId);
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
-        if (name.Length < DataSchemaConstants.PropertyNameMinLength)
+        if (propertyId.Length < DataSchemaConstants.PropertyNameMinLength)
             throw new ArgumentException(
                 $"Property name must be at least {DataSchemaConstants.PropertyNameMinLength} characters.");
 
-        if (name.Length > DataSchemaConstants.PropertyNameMaxLength)
+        if (propertyId.Length > DataSchemaConstants.PropertyNameMaxLength)
             throw new ArgumentException(
                 $"Property name cannot exceed {DataSchemaConstants.PropertyNameMaxLength} characters.");
 
@@ -26,7 +26,14 @@ public sealed record OfferProperty
             throw new ArgumentException(
                 $"Property value cannot exceed {DataSchemaConstants.PropertyValueMaxLength} characters.");
 
-        Name = name.Trim();
+        PropertyId = propertyId.Trim();
         Value = value.Trim();
     }
+
+#pragma warning disable CS8618
+    private OfferProperty()
+    {
+        /* EF */
+    }
+#pragma warning restore CS8618
 }

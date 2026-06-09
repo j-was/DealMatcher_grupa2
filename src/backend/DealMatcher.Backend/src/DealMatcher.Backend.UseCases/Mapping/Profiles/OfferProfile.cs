@@ -17,7 +17,7 @@ public sealed class OfferProfile : Profile
             .ForCtorParam(nameof(OfferDTO.Tags), opt => opt.MapFrom(src => src.Tags))
             .ForCtorParam(nameof(OfferDTO.Category), opt => opt.MapFrom(src => new CategoryDTO(src.CategoryId, "", "")))
             .ForCtorParam(nameof(OfferDTO.Properties),
-                opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.Name, p => p.Value)))
+                opt => opt.MapFrom(src => src.Properties.ToDictionary(p => p.PropertyId, p => p.Value)))
             .ForCtorParam(nameof(OfferDTO.Availability), opt => opt.MapFrom(src => src.Availability))
             .ForCtorParam(nameof(OfferDTO.Status), opt => opt.MapFrom(src => src.Status.Value.ToUpper()))
             .ForCtorParam(nameof(OfferDTO.CreatedAt), opt => opt.MapFrom(src => src.CreatedAt))
@@ -44,7 +44,7 @@ public sealed class OfferProfile : Profile
                     new CategoryDTO(src.Category.Id, src.Category.Name, src.Category.Description)))
             .ForCtorParam(nameof(OfferDTO.Properties),
                 opt => opt.MapFrom(src =>
-                    src.Offer.Properties.ToDictionary(p => p.Name, p => p.Value)))
+                    src.Offer.Properties.ToDictionary(p => p.PropertyId, p => p.Value)))
             .ForCtorParam(nameof(OfferDTO.Availability),
                 opt => opt.MapFrom(src => src.Offer.Availability))
             .ForCtorParam(nameof(OfferDTO.Status),

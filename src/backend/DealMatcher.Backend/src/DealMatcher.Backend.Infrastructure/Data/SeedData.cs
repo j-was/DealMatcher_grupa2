@@ -285,6 +285,18 @@ public static class SeedData
         int GetCategoryId(string categoryName) =>
             categories.TryGetValue(categoryName, out var id) ? id : categories["Inna"];
 
+        var categoryProperties = await dbContext.Set<Category>()
+            .Include(c => c.Properties)
+            .ToDictionaryAsync(
+                c => c.Id,
+                c => c.Properties.ToDictionary(p => p.Name, p => p.Id)
+            );
+
+        string GetPropertyId(int categoryId, string propertyName) =>
+            categoryProperties.TryGetValue(categoryId, out var props) && props.TryGetValue(propertyName, out var id)
+                ? id.ToString()
+                : throw new Exception($"Property '{propertyName}' not found in category {categoryId}");
+
         offers.AddRange(
         [
             new Offer(
@@ -302,9 +314,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Elektronika"),
                 properties:
                 [
-                    new OfferProperty("Stan", "Bardzo dobry"),
-                    new OfferProperty("Pamięć", "256"),
-                    new OfferProperty("Kolor", "Zielony"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Stan"), "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Pamięć"), "256"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Kolor"), "Zielony"),
                 ],
                 availability: 1
             ),
@@ -319,9 +331,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Elektronika"),
                 properties:
                 [
-                    new OfferProperty("Stan", "Bardzo dobry"),
-                    new OfferProperty("Pamięć", "512"),
-                    new OfferProperty("Kolor", "Czarny"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Stan"), "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Pamięć"), "512"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Kolor"), "Czarny"),
                 ],
                 availability: 1
             ),
@@ -336,9 +348,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Elektronika"),
                 properties:
                 [
-                    new OfferProperty("Stan", "Nowy"),
-                    new OfferProperty("Pamięć", "512"),
-                    new OfferProperty("Kolor", "Zielony"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Stan"), "Nowy"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Pamięć"), "512"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Kolor"), "Zielony"),
                 ],
                 availability: 2
             ),
@@ -357,8 +369,8 @@ public static class SeedData
                 categoryId: GetCategoryId("Elektronika"),
                 properties:
                 [
-                    new OfferProperty("Stan", "Bardzo dobry"),
-                    new OfferProperty("Kolor", "Biały"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Stan"), "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Kolor"), "Biały"),
                 ],
                 availability: 1
             ),
@@ -373,9 +385,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Elektronika"),
                 properties:
                 [
-                    new OfferProperty("Stan", "Bardzo dobry"),
-                    new OfferProperty("Pamięć", "64"),
-                    new OfferProperty("Kolor", "Niebieski"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Stan"), "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Pamięć"), "64"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Elektronika"),"Kolor"), "Niebieski"),
                 ],
                 availability: 1
             ),
@@ -394,9 +406,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Sport"),
                 properties:
                 [
-                    new OfferProperty("Rozmiar ramy", "M"),
-                    new OfferProperty("Kolor", "Żółty"),
-                    new OfferProperty("Rok produkcji", "2022"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Rozmiar ramy"), "M"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Kolor"), "Żółty"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Rok produkcji"), "2022"),
                 ],
                 availability: 1
             ),
@@ -411,8 +423,8 @@ public static class SeedData
                 categoryId: GetCategoryId("Sport"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Czarny"),
-                    new OfferProperty("Rok produkcji", "2023"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Kolor"), "Czarny"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Rok produkcji"), "2023"),
                 ],
                 availability: 3
             ),
@@ -430,8 +442,8 @@ public static class SeedData
                 categoryId: GetCategoryId("Sport"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Zielony"),
-                    new OfferProperty("Rok produkcji", "2021"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Kolor"), "Zielony"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Sport"),"Rok produkcji"), "2021"),
                 ],
                 availability: 1
             ),
@@ -450,9 +462,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Meble"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Szary"),
-                    new OfferProperty("Wymiary", "250x180x90"),
-                    new OfferProperty("Stan", "Dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Kolor"), "Szary"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Wymiary"), "250x180x90"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Stan"), "Dobry"),
                 ],
                 availability: 1
             ),
@@ -470,9 +482,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Meble"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Biały"),
-                    new OfferProperty("Wymiary", "160x80"),
-                    new OfferProperty("Stan", "Nowy"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Kolor"), "Biały"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Wymiary"), "160x80"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Stan"), "Nowy"),
                 ],
                 availability: 2
             ),
@@ -487,9 +499,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Meble"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Biały"),
-                    new OfferProperty("Wymiary", "200x220x60"),
-                    new OfferProperty("Stan", "Używany"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Kolor"), "Biały"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Wymiary"), "200x220x60"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Stan"), "Używany"),
                 ],
                 availability: 1
             ),
@@ -504,9 +516,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Meble"),
                 properties:
                 [
-                    new OfferProperty("Kolor", "Brązowy"),
-                    new OfferProperty("Wymiary", "160-240x90"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Kolor"), "Brązowy"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Wymiary"), "160-240x90"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Meble"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -525,9 +537,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Odzież"),
                 properties:
                 [
-                    new OfferProperty("Rozmiar", "L"),
-                    new OfferProperty("Kolor", "Czarny"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Rozmiar"), "L"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Kolor"), "Czarny"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -541,9 +553,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Odzież"),
                 properties:
                 [
-                    new OfferProperty("Rozmiar", "M"),
-                    new OfferProperty("Kolor", "Czerwony"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Rozmiar"), "M"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Kolor"), "Czerwony"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -557,9 +569,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Odzież"),
                 properties:
                 [
-                    new OfferProperty("Rozmiar", "52"),
-                    new OfferProperty("Kolor", "Niebieski"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Rozmiar"), "52"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Kolor"), "Niebieski"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -576,9 +588,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Odzież"),
                 properties:
                 [
-                    new OfferProperty("Rozmiar", "42"),
-                    new OfferProperty("Kolor", "Czarny"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Rozmiar"), "42"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Kolor"), "Czarny"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Odzież"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -599,10 +611,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Książki"),
                 properties:
                 [
-                    new OfferProperty("Autor", "Robert C. Martin"),
-                    new OfferProperty("Wydawnictwo", "Helion"),
-                    new OfferProperty("Rok wydania", "2021"),
-                    new OfferProperty("Stan", "Bardzo dobra"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Autor"), "Robert C. Martin"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Wydawnictwo"), "Helion"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Rok wydania"), "2021"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Stan"), "Bardzo dobra"),
                 ],
                 availability: 1
             ),
@@ -617,9 +629,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Książki"),
                 properties:
                 [
-                    new OfferProperty("Autor", "Andrzej Sapkowski"),
-                    new OfferProperty("Wydawnictwo", "superNOWA"),
-                    new OfferProperty("Stan", "Bardzo dobra"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Autor"), "Andrzej Sapkowski"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Wydawnictwo"), "superNOWA"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Stan"), "Bardzo dobra"),
                 ],
                 availability: 1
             ),
@@ -636,9 +648,9 @@ public static class SeedData
                 categoryId: GetCategoryId("Książki"),
                 properties:
                 [
-                    new OfferProperty("Autor", "J.K. Rowling"),
-                    new OfferProperty("Wydawnictwo", "Media Rodzina"),
-                    new OfferProperty("Stan", "Nowa"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Autor"), "J.K. Rowling"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Wydawnictwo"), "Media Rodzina"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Książki"),"Stan"), "Nowa"),
                 ],
                 availability: 1
             ),
@@ -656,10 +668,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Motoryzacja"),
                 properties:
                 [
-                    new OfferProperty("Marka", "Michelin"),
-                    new OfferProperty("Model", "Alpin 6"),
-                    new OfferProperty("Rok produkcji", "2023"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Marka"), "Michelin"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Model"), "Alpin 6"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Rok produkcji"), "2023"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -677,10 +689,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Motoryzacja"),
                 properties:
                 [
-                    new OfferProperty("Marka", "Britax Römer"),
-                    new OfferProperty("Model", "Kidfix XP"),
-                    new OfferProperty("Rok produkcji", "2022"),
-                    new OfferProperty("Stan", "Bardzo dobry"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Marka"), "Britax Römer"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Model"), "Kidfix XP"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Rok produkcji"), "2022"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Stan"), "Bardzo dobry"),
                 ],
                 availability: 1
             ),
@@ -698,10 +710,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Motoryzacja"),
                 properties:
                 [
-                    new OfferProperty("Marka", "Thule"),
-                    new OfferProperty("Model", "EasyFold XT 3"),
-                    new OfferProperty("Rok produkcji", "2023"),
-                    new OfferProperty("Stan", "Nowy"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Marka"), "Thule"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Model"), "EasyFold XT 3"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Rok produkcji"), "2023"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Motoryzacja"),"Stan"), "Nowy"),
                 ],
                 availability: 1
             ),
@@ -720,10 +732,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Nieruchomości"),
                 properties:
                 [
-                    new OfferProperty("Powierzchnia", "65"),
-                    new OfferProperty("Liczba pokoi", "3"),
-                    new OfferProperty("Piętro", "2"),
-                    new OfferProperty("Typ", "Sprzedaż"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Powierzchnia"), "65"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Liczba pokoi"), "3"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Piętro"), "2"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Typ"), "Sprzedaż"),
                 ],
                 availability: 1
             ),
@@ -738,10 +750,10 @@ public static class SeedData
                 categoryId: GetCategoryId("Nieruchomości"),
                 properties:
                 [
-                    new OfferProperty("Powierzchnia", "45"),
-                    new OfferProperty("Liczba pokoi", "2"),
-                    new OfferProperty("Piętro", "4"),
-                    new OfferProperty("Typ", "Wynajem"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Powierzchnia"), "45"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Liczba pokoi"), "2"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Piętro"), "4"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Typ"), "Wynajem"),
                 ],
                 availability: 1
             ),
@@ -756,8 +768,8 @@ public static class SeedData
                 categoryId: GetCategoryId("Nieruchomości"),
                 properties:
                 [
-                    new OfferProperty("Powierzchnia", "800"),
-                    new OfferProperty("Typ", "Sprzedaż"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Powierzchnia"), "800"),
+                    new OfferProperty(GetPropertyId(GetCategoryId("Nieruchomości"),"Typ"), "Sprzedaż"),
                 ],
                 availability: 1
             ),

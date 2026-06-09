@@ -122,11 +122,11 @@ public sealed class Offer :
     private static void ValidateProperties(List<OfferProperty> properties)
     {
         var duplicate = properties
-            .GroupBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+            .GroupBy(p => p.PropertyId, StringComparer.OrdinalIgnoreCase)
             .FirstOrDefault(g => g.Count() > 1);
 
         if (duplicate != null)
-            throw new ArgumentException($"Duplicate property name: '{duplicate.Key}'.");
+            throw new ArgumentException($"Duplicate property id: '{duplicate.Key}'.");
     }
 
     public void ChangeStatus(OfferStatus offerStatus)
@@ -206,6 +206,6 @@ public sealed class Offer :
             Availability = availability.Value;
         }
 
-        ChangeStatus(OfferStatus.Draft);
+        ChangeStatus(OfferStatus.Active);
     }
 }

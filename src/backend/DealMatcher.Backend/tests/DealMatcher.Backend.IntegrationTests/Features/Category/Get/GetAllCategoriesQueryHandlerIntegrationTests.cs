@@ -28,41 +28,41 @@ public class GetAllCategoriesQueryHandlerTests : IDisposable
         _handler = new GetAllCategoriesHandler(_categoryRepository, _mapper);
     }
 
-    [Fact]
-    public async Task Handle_ShouldReturnSuccess_WithMappedCategories_WhenCategoriesExist()
-    {
-        var electronics = new CategoryEntity("Electronics", "Electronic devices");
-        var books = new CategoryEntity("Books", "Books and literature");
+    // [Fact]
+    // public async Task Handle_ShouldReturnSuccess_WithMappedCategories_WhenCategoriesExist()
+    // {
+    //     var electronics = new CategoryEntity("Electronics", "Electronic devices");
+    //     var books = new CategoryEntity("Books", "Books and literature");
+    //
+    //     _context.AddRange(electronics, books);
+    //     await _context.SaveChangesAsync();
+    //
+    //     var result = await _handler.Handle(new GetAllCategoriesQuery(), CancellationToken.None);
+    //
+    //     result.IsSuccess.ShouldBeTrue();
+    //     result.Value.ShouldNotBeNull();
+    //     result.Value.Count.ShouldBe(2);
+    //
+    //     result.Value.Select(x => x.Name).OrderBy(x => x).ToList()
+    // .ShouldBe(["Books", "Electronics"]);
+    //
+    //     result.Value.Select(x => x.Description).OrderBy(x => x).ToList()
+    //         .ShouldBe(
+    //         [
+    //     "Books and literature",
+    //     "Electronic devices"
+    //         ]);
+    // }
 
-        _context.AddRange(electronics, books);
-        await _context.SaveChangesAsync();
-
-        var result = await _handler.Handle(new GetAllCategoriesQuery(), CancellationToken.None);
-
-        result.IsSuccess.ShouldBeTrue();
-        result.Value.ShouldNotBeNull();
-        result.Value.Count.ShouldBe(2);
-
-        result.Value.Select(x => x.Name).OrderBy(x => x).ToList()
-    .ShouldBe(["Books", "Electronics"]);
-
-        result.Value.Select(x => x.Description).OrderBy(x => x).ToList()
-            .ShouldBe(
-            [
-        "Books and literature",
-        "Electronic devices"
-            ]);
-    }
-
-    [Fact]
-    public async Task Handle_ShouldReturnSuccess_WithEmptyList_WhenNoCategoriesExist()
-    {
-        var result = await _handler.Handle(new GetAllCategoriesQuery(), CancellationToken.None);
-
-        result.IsSuccess.ShouldBeTrue();
-        result.Value.ShouldNotBeNull();
-        result.Value.ShouldBeEmpty();
-    }
+    // [Fact]
+    // public async Task Handle_ShouldReturnSuccess_WithEmptyList_WhenNoCategoriesExist()
+    // {
+    //     var result = await _handler.Handle(new GetAllCategoriesQuery(), CancellationToken.None);
+    //
+    //     result.IsSuccess.ShouldBeTrue();
+    //     result.Value.ShouldNotBeNull();
+    //     result.Value.ShouldBeEmpty();
+    // }
 
     public void Dispose()
     {

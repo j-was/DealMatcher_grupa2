@@ -52,8 +52,7 @@ public sealed class OfferConfig : DealMatcherEntityBaseConfig<Offer>
         {
             prop.ToTable("OfferProperties");
             prop.WithOwner().HasForeignKey("OfferId");
-            prop.HasIndex(p => p.Name);
-            prop.Property(p => p.Name).HasMaxLength(DataSchemaConstants.PropertyNameMaxLength).IsRequired();
+            prop.HasIndex(p => p.PropertyId);
             prop.Property(p => p.Value).HasMaxLength(DataSchemaConstants.PropertyValueMaxLength).IsRequired();
         });
 

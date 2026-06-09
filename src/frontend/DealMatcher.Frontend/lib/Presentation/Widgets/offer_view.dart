@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Models/category.dart';
 import 'package:frontend/Models/offer.dart';
+import 'package:frontend/Services/category_service.dart';
 import 'package:frontend/Services/conversation_service.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,6 +18,8 @@ class OfferViewState extends State<OfferView> {
   bool ifExpanded = false;
   bool _conversationLoading = false;
   final ConversationService _conversationService = ConversationService();
+  final CategoryService _categoryService = CategoryService();
+  Map<String, String> _propertyNamesById = {};
   int _imageIndex = 0;
 
   Future<void> _startConversation() async {
@@ -80,6 +84,44 @@ class OfferViewState extends State<OfferView> {
         });
       }
     }
+  }
+
+  Future<void> _loadPropertyNames() async {
+    String categoryName = widget.offer.category.name;
+
+    if (categoryName.isEmpty) {
+      final categories = await _categoryService.getCategories();
+
+      final category = categories.cast<Category?>().firstWhere(
+        (category) => category?.id == widget.offer.category.id,
+        orElse: () => null,
+      );
+
+      categoryName = category?.name ?? '';
+    }
+
+    if (categoryName.isEmpty) {
+      return;
+    }
+
+    final properties = await _categoryService.getCategoryProperties(
+      categoryName,
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _propertyNamesById = {
+        for (final property in properties)
+          property.id.toString(): property.name,
+      };
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPropertyNames();
   }
 
   @override
@@ -270,15 +312,21 @@ class OfferViewState extends State<OfferView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 8),
-                              ...widget.offer.properties.map(
-                                (property) => Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              ...widget.offer.properties.entries.map((entry) {
+                                final propertyName =
+                                    _propertyNamesById[entry.key];
+
+                                if (propertyName == null) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                return Row(
                                   children: [
-                                    Text('${property.$1}: '),
-                                    Expanded(child: Text(property.$2)),
+                                    Text('$propertyName: '),
+                                    Expanded(child: Text(entry.value)),
                                   ],
-                                ),
-                              ),
+                                );
+                              }),
                               const SizedBox(height: 8),
                               Text('Ilość: ${widget.offer.availability}'),
                               const SizedBox(height: 8),

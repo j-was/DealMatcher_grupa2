@@ -10,7 +10,7 @@ class Offer {
   final Seller _seller;
   final Category _category;
   final List<String> _tags;
-  final List<(String, String)> _properties;
+  final Map<String, String> _properties;
   final int _availability;
   final String _status;
   final DateTime _createdAt;
@@ -24,7 +24,7 @@ class Offer {
   Seller get seller => _seller;
   Category get category => _category;
   List<String> get tags => List.unmodifiable(_tags);
-  List<(String, String)> get properties => List.unmodifiable(_properties);
+  Map<String, String> get properties => Map.unmodifiable(_properties);
   int get availability => _availability;
   String get status => _status;
   DateTime get createdAt => _createdAt;
@@ -39,7 +39,7 @@ class Offer {
     required Seller seller,
     required Category category,
     required List<String> tags,
-    required List<(String, String)> properties,
+    required Map<String, String> properties,
     required int availability,
     required String status,
     required DateTime createdAt,
@@ -75,9 +75,9 @@ class Offer {
       _tags = (json['tags'] as List<dynamic>? ?? [])
           .map((e) => e.toString())
           .toList(),
-      _properties = (json['properties'] as Map<String, dynamic>? ?? {}).entries
-          .map((e) => (e.key, e.value.toString()))
-          .toList(),
+      _properties = (json['properties'] as Map<String, dynamic>? ?? {}).map(
+        (key, value) => MapEntry(key, value.toString()),
+      ),
       _availability = json['availability'] ?? 0,
       _status = json['status'] ?? 'ACTIVE',
       _createdAt = DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
@@ -92,9 +92,7 @@ class Offer {
     'seller': _seller.toJson(),
     'category': _category.toJson(),
     'tags': _tags,
-    'properties': {
-      for (final property in _properties) property.$1: property.$2,
-    },
+    'properties': _properties,
     'availability': _availability,
     'status': _status,
     'createdAt': _createdAt.toIso8601String(),

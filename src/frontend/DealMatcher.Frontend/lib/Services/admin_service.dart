@@ -38,7 +38,7 @@ class AdminService {
     }
 
     final uri = Uri.parse(
-      '$baseUrl/v1/admin/users',
+      '$baseUrl/admin/users',
     ).replace(queryParameters: queryParameters);
 
     final authHeaders = AuthService.instance.authHeaders();
@@ -84,7 +84,7 @@ class AdminService {
     }
 
     final uri = Uri.parse(
-      '$baseUrl/v1/admin/offers',
+      '$baseUrl/admin/offers',
     ).replace(queryParameters: queryParameters);
 
     final authHeaders = AuthService.instance.authHeaders();
@@ -130,11 +130,11 @@ class AdminService {
       queryParameters['to'] = to.toUtc().toIso8601String();
     }
 
-    // final uri = Uri.parse('$baseUrl/v1/admin/activity/user/$userId').replace(
+    // final uri = Uri.parse('$baseUrl/admin/activity/user/$userId').replace(
     //   queryParameters: queryParameters.isEmpty ? null : queryParameters,
     // );
 
-    final uri = Uri.parse('$baseUrl/v1/admin/activity/user/$userId');
+    final uri = Uri.parse('$baseUrl/admin/activity/user/$userId');
     final response = await http.get(uri, headers: _getJsonGetHeaders());
 
     if (response.statusCode == 200) {
@@ -178,10 +178,10 @@ class AdminService {
       queryParameters['to'] = to.toUtc().toIso8601String();
     }
 
-    // final uri = Uri.parse('$baseUrl/v1/admin/activity/offer/$offerId').replace(
+    // final uri = Uri.parse('$baseUrl/admin/activity/offer/$offerId').replace(
     //   queryParameters: queryParameters.isEmpty ? null : queryParameters,
     // );
-    final uri = Uri.parse('$baseUrl/v1/admin/activity/offer/$offerId');
+    final uri = Uri.parse('$baseUrl/admin/activity/offer/$offerId');
 
     final response = await http.get(uri, headers: _getJsonGetHeaders());
 
@@ -213,7 +213,7 @@ class AdminService {
 
   Future<User> getUserDetails(int userId) async {
     try {
-      final uri = Uri.parse('$baseUrl/v1/admin/users/$userId');
+      final uri = Uri.parse('$baseUrl/admin/users/$userId');
       final response = await http.get(
         uri,
         headers: AuthService.instance.authHeaders(),

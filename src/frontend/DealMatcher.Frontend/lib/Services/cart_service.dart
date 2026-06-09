@@ -17,7 +17,7 @@ class CartService {
     if (root.isEmpty) {
       throw StateError('API_URL is not configured.');
     }
-    return Uri.parse('$root/v1$path');
+    return Uri.parse('$root$path');
   }
 
   Future<List<CartItem>> getCartItems() async {

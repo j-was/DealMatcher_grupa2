@@ -113,7 +113,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
   /// Loads category properties and optionally pre-fills values from the offer.
   Future<void> _loadProperties(
     Category category, {
-    List<(String, String)>? existingProperties,
+    Map<String, String>? existingProperties,
   }) async {
     setState(() {
       _categoryProperties = [];
@@ -126,27 +126,25 @@ class _OfferEditFormState extends State<OfferEditForm> {
       );
 
       // Build a lookup map from existing offer properties
-      final existingMap = <String, String>{
-        if (existingProperties != null)
-          for (final p in existingProperties) p.$1: p.$2,
-      };
+      final existingMap = existingProperties ?? <String, String>{};
 
       setState(() {
         _categoryProperties = properties;
         for (final property in properties) {
-          final existing = existingMap[property.name];
+          final key = property.id.toString();
+          final existing = existingMap[key];
           switch (property.type) {
             case "BOOLEAN":
-              _propertyValues[property.name] = existing == 'true';
+              _propertyValues[key] = existing == 'true';
               break;
             case "SELECT":
               final firstOption = property.options.isNotEmpty
                   ? property.options.first
                   : null;
-              _propertyValues[property.name] = existing ?? firstOption;
+              _propertyValues[key] = existing ?? firstOption;
               break;
             default: // text  / numeric
-              _propertyValues[property.name] = existing ?? '';
+              _propertyValues[key] = existing ?? '';
               break;
           }
         }
@@ -190,15 +188,16 @@ class _OfferEditFormState extends State<OfferEditForm> {
   }
 
   Widget _buildPropertyField(CategoryProperty property) {
+    final key = property.id.toString();
     switch (property.type) {
       case "TEXT": // text
         return _PropPad(
           child: TextFormField(
-            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            initialValue: (_propertyValues[key] ?? '').toString(),
             decoration: _decoration(context, property.name),
             style: const TextStyle(color: Colors.white),
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            onChanged: (v) => _propertyValues[property.name] = v,
+            onChanged: (v) => _propertyValues[key] = v,
             validator: (v) => (v == null || v.trim().isEmpty)
                 ? 'Wymagana jest wartość właściwości'
                 : null,
@@ -207,12 +206,12 @@ class _OfferEditFormState extends State<OfferEditForm> {
       case "NUMBER": // numeric
         return _PropPad(
           child: TextFormField(
-            initialValue: (_propertyValues[property.name] ?? '').toString(),
+            initialValue: (_propertyValues[key] ?? '').toString(),
             decoration: _decoration(context, property.name),
             style: const TextStyle(color: Colors.white),
             keyboardType: TextInputType.number,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            onChanged: (v) => _propertyValues[property.name] = v,
+            onChanged: (v) => _propertyValues[key] = v,
             validator: (v) {
               if (v == null || v.trim().isEmpty) {
                 return 'Wymagana jest wartość właściwości';
@@ -229,24 +228,22 @@ class _OfferEditFormState extends State<OfferEditForm> {
               property.name,
               style: const TextStyle(color: Colors.white70),
             ),
-            value: (_propertyValues[property.name] as bool?) ?? false,
-            onChanged: (v) =>
-                setState(() => _propertyValues[property.name] = v),
+            value: (_propertyValues[key] as bool?) ?? false,
+            onChanged: (v) => setState(() => _propertyValues[key] = v),
             contentPadding: EdgeInsets.zero,
           ),
         );
       case "SELECT": // select
         return _PropPad(
           child: DropdownButtonFormField<String>(
-            initialValue: _propertyValues[property.name] as String?,
+            initialValue: _propertyValues[key] as String?,
             decoration: _decoration(context, property.name),
             dropdownColor: const Color.fromARGB(255, 48, 46, 44),
             style: const TextStyle(color: Colors.white),
             items: property.options
                 .map((o) => DropdownMenuItem(value: o, child: Text(o)))
                 .toList(),
-            onChanged: (v) =>
-                setState(() => _propertyValues[property.name] = v),
+            onChanged: (v) => setState(() => _propertyValues[key] = v),
             validator: (v) => (v == null || v.isEmpty) ? 'Wybierz opcję' : null,
           ),
         );
@@ -331,7 +328,7 @@ class _OfferEditFormState extends State<OfferEditForm> {
 
       final properties = <String, String>{
         for (final p in _categoryProperties)
-          p.name: _propertyValues[p.name]?.toString() ?? '',
+          p.id.toString(): _propertyValues[p.id.toString()]?.toString() ?? '',
       };
 
       final data = {

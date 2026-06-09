@@ -64,26 +64,25 @@ class SearchFormState extends State<SearchForm> {
         categoryProperties = properties;
 
         for (final property in properties) {
+          final key = property.id.toString();
           switch (property.type) {
             case "TEXT":
-              _textPropertiesControllers[property.name] = [
-                TextEditingController(),
-              ];
-              _propertyValues[property.name] = [''];
+              _textPropertiesControllers[key] = [TextEditingController()];
+              _propertyValues[key] = [''];
               break;
             case "NUMBER":
-              _propertyValues[property.name] = ['', ''];
+              _propertyValues[key] = ['', ''];
               break;
             case "BOOLEAN":
-              _propertyValues[property.name] = [false];
+              _propertyValues[key] = [false];
               break;
             case "SELECT":
-              _propertyValues[property.name] = [
+              _propertyValues[key] = [
                 property.options.isNotEmpty ? property.options.first : null,
               ];
               break;
             default:
-              _propertyValues[property.name] = [''];
+              _propertyValues[key] = [''];
               break;
           }
         }
@@ -94,9 +93,10 @@ class SearchFormState extends State<SearchForm> {
   }
 
   Widget buildPropertyField(CategoryProperty property) {
+    final key = property.id.toString();
     switch (property.type) {
       case "TEXT":
-        final controllers = _textPropertiesControllers[property.name] ??= [
+        final controllers = _textPropertiesControllers[key] ??= [
           TextEditingController(),
         ];
         return SeparatedWidget(
@@ -114,7 +114,7 @@ class SearchFormState extends State<SearchForm> {
                     style: const TextStyle(color: Colors.white54),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onChanged: (_) {
-                      _propertyValues[property.name] = controllers
+                      _propertyValues[key] = controllers
                           .map((ctrl) => ctrl.text)
                           .toList();
                     },
@@ -133,13 +133,13 @@ class SearchFormState extends State<SearchForm> {
                   if (controllers.isNotEmpty)
                     IconButton(
                       onPressed: () {
-                        removeTextProperty(property.name);
+                        removeTextProperty(key);
                       },
                       icon: const Icon(Icons.remove),
                     ),
                   IconButton(
                     onPressed: () {
-                      addTextProperty(property.name);
+                      addTextProperty(key);
                     },
                     icon: const Icon(Icons.add),
                   ),
@@ -149,7 +149,7 @@ class SearchFormState extends State<SearchForm> {
           ),
         );
       case "NUMBER":
-        final values = (_propertyValues[property.name]) ?? ['', ''];
+        final values = (_propertyValues[key]) ?? ['', ''];
         return SeparatedWidget(
           widget: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +172,7 @@ class SearchFormState extends State<SearchForm> {
                         style: const TextStyle(color: Colors.white54),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
-                          _propertyValues[property.name] = [value, values[1]];
+                          _propertyValues[key] = [value, values[1]];
                         },
                         validator: (value) {
                           if (value != null &&
@@ -194,7 +194,7 @@ class SearchFormState extends State<SearchForm> {
                         style: const TextStyle(color: Colors.white54),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {
-                          _propertyValues[property.name] = [values[0], value];
+                          _propertyValues[key] = [values[0], value];
                         },
                         validator: (value) {
                           if (value != null &&
@@ -229,17 +229,18 @@ class SearchFormState extends State<SearchForm> {
               property.name,
               style: const TextStyle(color: Colors.white54),
             ),
-            value: (_propertyValues[property.name] as bool?) ?? false,
+            value: (_propertyValues[key]?.first as bool?) ?? false,
             onChanged: (value) {
               setState(() {
-                _propertyValues[property.name] = [value];
+                _propertyValues[key] = [value];
               });
             },
           ),
         );
       case "SELECT":
-        final selectedValues =
-            (_propertyValues[property.name])?.cast<String>() ?? [];
+        final selectedValues = (_propertyValues[key] ?? [])
+            .whereType<String>()
+            .toList();
         return SeparatedWidget(
           widget: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,9 +261,9 @@ class SearchFormState extends State<SearchForm> {
                   controlAffinity: ListTileControlAffinity.leading,
                   onChanged: (checked) {
                     setState(() {
-                      final currValues =
-                          (_propertyValues[property.name])?.cast<String>() ??
-                          <String>[];
+                      final currValues = (_propertyValues[key] ?? [])
+                          .whereType<String>()
+                          .toList();
 
                       if (checked == true) {
                         if (!currValues.contains(o)) {
@@ -272,7 +273,7 @@ class SearchFormState extends State<SearchForm> {
                         currValues.remove(o);
                       }
 
-                      _propertyValues[property.name] = currValues;
+                      _propertyValues[key] = currValues;
                     });
                   },
                 );
@@ -342,7 +343,8 @@ class SearchFormState extends State<SearchForm> {
     final properties = <String, List<String>>{};
 
     for (final property in categoryProperties) {
-      final values = _propertyValues[property.name];
+      final key = property.id.toString();
+      final values = _propertyValues[key];
 
       if (values == null) {
         continue;
@@ -354,7 +356,7 @@ class SearchFormState extends State<SearchForm> {
           .toList();
 
       if (strValues.isNotEmpty) {
-        properties[property.name] = strValues;
+        properties[key] = strValues;
       }
     }
 

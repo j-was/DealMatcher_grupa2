@@ -38,5 +38,7 @@ jobs:
                 containerAppName: dealmatcher-frontend2
                 resourceGroup: pw-dealmatcher
                 imageToBuild: ${{ secrets.DEALMATCHERFRONTEND2_REGISTRY_USERNAME }}/dealmatcher-frontend:${{github.sha}}
-                _buildArgumentsKey_: API_URL
-                _buildArgumentsValues_: ${{ secrets.API_URL }}
+                buildArguments: |
+                    API_URL=${{ secrets.API_URL }}
+                environmentVariables: |
+                    API_URL=${{ secrets.API_URL }}

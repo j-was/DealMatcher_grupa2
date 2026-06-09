@@ -35,6 +35,10 @@ jobs:
                 registryUrl: docker.io
                 registryUsername: ${{ secrets.DEALMATCHERFRONTENDALIEN_REGISTRY_USERNAME }}
                 registryPassword: ${{ secrets.DEALMATCHERFRONTENDALIEN_REGISTRY_PASSWORD }}
-                containerAppName: dealmatcher-frontend2
+                containerAppName: dealmatcher-frontend-alien
                 resourceGroup: pw-dealmatcher
                 imageToBuild: ${{ secrets.DEALMATCHERFRONTENDALIEN_REGISTRY_USERNAME }}/dealmatcher-frontend-alien:${{github.sha}}
+                buildArguments: |
+                    API_URL=${{ secrets.API_ALIEN_URL }}
+                environmentVariables: |
+                    API_URL=${{ secrets.API_ALIEN_URL }}

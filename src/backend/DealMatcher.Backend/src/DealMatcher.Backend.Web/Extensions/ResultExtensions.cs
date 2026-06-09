@@ -25,6 +25,12 @@ public static class ResultExtensions
             return;
         }
 
+        if (result.Status == ResultStatus.NoContent)
+        {
+            await response.SendAsync(result.Value, StatusCodes.Status204NoContent, cancellation: ct);
+            return;
+        }
+
         if (result.IsSuccess)
         {
             await response.SendAsync(result.Value, 200, cancellation: ct);

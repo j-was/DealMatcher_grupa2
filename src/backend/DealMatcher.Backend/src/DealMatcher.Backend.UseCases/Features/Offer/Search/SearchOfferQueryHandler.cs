@@ -14,6 +14,11 @@ public sealed class SearchOfferQueryHandler(IReadRepository<OfferEntity> offersR
 
         var response = mapper.Map<List<OfferDTO>>(searchedOffers);
 
+        if (response.Count == 0)
+        {
+            return Result.NoContent();
+        }
+
         return Result.Success(response);
     }
 

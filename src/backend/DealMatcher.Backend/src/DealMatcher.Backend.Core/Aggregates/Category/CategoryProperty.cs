@@ -31,7 +31,15 @@ public sealed class CategoryProperty : DealMatcherEntityBase, IAggregateRoot
 
         Name = name.Trim();
         Type = type;
-        Options = options?.Select(o => o.Trim()).ToList();
+        if (options != null && options.Count > 0)
+        {
+            Options = options?.Select(o => o.Trim()).ToList();
+        }
+        else
+        {
+            Options = null;
+        }
+
     }
 
 #pragma warning disable CS8618

@@ -67,8 +67,13 @@ class OfferService {
     request.headers['Accept'] = 'application/json';
     request.headers['Authorization'] =
         'Bearer ${AuthService.instance.accessToken}';
-    request.fields['data'] = jsonEncode(jsonOffer);
-
+    request.fields['Title'] = jsonOffer['title'].toString();
+    request.fields['Description'] = jsonOffer['description'].toString();
+    request.fields['Price'] = jsonOffer['price'].toString();
+    request.fields['CategoryId'] = jsonOffer['categoryId'].toString();
+    request.fields['Availability'] = jsonOffer['availability'].toString();
+    request.fields['Tags'] = jsonEncode(jsonOffer['tags'] ?? []);
+    request.fields['Properties'] = jsonEncode(jsonOffer['properties'] ?? {});
     for (final img in images) {
       final bytes = await img.readAsBytes();
 

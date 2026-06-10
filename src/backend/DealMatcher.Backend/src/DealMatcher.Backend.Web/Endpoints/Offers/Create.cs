@@ -25,23 +25,16 @@ public class Create(IMediator mediator) : Endpoint<CreateOfferRequest>
             return;
         }
 
-        var createOfferDTO = JsonSerializer.Deserialize<CreateOfferDTO>(req.Data, _jsonOptions);
+        var tags = JsonSerializer.Deserialize<List<string>>(req.Tags, _jsonOptions);
+        var properties = JsonSerializer.Deserialize<Dictionary<string, string>>(req.Properties, _jsonOptions);
 
-        if (createOfferDTO is null)
+        if (tags is null || properties is null)
         {
             await SendErrorsAsync(400, ct);
             return;
         }
 
-        var request = new CreateNewOfferCommand(createOfferDTO.Title,
-            createOfferDTO.Description,
-            createOfferDTO.Price,
-            req.Images,
-            createOfferDTO.Tags,
-            createOfferDTO.CategoryId,
-            createOfferDTO.Properties,
-            createOfferDTO.Availability,
-            sellerId);
+        var request = new CreateNewOfferCommand(req.Title, req.Description, req.Price, req.Images, tags, req.CategoryId, properties, req.Availability, sellerId);
 
         var result = await mediator.Send(request, ct);
         await result.SendResult(this, ct);
